@@ -82,6 +82,9 @@
         <el-form-item prop="id" style="height: 0">
           <el-input type="hidden" v-model="customerOrderForm.id" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item prop="state" style="height: 0">
+          <el-input type="hidden" v-model="customerOrderForm.state" autocomplete="off"></el-input>
+        </el-form-item>        
         </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -113,7 +116,8 @@
           sex: '',
           age: '',
           location: '',
-          remark: ''
+          remark: '',
+          state: ''
         },
         rules: {
           seqNumber: [
@@ -190,13 +194,15 @@
           sex: '',
           age: '',
           location: '',
-          remark: ''
+          remark: '',
+          state: ''
         }
         this.$refs.customerOrderForm.resetFields()
       },
       onSubmit (customerOrderForm) {
         this.$refs.customerOrderForm.validate((valid) => {
           if (valid) {
+            alert(this.customerOrderForm.state)
             this.$axios
               .post('/admin/content/customerorder', {
                 id: this.customerOrderForm.id,
@@ -212,7 +218,8 @@
                 sex: this.customerOrderForm.sex,
                 age: this.customerOrderForm.age,
                 location: this.customerOrderForm.location,
-                remark: this.customerOrderForm.remark
+                remark: this.customerOrderForm.remark,
+                state: this.customerOrderForm.state
               }).then(resp => {
                 if (resp && resp.data.code === 200) {
                   this.dialogFormVisible = false

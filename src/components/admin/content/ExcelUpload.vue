@@ -2,37 +2,39 @@
   <div>
   <el-upload
     class="excel-upload"
-    ref="excel-upload"
+    ref="excelUpload"
     action="http://localhost:8443/api/admin/content/uploadFile"
     with-credentials
     :on-change="handleChange"
     :on-preview="handlePreview"
     :on-remove="handleRemove"
+    :before-upload="beforeUpload"
     :before-remove="beforeRemove"
     :on-success="handleSuccess"
     multiple
     :limit="1"
     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
     :on-exceed="handleExceed"
-    :file-list="fileList">
+    :auto-upload="true"
+    :file-list="fileList"
+    >
     <!-- <i class="el-icon-upload"></i>
     <div class="ec-upload__text">将文件拖到此处,或<em>点击上传</em></div> -->
     <el-button size="small" type="primary">点击上传</el-button>
-    <el-button type="primary" @click="exportTemplate()">导出模板</el-button>
-    <el-button type="primary" @click="export2Excel()">导出账单</el-button>
-    <div slot="tip" class="el-upload_tip">只能上传xlsx/xls的excel文件</div>
+    <div slot="tip" class="el-
+    ">只能上传xlsx/xls的excel文件</div>
   </el-upload>
 <el-card class="box-card">
     <div slot="header" class="clearfix">
         <span>数据预览</span>
     </div>
     <div class="text item">
-	<el-table :data="tableData" border highlight-current-row style="width: 100%;">
-        <el-table-column  :label="tableTitle" >
-            <el-table-column v-for="(item,i) in tableData" :index="(i)" :prop="item" :label="item" :key='item'>
-	        </el-table-column>
-	    </el-table-column>
-	</el-table>
+    <el-table :data="tableData" border highlight-current-row style="width: 100%;">
+          <el-table-column  :label="tableTitle" >
+              <el-table-column v-for="(item,i) in tableData" :index="(i)" :prop="item" :label="item" :key='item'>
+            </el-table-column>
+        </el-table-column>
+    </el-table>
     </div>
 </el-card>  
   </div>
@@ -42,7 +44,7 @@
 import XLSX from 'xlsx'
 import { export_excel_to_json, export_json_to_excel } from '@/vendor/Export2Excel.js'
   export default {
-    name: 'ExcelUpload',
+    name: 'excelUpload',
     data () {
       return {
         fileList: [],
@@ -51,16 +53,19 @@ import { export_excel_to_json, export_json_to_excel } from '@/vendor/Export2Exce
         file: '',
         da: '',
         tableData2: '',
-        tableData: '',
-        tableHeader: '',
+        tableData: [],
+        tableHeader: [],
         tableTitle: ''
       }
     },
     methods: {
+      beforeUpload (file) {
+        console.log('beforeUpload...')
+      },
       generateData ({ tableTitle, header, results }) {
         this.tableTitle = tableTitle
-        this.tableData = results
         this.tableHeader = header
+        this.tableData = results        
       },
       handleDrop(e) {
         console.log("handleDrop")
@@ -133,13 +138,23 @@ import { export_excel_to_json, export_json_to_excel } from '@/vendor/Export2Exce
         // 判断上传文件格式
         if (this.fileTemp) {
           if ((this.fileTemp.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
-            this.importfxx(this.fileTemp)
-            // this.readerData(this.fileTemp)
+              if (this.fileTemp.size < 5*1024*1024 ) {//文件大小须小于5M
+                  this.sayhello()                 
+              } else {
+                  this.$message({
+                  type:'warning',
+                  message:'文件不能大于5M！'
+                  })
+                  return false
+              }
+            // this.importfxx(this.fileTemp)
+            //this.readerData(this.fileTemp)
             } else {
               this.$message({
                 type:'warning',
-                message:'附件格式错误，请删除后重新上传！'
+                message:'文件格式错误，请删除后重新上传！'
                 })
+                return false
             }
         } else {
           this.$message({
@@ -258,6 +273,9 @@ import { export_excel_to_json, export_json_to_excel } from '@/vendor/Export2Exce
           export_json_to_excel(tHeader, data, '模板');
           }
         )
+      },
+      sayhello(){
+        alert('hi')
       }
     }
   }

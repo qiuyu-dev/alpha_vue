@@ -172,7 +172,8 @@
           sex: item.sex,
           age: item.age.toString(), // 不加验证报错
           location: item.location,
-          remark: item.remark
+          remark: item.remark,
+          state: item.state
         }
         // this.$refs.edit.category = {
         //   id: item.category.id.toString()
