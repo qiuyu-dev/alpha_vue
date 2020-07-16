@@ -202,7 +202,6 @@
       onSubmit (customerOrderForm) {
         this.$refs.customerOrderForm.validate((valid) => {
           if (valid) {
-            alert(this.customerOrderForm.state)
             this.$axios
               .post('/admin/content/customerorder', {
                 id: this.customerOrderForm.id,
