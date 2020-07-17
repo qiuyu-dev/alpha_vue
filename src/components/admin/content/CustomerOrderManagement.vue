@@ -51,6 +51,7 @@
         <el-table-column
           prop="certificateType"
           label="证件类型"
+          :formatter="ctFormat"
           fit>
         </el-table-column>
         <el-table-column
@@ -108,7 +109,7 @@
         <customer-order-edit @onSubmit="loadData()" ref="CustomerOrderEdit"></customer-order-edit>
       </div>
       <div style="margin: 20px 0 20px 0;float: right">
-        <upload-form ref="UploadForm"></upload-form>
+        <upload-form @onUpload="loadData()" ref="UploadForm"></upload-form>
       </div>
       </el-row>
       </el-card>
@@ -239,6 +240,14 @@
         var date = row[column.property]
         if (date !== null && date !== undefined) {
           return this.$moment(date).format('YYYY-MM-DD')
+        }
+      },
+      ctFormat (row, column) {
+        var ctype = row[column.property]
+        if (ctype == '1') {
+          return '身份证'
+        } else if (ctype == '2') {
+          return '护照'
         }
       }
     }

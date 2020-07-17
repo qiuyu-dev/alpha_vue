@@ -146,9 +146,9 @@
         return this.$confirm(`确定移除 ${file.name}？`)
       },
       handleSuccess (response) {
-        this.form.url = response
+        this.uploadForm.url = response
         console.log(this.uploadForm.url)
-        // this.$emit('onUpload')
+        this.$emit('onUpload')
         this.$message.warning('上传成功')
       },
       onSubmit () {
@@ -172,7 +172,7 @@
                   }).then(resp => {
                     if (resp && resp.data.code === 200) {
                       this.dialogFormVisible = false
-                      //this.$emit('onSubmit')
+                      this.$emit('onUpload')
                       console.log(resp.data.message)
                     }
                   })

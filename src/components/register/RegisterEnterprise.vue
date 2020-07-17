@@ -1,34 +1,45 @@
 <template>
   <div id="paper">
-  <el-form :model="loginForm" :rules="rules" class="login-container" label-position="left"
+  <el-form :model="registerForm" :rules="rules" ref="registerForm" class="login-container" label-position="left"
            label-width="0px" v-loading="loading">
     <h3 class="login_title">企业管理员注册</h3>
-    <el-form-item prop="username">
-      <el-input type="text" v-model="loginForm.username"
-                auto-complete="off" placeholder="账号"></el-input>
+    <el-form-item label="组织机构代码" :label-width="formLabelWidth" prop="orgcode">
+      <el-input type="text" v-model.trim="registerForm.orgcode"
+                auto-complete="off" placeholder="组织机构代码"></el-input>
     </el-form-item>
-    <el-form-item prop="password">
-      <el-input type="password" v-model="loginForm.password"
-                auto-complete="off" placeholder="密码"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-input type="text" v-model="loginForm.name"
-                auto-complete="off" placeholder="姓名"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-input type="text" v-model="loginForm.phone"
-                auto-complete="off" placeholder="联系电话"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-input type="text" v-model="loginForm.crop"
+    <el-form-item label="公司名称" :label-width="formLabelWidth" prop="crop">
+      <el-input type="text" v-model.trim="registerForm.crop"
                 auto-complete="off" placeholder="公司名称"></el-input>
     </el-form-item>
-    <el-form-item>
-      <el-input type="text" v-model="loginForm.orgcode"
-                auto-complete="off" placeholder="组织机构代码"></el-input>
-    </el-form-item>    
+    <el-form-item label="公司类型" :label-width="formLabelWidth" prop="ctype">
+      <el-select v-model="registerForm.ctype" placeholder="请选择公司类型">
+          <el-option label="保险商" value="1"></el-option>
+          <el-option label="服务商" value="2"></el-option>
+        </el-select>
+    </el-form-item>             
+    <el-form-item label="用户" :label-width="formLabelWidth" prop="username">
+      <el-input type="text" v-model.trim="registerForm.username"
+                auto-complete="off" placeholder="用户"></el-input>
+    </el-form-item>
+    <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
+      <el-input type="password" v-model.trim="registerForm.password"
+                auto-complete="off" placeholder="密码"></el-input>
+    </el-form-item>
+    <el-form-item label="姓名" :label-width="formLabelWidth" prop="name">
+      <el-input type="text" v-model.trim="registerForm.name"
+                auto-complete="off" placeholder="姓名"></el-input>
+    </el-form-item>
+    <el-form-item label="联系电话" :label-width="formLabelWidth" prop="phone">
+      <el-input type="text" v-model.trim="registerForm.phone"
+                auto-complete="off" placeholder="联系电话"></el-input>
+    </el-form-item>
+    <el-form-item label="email" :label-width="formLabelWidth" prop="email">
+      <el-input type="text" v-model.trim="registerForm.email"
+                auto-complete="off" placeholder="email" @blur="validEmail()"></el-input>
+    </el-form-item>       
     <el-form-item style="width: 100%">
       <el-button type="primary" style="width: 40%;background: #505458;border: none" v-on:click="register">注册</el-button>
+      <router-link to="login"><el-button type="primary" style="width: 40%;background: #505458;border: none">返回</el-button></router-link>
     </el-form-item>
   </el-form>
   </div>
@@ -37,50 +48,78 @@
   export default{
     data () {
       return {
+        formLabelWidth: '120px',
         rules: {
+          orgcode: [{required: true, message: '组织机构代码不能为空', trigger: 'blur'}],
+          crop: [{required: true, message: '公司名称不能为空', trigger: 'blur'}],
+          ctype: [{required: true, message: '请选择公司类型', trigger: 'blur'}],
           username: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
-          password: [{required: true, message: '密码不能为空', trigger: 'blur'}]
+          password: [{required: true, message: '密码不能为空', trigger: 'blur'}],
+          name: [{required: true, message: '姓名不能为空', trigger: 'blur'}],
+          phone: [{required: true, message: '联系电话不能为空', trigger: 'blur'}],
+          email: [{required: true, message: 'email不能为空', trigger: 'blur'}]
         },
         checked: true,
-        loginForm: {
+        registerForm: {
+          orgcode: '',
+          crop: '',
+          ctype: '',
           username: '',
           password: '',
           name: '',
           phone: '',
-          email: '',
-          crop: '',
-          orgcode: '',
+          email: ''         
         },
         loading: false
       }
     },
     methods: {
       register () {
-        var _this = this
-        this.$axios
-          .post('/register', {
-            username: this.loginForm.username,
-            password: this.loginForm.password,
-            name: this.loginForm.name,
-            phone: this.loginForm.phone,
-            email: this.loginForm.email,
-            crop: this.loginForm.crop,
-            orgcode: this.loginForm.orgcode
-          })
-          .then(resp => {
-            if (resp.data.code === 200) {
-              this.$alert('注册成功', '提示', {
-                confirmButtonText: '确定'
-              })
-              _this.$router.replace('/login')
+        this.$refs.registerForm.validate((valid) => {
+          if (valid) {
+              if(this.validEmail()){
+                return 
+              }
+              var _this = this
+              this.$axios.post('/register', {
+              crop: this.registerForm.crop,
+              orgcode: this.registerForm.orgcode,
+              ctype: this.registerForm.ctype,
+              username: this.registerForm.username,
+              password: this.registerForm.password,
+              name: this.registerForm.name,
+              phone: this.registerForm.phone,
+              email: this.registerForm.email
+            }).then(resp => {
+                if (resp.data.code === 200) {
+                  this.$alert('注册成功', '提示', {
+                    confirmButtonText: '确定'
+                  })
+                  _this.$router.replace('/login')
+                } else {
+                  this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
+                }
+              }).catch(failResponse => {})
             } else {
-              this.$alert(resp.data.message, '提示', {
-                confirmButtonText: '确定'
-              })
-            }
-          })
-          .catch(failResponse => {})
+              console.log('error submit')
+              return false
+          }
+        })
+      },
+     validEmail() {
+        const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        if(!reg.test(this.registerForm.email)){
+           this.$alert('邮箱格式不正确', '提示', {
+                    confirmButtonText: '确定'
+                  })
+           return true
+        } else {
+          return false
+        }
       }
+      
     }
   }
 </script>
@@ -99,7 +138,7 @@
   .login-container {
     border-radius: 15px;
     background-clip: padding-box;
-    margin: 90px auto;
+    margin: 5px auto;
     width: 350px;
     padding: 35px 35px 15px 35px;
     background: #fff;
