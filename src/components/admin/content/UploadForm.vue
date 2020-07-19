@@ -7,7 +7,7 @@
       @close="clear">
       <el-form :model="uploadForm" :rules="rules" style="text-align: left" ref="uploadForm">
         <el-form-item label="服务商" :label-width="formLabelWidth" prop="cid">
-        <el-select v-model="uploadForm.category.id" placeholder="请选择服务商">
+        <el-select v-model="uploadForm.cid" placeholder="请选择服务商">
           <el-option label="服务商1" value="1"></el-option>
           <el-option label="服务商2" value="2"></el-option>
           <el-option label="服务商3" value="3"></el-option>
@@ -34,6 +34,7 @@
               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
               :on-exceed="handleExceed"
               :auto-upload="false"
+              :data="getData()"
               :file-list="fileList"
               >
               <!-- <i class="el-icon-upload"></i>
@@ -66,13 +67,7 @@
         dialogFormVisible: false,
         fileList: [],
         uploadForm: {
-          id: '',
-          url: '',
-          cid: '',
-          category: {
-            id: '',
-            name: ''
-          }
+          cid: ''          
         },        
         rules:{
           category: [
@@ -82,18 +77,16 @@
       }
     },
     methods: {
+      getData () {
+        return this.uploadForm
+      },
       clear () {
         this.uploadForm = {
-          id: '',
-          url: '',
-          cid: '',
-          category: {
-            id: '',
-            name: ''
-          }
+          cid: ''
         }
-        this.$refs.excelUpload.clearFiles()
-        this.$refs.uploadForm.resetFields()
+        this.fileTemp == null
+        // this.$refs.excelUpload.clearFiles()
+        // this.$refs.uploadForm.resetFields()
       },
       beforeUpload (file) {
         console.log('beforeUpload...')
@@ -147,44 +140,43 @@
       },
       handleSuccess (response) {
         this.uploadForm.url = response
+        console.log('handleSuccess...')
         console.log(this.uploadForm.url)
         this.$emit('onUpload')
         this.$message.warning('上传成功')
       },
       onSubmit () {
-        var id = this.uploadForm.id;
-        var _url = this.uploadForm.url;
-        var _cid  = this.uploadForm.category.id;
+        var _cid  = this.uploadForm.cid;
         if (_cid == ''){
           alert("请选择服务商")
           return
-        } else if (this.fileTemp == null){
+        } 
+        if (this.fileTemp == null){
           alert("请选择excel文件上传")
           return
         } else {
+          alert(this.fileTemp.size)
+        }
           this.$refs.uploadForm.validate((valid) => {
              if (valid) {
                 //手动上传文件，在点击确认的时候 校验通过才会去请求上传文件的url
                 this.$refs.excelUpload.submit();
-                this.$axios.post('/admin/content/uploadFileProcess', {
-                  url: _url,
-                  cid: _cid
-                  }).then(resp => {
-                    if (resp && resp.data.code === 200) {
-                      this.dialogFormVisible = false
-                      this.$emit('onUpload')
-                      console.log(resp.data.message)
-                    }
-                  })
+                // this.$axios.post('/admin/content/uploadFileProcess', {
+                //   url: _url,
+                //   cid: _cid
+                //   }).then(resp => {
+                //     if (resp && resp.data.code === 200) {
+                //       this.dialogFormVisible = false
+                //       this.$emit('onUpload')
+                //       console.log(resp.data.message)
+                //     }
+                //   })
               } else {
                console.log('error submit')
                return false               
              }
           })          
-        }
-      },
-      uploadFile () {
-        this.$refs.uploadForm.url = this.$refs.excelUpload.url
+        
       }
     }  
   }

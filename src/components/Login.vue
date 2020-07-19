@@ -54,7 +54,19 @@
           })
           .catch(failResponse => {
           })
+      },
+      keyDown(e){ //如果是回车则执行登录方法
+        if (e.keyCode == 13) {
+          this.login();
+        }
       }
+    },
+    mounted () {
+      //绑定事件
+     window.addEventListener('keydown',this.keyDown);
+    },
+    destroyed () {
+      window.removeEventListener('keydown',this.keyDown,false);
     }
   }
 </script>
