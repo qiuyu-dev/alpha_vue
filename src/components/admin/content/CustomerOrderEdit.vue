@@ -84,7 +84,10 @@
         </el-form-item>
         <el-form-item prop="state" style="height: 0">
           <el-input type="hidden" v-model="customerOrderForm.state" autocomplete="off"></el-input>
-        </el-form-item>        
+        </el-form-item>  
+        <el-form-item prop="cpExcelMst" style="height: 0">
+          <el-input type="hidden" v-model="customerOrderForm.cpExcelMst"></el-input>
+        </el-form-item>              
         </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -117,7 +120,8 @@
           age: '',
           location: '',
           remark: '',
-          state: ''
+          state: '',
+          cpExcelMst: {}
         },
         rules: {
           seqNumber: [
@@ -195,7 +199,8 @@
           age: '',
           location: '',
           remark: '',
-          state: ''
+          state: '',
+          cpExcelMst: {}
         }
         this.$refs.customerOrderForm.resetFields()
       },
@@ -218,7 +223,8 @@
                 age: this.customerOrderForm.age,
                 location: this.customerOrderForm.location,
                 remark: this.customerOrderForm.remark,
-                state: this.customerOrderForm.state
+                state: this.customerOrderForm.state,
+                cpExcelMst: this.customerOrderForm.cpExcelMst
               }).then(resp => {
                 if (resp && resp.data.code === 200) {
                   this.dialogFormVisible = false

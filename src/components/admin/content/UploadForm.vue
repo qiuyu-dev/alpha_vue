@@ -7,13 +7,14 @@
       @close="clear">
       <el-form :model="uploadForm" :rules="rules" style="text-align: left" ref="uploadForm">
         <el-form-item label="服务商" :label-width="formLabelWidth" prop="cid">
-        <el-select v-model="uploadForm.cid" placeholder="请选择服务商">
-          <el-option label="服务商1" value="1"></el-option>
+        <el-select @change="getOptions" v-model="uploadForm.cid" placeholder="请选择服务商">
+          <el-option v-for="(item,index) in objData" :key="index" :value="item.id" :label="item.name"/>
+          <!-- <el-option label="服务商1" value="1"></el-option>
           <el-option label="服务商2" value="2"></el-option>
           <el-option label="服务商3" value="3"></el-option>
           <el-option label="服务商4" value="4"></el-option>
           <el-option label="服务商5" value="5"></el-option>
-          <el-option label="服务商6" value="6"></el-option>
+          <el-option label="服务商6" value="6"></el-option> -->
         </el-select>
         </el-form-item>
         <el-form-item label="上传excel文件" :label-width="formLabelWidth" prop="url">
@@ -66,6 +67,7 @@
         formLabelWidth: '120px',
         dialogFormVisible: false,
         fileList: [],
+        objData: [],
         uploadForm: {
           cid: ''          
         },        
@@ -154,8 +156,6 @@
         if (this.fileTemp == null){
           alert("请选择excel文件上传")
           return
-        } else {
-          alert(this.fileTemp.size)
         }
           this.$refs.uploadForm.validate((valid) => {
              if (valid) {
@@ -177,8 +177,24 @@
              }
           })          
         
+      },
+      getOptions () {
+        let _this = this
+        this.$axios.get('/admin/content/companylist').then(resp => {
+            if (resp && resp.data.code === 200) {
+              _this.objData = resp.data.result
+              console.log(_this.objData)
+
+            }
+          }).catch((error) =>{
+            console.log(error)
+          })        
+
       }
-    }  
+    },
+    mounted () {
+      this.getOptions()
+    } 
   }
 </script>
 

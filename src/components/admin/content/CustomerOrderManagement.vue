@@ -174,7 +174,8 @@
           age: item.age.toString(), // 不加验证报错
           location: item.location,
           remark: item.remark,
-          state: item.state
+          state: item.state,
+          cpExcelMst: item.cpExcelMst
         }
         // this.$refs.edit.category = {
         //   id: item.category.id.toString()
