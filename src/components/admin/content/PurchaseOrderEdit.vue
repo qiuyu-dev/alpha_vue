@@ -6,13 +6,13 @@
       :visible.sync="dialogFormVisible"
       @close="clear">
       <el-form :model="purchaseOrderForm" style="text-align: left" ref="purchaseOrderForm">
-        <el-row>
+        <el-row :gutter="10">
           <el-col :span="8">
             <el-form-item label="被保险人姓名" :label-width="formLabelWidth" prop="cname">
               <el-input v-model="purchaseOrderForm.cname" autocomplete="off" readonly disabled></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">     
+          <el-col :span="6">     
             <el-form-item label="证件类型" :label-width="formLabelWidth" prop="certificateType">
             <el-select class="select" v-model="purchaseOrderForm.certificateType" placeholder="请选择证件类型" disabled>
               <el-option label="身份证" value="1"></el-option>
@@ -20,20 +20,20 @@
             </el-select>
             </el-form-item>          
           </el-col>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="电话" :label-width="formLabelWidth" prop="phonenum">
               <el-input v-model="purchaseOrderForm.phonenum" autocomplete="off" readonly disabled></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="10">
           <el-col :span="24">
             <el-form-item label="被保险人证件号" :label-width="formLabelWidth" prop="insuredId">
               <el-input v-model="purchaseOrderForm.insuredId" autocomplete="off" readonly disabled></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="10">
           <el-col :span="12">
             <el-form-item label="生效日" :label-width="formLabelWidth">
             <el-form-item prop="beginTime">
@@ -49,8 +49,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="8">         
+        <el-row :gutter="10">
+          <el-col :span="6">         
             <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
             <el-select class="select" v-model="purchaseOrderForm.sex" placeholder="请选择性别" disabled>
               <el-option label="男" value="1"></el-option>
@@ -58,23 +58,23 @@
             </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="6">
             <el-form-item label="年龄" :label-width="formLabelWidth" prop="age">
               <el-input v-model="purchaseOrderForm.age" autocomplete="off" readonly disabled></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="所在地" :label-width="formLabelWidth" prop="location">
               <el-input v-model="purchaseOrderForm.location" autocomplete="off" readonly disabled></el-input>
             </el-form-item>
           </el-col>        
         </el-row>
-        <el-row>
+        <el-row :gutter="10">
         <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
            <el-input v-model="purchaseOrderForm.remark" autocomplete="off" readonly disabled></el-input>
         </el-form-item>
         </el-row>
-        <el-row>
+        <el-row :gutter="10">
             <el-form-item label="操作" :label-width="formLabelWidth" prop="opt">
             <el-select class="select" v-model="purchaseOrderForm.opt" placeholder="请选择操作">
               <el-option label="通过" value="1"></el-option>
@@ -174,6 +174,13 @@
         var _id = this.purchaseOrderForm.id
         var _opt = this.purchaseOrderForm.opt
         var _reson = this.purchaseOrderForm.reson
+        if (_opt == null) {
+          this.$alert("请选择操作", '提示', {
+                  confirmButtonText: '确定'
+                })
+          return 
+        }
+        
         // alert(_id + "/ "+ _opt + " /" +_reson)
         // this.$refs.purchaseOrderForm.validate((valid) => {
           // if (valid) {
