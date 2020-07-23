@@ -127,10 +127,6 @@ import ImgUpload from './ImgUpload'
         this.msg=''
       },
       onSubmit (purchaseOrderPayForm) {
-        alert(this.msg.length + "/" + this.msg)
-        alert(this.objData.batchNumber)
-        alert(this.objData.name)
- 
         this.$axios.post('/admin/content/purchaseorder/pay', {
                 batchNumber: this.objData.batchNumber,
                 cid: this.objData.cid,
