@@ -6,78 +6,92 @@
       :visible.sync="dialogFormVisible"
       @close="clear">
       <el-form :model="customerOrderForm" :rules="rules" style="text-align: left" ref="customerOrderForm">
-        <el-row>
-        <el-form-item label="序号" :label-width="formLabelWidth" prop="seqNumber">
-          <el-input v-model="customerOrderForm.seqNumber" autocomplete="off" placeholder="序号"></el-input>
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <el-form-item label="序号" :label-width="formLabelWidth" prop="seqNumber">
+              <el-input v-model="customerOrderForm.seqNumber" autocomplete="off" placeholder="序号"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">        
+            <el-form-item label="保单号" :label-width="formLabelWidth2" prop="policyNumber">
+              <el-input v-model="customerOrderForm.policyNumber" autocomplete="off" placeholder="保单号"></el-input>
+            </el-form-item>
+          </el-col>        
+          <el-col :span="8">
+            <el-form-item label="产品" :label-width="formLabelWidth2" prop="product">
+              <el-input v-model="customerOrderForm.product" autocomplete="off" placeholder="产品"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
-        <el-row>
-        <el-form-item label="保单号" :label-width="formLabelWidth" prop="policyNumber">
-          <el-input v-model="customerOrderForm.policyNumber" autocomplete="off"></el-input>
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <el-form-item label="被保险人姓名" :label-width="formLabelWidth" prop="insuredName">
+              <el-input v-model="customerOrderForm.insuredName" autocomplete="off" placeholder="姓名">></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">        
+            <el-form-item label="证件类型" :label-width="formLabelWidth2" prop="certificateType">
+              <el-select class="select" v-model="customerOrderForm.certificateType" placeholder="请选择分类">
+                <el-option label="身份证" value="1"></el-option>
+                <el-option label="护照" value="2"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="电话" :label-width="formLabelWidth2" prop="phonenum">
+              <el-input v-model="customerOrderForm.phonenum" autocomplete="off" placeholder="电话"></el-input>
+            </el-form-item>
+          </el-col>           
         </el-row>
-        <el-row>
-        <el-form-item label="产品" :label-width="formLabelWidth" prop="product">
-          <el-input v-model="customerOrderForm.product" autocomplete="off"></el-input>
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="24">
+            <el-form-item label="被保险人证件号" :label-width="formLabelWidth" prop="insuredId">
+              <el-input v-model="customerOrderForm.insuredId" autocomplete="off" placeholder="证件号"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
-        <el-row>
-        <el-form-item label="被保险人姓名" :label-width="formLabelWidth" prop="insuredName">
-          <el-input v-model="customerOrderForm.insuredName" autocomplete="off"></el-input>
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="12">
+            <el-form-item label="生效日" :label-width="formLabelWidth" required>
+            <el-form-item prop="effectiveDate">
+                <el-date-picker type="date" placeholder="选择日期" v-model="customerOrderForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 65%;" ></el-date-picker>
+            </el-form-item>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="截止日" :label-width="formLabelWidth" required>
+            <el-form-item prop="closingDate">
+                <el-date-picker type="date" placeholder="选择日期" v-model="customerOrderForm.closingDate" value-format="yyyy-MM-dd" style="width: 65%;" ></el-date-picker>
+            </el-form-item>
+            </el-form-item>
+          </el-col>
         </el-row>
-        <el-row>
-          <div style="margin: 10px 0 10px 0;">
-        <el-form-item label="证件类型" :label-width="formLabelWidth" prop="certificateType">
-        <el-select class="select" v-model="customerOrderForm.certificateType" placeholder="请选择分类">
-          <el-option label="身份证" value="1"></el-option>
-          <el-option label="护照" value="2"></el-option>
-        </el-select>
-        </el-form-item>
-          </div>
-          <div style="margin: 10px 0 10px 0;">
-        <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
-        <el-select class="select" v-model="customerOrderForm.sex" placeholder="请选择性别">
-          <el-option label="男" value="1"></el-option>
-          <el-option label="女" value="2"></el-option>
-        </el-select>
-        </el-form-item>
-          </div>
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
+              <el-select class="select" v-model="customerOrderForm.sex" placeholder="请选择性别">
+                <el-option label="男" value="1"></el-option>
+                <el-option label="女" value="2"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">          
+            <el-form-item label="年龄" :label-width="formLabelWidth2" prop="age">
+              <el-input v-model="customerOrderForm.age" autocomplete="off" placeholder="年龄"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="所在地" :label-width="formLabelWidth2" prop="location">
+              <el-input v-model="customerOrderForm.location" autocomplete="off" placeholder="所在地"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
-        <el-row>
-        <el-form-item label="电话" :label-width="formLabelWidth" prop="phonenum">
-           <el-input v-model="customerOrderForm.phonenum" autocomplete="off"></el-input>
-        </el-form-item>
-        </el-row>
-        <el-row>
-        <el-form-item label="被保险人证件号" :label-width="formLabelWidth" prop="insuredId">
-           <el-input v-model="customerOrderForm.insuredId" autocomplete="off"></el-input>
-        </el-form-item>
-        </el-row>
-        <el-row>
-        <el-form-item label="生效日" :label-width="formLabelWidth" required>
-        <el-form-item prop="effectiveDate">
-            <el-date-picker type="date" placeholder="选择日期" v-model="customerOrderForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 25%;" ></el-date-picker>
-        </el-form-item>
-        </el-form-item>
-        <el-form-item label="截止日" :label-width="formLabelWidth" required>
-        <el-form-item prop="closingDate">
-            <el-date-picker type="date" placeholder="选择日期" v-model="customerOrderForm.closingDate" value-format="yyyy-MM-dd" style="width: 25%;" ></el-date-picker>
-        </el-form-item>
-        </el-form-item>
-        </el-row>
-        <el-row>
-        <el-form-item label="年龄" :label-width="formLabelWidth" prop="age">
-           <el-input v-model="customerOrderForm.age" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="所在地" :label-width="formLabelWidth" prop="location">
-           <el-input v-model="customerOrderForm.location" autocomplete="off"></el-input>
-        </el-form-item>
-        </el-row>
-        <el-row>
-        <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
-           <el-input v-model="customerOrderForm.remark" autocomplete="off"></el-input>
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="24"> 
+              <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
+                <el-input v-model="customerOrderForm.remark" autocomplete="off" placeholder="备注"></el-input>
+              </el-form-item>
+           </el-col>
         </el-row>
         <el-form-item prop="id" style="height: 0">
           <el-input type="hidden" v-model="customerOrderForm.id" autocomplete="off"></el-input>
@@ -105,6 +119,7 @@
       return {
         dialogFormVisible: false,
         formLabelWidth: '120px',
+        formLabelWidth2: '100px',
         customerOrderForm: {
           id: '',
           seqNumber: '',
@@ -137,7 +152,7 @@
             {min: 1, max: 100, message: '长度1-100', triger: 'blur'}
           ],
           insuredName: [
-            {required: true, message: '请输入被保险人姓名', triger: 'blur'},
+            {required: true, message: '请输入姓名', triger: 'blur'},
             {min: 1, max: 20, message: '长度1-20', triger: 'blur'}
           ],
           certificateType: [
@@ -148,7 +163,7 @@
             {min: 1, max: 20, message: '长度1-20', triger: 'blur'}
           ],
           insuredId: [
-            {required: true, message: '请输入被保险人证件号', triger: 'blur'},
+            {required: true, message: '请输入证件号', triger: 'blur'},
             {min: 1, max: 30, message: '长度1-30', triger: 'blur'}
           ],
           effectiveDate: [
@@ -250,6 +265,10 @@
   }
   .select {
     width: 120px;
+    margin: 0px 10px 0 0px;
+  }
+  .input {
+    width: 130px;
     margin: 0px 10px 0 0px;
   }
 </style>
