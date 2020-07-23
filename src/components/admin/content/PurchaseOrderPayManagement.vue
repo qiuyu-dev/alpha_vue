@@ -19,12 +19,7 @@
           type="selection"
           width="55">
         </el-table-column>
-        <el-table-column
-          prop="seqNumber"
-          label="序号"
-          fit>
-        </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="policyNumber"
           label="保单号"
           width="100">
@@ -33,9 +28,9 @@
           prop="product"
           label="产品"
           fit>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
-          prop="insuredName"
+          prop="cname"
           label="被保险人姓名"
           width="120">
         </el-table-column>
@@ -58,26 +53,27 @@
           fit>
         </el-table-column>
         <el-table-column
-          prop="effectiveDate"
+          prop="beginTime"
           :formatter="dateFormat"
           label="生效日期"
           width="100"
           fit>
         </el-table-column>
         <el-table-column
-          prop="closingDate"
+          prop="endTime"
           :formatter="dateFormat"
           label="截止日期"
           width="100"
           fit>
         </el-table-column>
         <el-table-column
-          prop="state"
+          prop="cestatus"
+          :formatter="cesFormat"
           label="状态"
           width="100"
           fit>
         </el-table-column>        
-        <el-table-column
+        <!-- <el-table-column
           fixed="right"
           label="操作"
           width="120">
@@ -89,11 +85,12 @@
               付费
             </el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       <el-row>
       <div style="margin: 20px 0 20px 0;float: right">
-        <purchase-order-pay-edit @onSubmit="loadData()" ref="purchaseOrderPayEdit"></purchase-order-pay-edit>
+        <purchase-order-pay-edit :msg="mymsg"  @onSubmit="loadData()"  ref="purchaseOrderPayEdit"></purchase-order-pay-edit>
+        <el-button class="add-button" @click="batchFeeOpt()">付费</el-button>
       </div>
       </el-row>
       </el-card>
@@ -108,7 +105,8 @@
     data () {
       return {
         datas: [],
-        multipleSelection: []
+        multipleSelection: [],
+        mymsg: []
       }
     },
     mounted () {
@@ -137,16 +135,12 @@
         }       
       },
       loadData () {
-        // var _this = this
-        // this.$axios.get('/purchaseorder/list').then(resp => {
-        //   if (resp && resp.data.code === 200) {
-        //     _this.datas = resp.data.result
-        //   }
-        // })
-        this.datas=[
-            {"id":141,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张十","certificateType":"1","phonenum":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试10","state":"1"},
-            {"id":140,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张九","certificateType":"1","phonenum":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试9","state":"1"},
-            {"id":85,"seqNumber":"123456","policyNumber":"333331","product":"太平人寿新安康","insuredName":"李四","certificateType":"2","phonenum":"1388889999","insuredId":"654321","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"2","age":23,"location":"天津","remark":"测试2","state":"1"}]
+        var _this = this
+        this.$axios.get('/customerenterprise/list').then(resp => {
+          if (resp && resp.data.code === 200) {
+            _this.datas = resp.data.result
+          }
+        })
       },
       toggleSelection (rows) {
         if (rows) {
@@ -173,6 +167,36 @@
         } else if (ctype == '2') {
           return '护照'
         }
+      },
+      cesFormat (row, column) {
+        var ctype = row[column.property]
+        if (ctype == '1') {
+          return '新增'
+        } else if (ctype == '2') {
+          return '已核实'
+        } else if (ctype == '3') {
+          return '未通过'
+        } else if (ctype == '4') {
+          return '延续'
+        }
+      },
+      batchFeeOpt () {        
+        let checkArr = this.multipleSelection
+        if(checkArr.length==0){
+           this.$alert("请选择人员", '提示', {
+                  confirmButtonText: '确定'
+                })
+           return false
+        } else {
+          let ids = []
+          checkArr.forEach(function (item) {
+            ids.push(item.id)          
+            console.log(item.id)
+         })
+          this.mymsg=ids
+          this.$refs.purchaseOrderPayEdit.dialogFormVisible = true
+        }
+        
       }
     }
   }
