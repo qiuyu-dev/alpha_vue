@@ -4,7 +4,7 @@
       title="修改用户信息"
       :visible.sync="dialogFormVisible">
       <el-form v-model="selectedUser" style="text-align: left" ref="dataForm">
-        <el-form-item label="用户名" label-width="120px" prop="username">
+        <el-form-item label="账号" label-width="120px" prop="username">
           <label>{{selectedUser.username}}</label>
         </el-form-item>
         <el-form-item label="姓名" label-width="120px" prop="name">
@@ -32,8 +32,8 @@
     </el-dialog>
     <el-row style="margin: 18px 0px 0px 18px ">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+        <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
+        <el-breadcrumb-item>系统功能</el-breadcrumb-item> -->
         <el-breadcrumb-item>用户信息</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>    
@@ -44,10 +44,10 @@
         :default-sort = "{prop: 'id', order: 'ascending'}"
         style="width: 100%"
         :max-height="tableHeight">
-        <el-table-column
+        <!-- <el-table-column
           type="selection"
           width="55">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="id"
           label="id"
@@ -56,7 +56,7 @@
         </el-table-column>
         <el-table-column
           prop="username"
-          label="用户名"
+          label="账号"
           fit>
         </el-table-column>
         <el-table-column
@@ -75,7 +75,7 @@
           show-overflow-tooltip
           fit>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="状态"
           sortable
           width="100">
@@ -87,7 +87,7 @@
               @change="(value) => commitStatusChange(value, scope.row)">
             </el-switch>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           label="操作"
           width="120">
@@ -98,17 +98,17 @@
               size="small">
               编辑
             </el-button>
-            <el-button
+            <!-- <el-button
               type="text"
               size="small">
               删除
-            </el-button>
+            </el-button> -->
           </template>
         </el-table-column>
       </el-table>
       <div style="margin: 20px 0 20px 0;float: left">
-        <el-button>取消选择</el-button>
-        <el-button>批量删除</el-button>
+        <!-- <el-button>取消选择</el-button>
+        <el-button>批量删除</el-button> -->
       </div>
       <div style="margin: 20px 0 20px 0;float: right">
         <bulk-registration @onSubmit="listUsers()"></bulk-registration>
@@ -143,7 +143,7 @@
       methods: {
         listUsers () {
           var _this = this
-          this.$axios.get('/admin/user').then(resp => {
+          this.$axios.get('/admin/user/list').then(resp => {
             if (resp && resp.data.code === 200) {
               _this.users = resp.data.result
             }
@@ -151,7 +151,7 @@
         },
         listRoles () {
           var _this = this
-          this.$axios.get('/admin/role').then(resp => {
+          this.$axios.get('/admin/role/listbycurruser').then(resp => {
             if (resp && resp.data.code === 200) {
               _this.roles = resp.data.result
             }
@@ -187,7 +187,7 @@
               }
             }
           }
-          this.$axios.put('/admin/user', {
+          this.$axios.put('/admin/user/edit', {
             username: user.username,
             name: user.name,
             phone: user.phone,

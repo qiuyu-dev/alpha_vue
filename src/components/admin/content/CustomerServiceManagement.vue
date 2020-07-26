@@ -2,8 +2,8 @@
   <div>
     <el-row style="margin: 18px 0px 0px 18px ">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-        <el-breadcrumb-item>内容管理</el-breadcrumb-item>
+        <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
+        <el-breadcrumb-item>系统功能</el-breadcrumb-item> -->
         <el-breadcrumb-item>客户服务</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
@@ -158,16 +158,16 @@
         }       
       },
       loadData () {
-        // var _this = this
-        // this.$axios.get('/purchaseservice/list').then(resp => {
-        //   if (resp && resp.data.code === 200) {
-        //     _this.datas = resp.data.result
-        //   }
-        // })
-        this.datas=[
-            {"id":141,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张十","certificateType":"1","phonenum":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试10","state":"1"},
-            {"id":140,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张九","certificateType":"1","phonenum":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试9","state":"1"},
-            {"id":85,"seqNumber":"123456","policyNumber":"333331","product":"太平人寿新安康","insuredName":"李四","certificateType":"2","phonenum":"1388889999","insuredId":"654321","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"2","age":23,"location":"天津","remark":"测试2","state":"1"}]
+        var _this = this
+        this.$axios.get('/admin/v1/pri/po/share/purchaseservice/list').then(resp => {
+          if (resp && resp.data.code === 200) {
+            _this.datas = resp.data.result
+          }
+        })
+        // this.datas=[
+        //     {"id":141,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张十","certificateType":"1","phonenum":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试10","state":"1"},
+        //     {"id":140,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张九","certificateType":"1","phonenum":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试9","state":"1"},
+        //     {"id":85,"seqNumber":"123456","policyNumber":"333331","product":"太平人寿新安康","insuredName":"李四","certificateType":"2","phonenum":"1388889999","insuredId":"654321","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"2","age":23,"location":"天津","remark":"测试2","state":"1"}]
       },
       toggleSelection (rows) {
         if (rows) {

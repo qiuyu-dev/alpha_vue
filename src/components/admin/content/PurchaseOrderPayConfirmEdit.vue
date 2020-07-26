@@ -155,7 +155,7 @@ import ImgUpload from './ImgUpload'
           return 
         }
         //alert(this.purchaseOrderPayConfirmForm.id +"/" + this.purchaseOrderPayConfirmForm.receivable + "/" +this.purchaseOrderPayConfirmForm.confirmRemark)
-        this.$axios.post('/admin/content/purchaseorder/payconfirm', {
+        this.$axios.post('/admin/v1/pri/po/section/purchaseorder/payconfirm', {
                 id: this.purchaseOrderPayConfirmForm.id,
                 receivable: this.purchaseOrderPayConfirmForm.receivable,
                 confirmRemark: this.purchaseOrderPayConfirmForm.confirmRemark           

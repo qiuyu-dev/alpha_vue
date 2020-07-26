@@ -127,7 +127,7 @@ import ImgUpload from './ImgUpload'
         this.msg=''
       },
       onSubmit (purchaseOrderPayForm) {
-        this.$axios.post('/admin/content/purchaseorder/pay', {
+        this.$axios.post('/admin/v1/pri/po/section/purchaseorder/pay', {
                 batchNumber: this.objData.batchNumber,
                 cid: this.objData.cid,
                 effectiveNumber: this.msg.length,
@@ -153,7 +153,7 @@ import ImgUpload from './ImgUpload'
       },
       getData () {
         let _this = this
-        this.$axios.get('/admin/content/purchaseorderpay/batchfeeData').then(resp => {
+        this.$axios.get('/admin/v1/pri/po/section/purchaseorderpay/BatchFeeMstData').then(resp => {
             if (resp && resp.data.code === 200) {
               _this.objData = resp.data.result
               console.log(_this.objData)

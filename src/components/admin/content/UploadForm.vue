@@ -16,7 +16,7 @@
             <el-upload
               class="excel-upload"
               ref="excelUpload"
-              action="http://localhost:8443/api/admin/content/uploadFile"
+              action="http://localhost:8443/api/admin/v1/pri/co/share/uploadFile"
               with-credentials
               :on-change="handleChange"
               :on-preview="handlePreview"
@@ -178,7 +178,7 @@
       },
       getOptions () {
         let _this = this
-        this.$axios.get('/admin/content/companylist').then(resp => {
+        this.$axios.get('/admin/v1/pri/co/share/company/list').then(resp => {
             if (resp && resp.data.code === 200) {
               _this.objData = resp.data.result
               console.log(_this.objData)

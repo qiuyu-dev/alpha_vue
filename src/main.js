@@ -194,7 +194,7 @@ const initAdminMenu = (router, store) => {
     console.log('111')
     return
   }
-  axios.get('/menu').then(resp => {
+  axios.get('/admin/v1/pri/menu/currentuser').then(resp => {
     if (resp && resp.status === 200) {
       console.log(resp.data.result)
       var fmtRoutes = formatRoutes(resp.data.result)

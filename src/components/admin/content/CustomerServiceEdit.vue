@@ -219,7 +219,7 @@
         this.$refs.customerServiceForm.validate((valid) => {
           if (valid) {
             this.$axios
-              .post('/admin/content/purchaseorder', {
+              .post('/admin/v1/pri/po/section/purchaseorder', {
                 id: this.customerServiceForm.id,
                 seqNumber: this.customerServiceForm.seqNumber,
                 policyNumber: this.customerServiceForm.policyNumber,

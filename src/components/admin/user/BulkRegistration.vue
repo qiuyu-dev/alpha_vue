@@ -33,7 +33,7 @@
         </el-form-item> 
         <el-form-item prop="orgcode" style="height: 0">
           <el-input type="hidden" v-model="loginForm.orgcode"></el-input>
-        </el-form-item>                         
+        </el-form-item>           
         <el-form-item style="width: 100%">
           <el-button type="primary" style="width: 40%;background: #505458;border: none" v-on:click="register">添加</el-button>
         </el-form-item>
@@ -48,8 +48,9 @@
       data () {
         return {
           dialogFormVisible: false,
+          formLabelWidth: '120px',
           rules: {
-            username: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
+            username: [{required: true, message: '账号不能为空', trigger: 'blur'}],
             password: [{required: true, message: '密码不能为空', trigger: 'blur'}]
           },
           loginForm: {
@@ -62,7 +63,7 @@
             orgcode: ''
           }
         }
-      },
+      } ,
       methods: {
         clear () {
           this.loginForm = {
@@ -84,7 +85,9 @@
               phone: this.loginForm.phone,
               email: this.loginForm.email,
               crop: this.loginForm.crop,
-              orgcode: this.loginForm.orgcode
+              orgcode: this.loginForm.orgcode,
+              itype: 2
+              // 插入类型1为注册，2为管理员添加
             })
             .then(resp => {
               if (resp.data.code === 200) {

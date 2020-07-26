@@ -2,8 +2,8 @@
   <div>
     <el-row style="margin: 18px 0px 0px 18px ">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-        <el-breadcrumb-item>内容管理</el-breadcrumb-item>
+        <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
+        <el-breadcrumb-item>系统功能</el-breadcrumb-item> -->
         <el-breadcrumb-item>采购单付费</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
@@ -136,7 +136,7 @@
       },
       loadData () {
         var _this = this
-        this.$axios.get('/customerenterprise/list').then(resp => {
+        this.$axios.get('/admin/v1/pri/po/share/customerenterprise/list').then(resp => {
           if (resp && resp.data.code === 200) {
             _this.datas = resp.data.result
           }

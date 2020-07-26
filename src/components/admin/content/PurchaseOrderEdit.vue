@@ -185,7 +185,7 @@
         // this.$refs.purchaseOrderForm.validate((valid) => {
           // if (valid) {
             this.$axios
-              .post('/admin/content/purchaseorder', {
+              .post('/admin/v1/pri/po/section/purchaseorder', {
                 id: _id,
                 reson: _reson,
                 opt: _opt

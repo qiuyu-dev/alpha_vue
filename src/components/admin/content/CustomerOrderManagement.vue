@@ -2,8 +2,8 @@
   <div>
     <el-row style="margin: 18px 0px 0px 18px ">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-        <el-breadcrumb-item>内容管理</el-breadcrumb-item>
+        <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
+        <el-breadcrumb-item>系统功能</el-breadcrumb-item> -->
         <el-breadcrumb-item>客户单上传</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
@@ -15,18 +15,23 @@
         style="width: 100%"
         :max-height="tableHeight"
         @selection-change="handleSelectionChange">
-        <el-table-column
+        <!-- <el-table-column
           type="selection"
           width="55">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline>
               <el-form-item>
-                <span>{{ props.row.remark }}</span>
+                <span>证件号：{{ props.row.insuredId }}，电话：{{ props.row.phone }}</span>
               </el-form-item>
             </el-form>
           </template>
+        </el-table-column>
+         <el-table-column
+          prop="fileName"
+          label="文件名"
+          fit>
         </el-table-column>
         <el-table-column
           prop="seqNumber"
@@ -45,27 +50,28 @@
         </el-table-column>
         <el-table-column
           prop="insuredName"
-          label="被保险人姓名"
-          width="120">
+          label="姓名"
+         
+          >
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="certificateType"
           label="证件类型"
           :formatter="ctFormat"
           fit>
-        </el-table-column>
-        <el-table-column
+        </el-table-column> -->
+        <!-- <el-table-column
           prop="insuredId"
           label="证件号"
           show-overflow-tooltip
           fit>
-        </el-table-column>
-        <el-table-column
+        </el-table-column> -->
+        <!-- <el-table-column
           prop="phonenum"
           label="电话"
           show-overflow-tooltip
           fit>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="effectiveDate"
           :formatter="dateFormat"
@@ -80,7 +86,26 @@
           width="100"
           fit>
         </el-table-column>
+  <el-table-column
+          prop="operator"
+          label="操作员"
+          show-overflow-tooltip
+          fit>
+        </el-table-column>
+         <el-table-column
+          prop="explanation"
+          label="说明"
+          show-overflow-tooltip
+          fit>
+        </el-table-column>
         <el-table-column
+          prop="status"
+          label="状态"
+          show-overflow-tooltip
+          fit>
+        </el-table-column>
+        
+        <!-- <el-table-column
           fixed="right"
           label="操作"
           width="120">
@@ -98,16 +123,16 @@
               删除
             </el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       <el-row>
-      <div style="margin: 20px 0 20px 0;float: left">
+      <!-- <div style="margin: 20px 0 20px 0;float: left">
         <el-button @click="toggleSelection()">取消选择</el-button>
         <el-button @click="batchOpt()">批量删除</el-button>
-      </div>
-      <div style="margin: 20px 0 20px 0;float: right">
+      </div> -->
+      <!-- <div style="margin: 20px 0 20px 0;float: right">
         <customer-order-edit @onSubmit="loadData()" ref="CustomerOrderEdit"></customer-order-edit>
-      </div>
+      </div> -->
       <div style="margin: 20px 0 20px 0;float: right">
         <upload-form @onUpload="loadData()" ref="UploadForm"></upload-form>
       </div>
@@ -144,7 +169,7 @@
           type: 'warning'
         }).then(() => {
             this.$axios
-              .post('/admin/content/customerorder/delete', {id: id}).then(resp => {
+              .post('/admin/v1/pri/co/section/delete', {id: id}).then(resp => {
               if (resp && resp.data.code === 200) {
                 this.loadData()
               }
@@ -183,7 +208,7 @@
       },
       loadData () {
         var _this = this
-        this.$axios.get('/customerorder/list').then(resp => {
+        this.$axios.get('/admin/v1/pri/co/share/customerorder/listCpExcels').then(resp => {
           if (resp && resp.data.code === 200) {
             _this.datas = resp.data.result
           }
@@ -222,7 +247,7 @@
            ids.push(item.id)
            console.log(item.id)
          })
-         this.$axios.get('/admin/content/customerorder/deleteByIds',
+         this.$axios.get('/admin/v1/pri/co/section/deleteByIds',
          {
            params: {
              ids: ids + ''

@@ -53,7 +53,7 @@
       },
       createRole () {
         this.$axios
-          .post('/admin/role', {
+          .post('/admin/role/add', {
             name: this.roleForm.name,
             nameZh: this.roleForm.nameZh
           })

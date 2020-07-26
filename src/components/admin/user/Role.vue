@@ -33,9 +33,9 @@
     </el-dialog>
     <el-row style="margin: 18px 0px 0px 18px ">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-        <el-breadcrumb-item>角色配置</el-breadcrumb-item>
+        <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
+        <el-breadcrumb-item>系统功能</el-breadcrumb-item> -->
+        <el-breadcrumb-item>角色信息</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
     <role-create @onSubmit="listRoles()"></role-create>
@@ -136,7 +136,7 @@
     methods: {
       listRoles () {
         var _this = this
-        this.$axios.get('/admin/role').then(resp => {
+        this.$axios.get('/admin/role/list').then(resp => {
           if (resp && resp.status === 200) {
             _this.roles = resp.data.result
           }
@@ -152,7 +152,7 @@
       },
       listMenus () {
         var _this = this
-        this.$axios.get('/admin/role/menu').then(resp => {
+        this.$axios.get('/admin/v1/pri/menu/list').then(resp => {
           if (resp && resp.data.code === 200) {
             _this.menus = resp.data.result
           }
@@ -221,7 +221,7 @@
             }
           }
         }
-        this.$axios.put('/admin/role', {
+        this.$axios.put('/admin/role/edit', {
           id: role.id,
           name: role.name,
           nameZh: role.nameZh,

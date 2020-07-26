@@ -1,5 +1,5 @@
 <template>
-  <div id="paper">
+  <div id="paper" class="main">
   <el-form :model="registerForm" :rules="rules" ref="registerForm" class="login-container" label-position="left"
            label-width="0px" v-loading="loading">
     <h3 class="login_title">企业管理员注册</h3>
@@ -7,19 +7,19 @@
       <el-input type="text" v-model.trim="registerForm.orgcode"
                 auto-complete="off" placeholder="组织机构代码"></el-input>
     </el-form-item>
-    <el-form-item label="公司名称" :label-width="formLabelWidth" prop="crop">
+    <el-form-item label="企业名称" :label-width="formLabelWidth" prop="crop">
       <el-input type="text" v-model.trim="registerForm.crop"
-                auto-complete="off" placeholder="公司名称"></el-input>
+                auto-complete="off" placeholder="企业名称"></el-input>
     </el-form-item>
-    <el-form-item label="公司类型" :label-width="formLabelWidth" prop="ctype">
-      <el-select v-model="registerForm.ctype" placeholder="请选择公司类型">
+    <el-form-item label="企业类型" :label-width="formLabelWidth" prop="ctype">
+      <el-select v-model="registerForm.ctype" placeholder="请选择企业类型">
           <el-option label="保险商" value="1"></el-option>
           <el-option label="服务商" value="2"></el-option>
         </el-select>
     </el-form-item>             
-    <el-form-item label="用户" :label-width="formLabelWidth" prop="username">
+    <el-form-item label="账号" :label-width="formLabelWidth" prop="username">
       <el-input type="text" v-model.trim="registerForm.username"
-                auto-complete="off" placeholder="用户"></el-input>
+                auto-complete="off" placeholder="账号"></el-input>
     </el-form-item>
     <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
       <el-input type="password" v-model.trim="registerForm.password"
@@ -51,9 +51,9 @@
         formLabelWidth: '120px',
         rules: {
           orgcode: [{required: true, message: '组织机构代码不能为空', trigger: 'blur'}],
-          crop: [{required: true, message: '公司名称不能为空', trigger: 'blur'}],
+          crop: [{required: true, message: ' 企业名称不能为空', trigger: 'blur'}],
           ctype: [{required: true, message: '请选择公司类型', trigger: 'blur'}],
-          username: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
+          username: [{required: true, message: '账号不能为空', trigger: 'blur'}],
           password: [{required: true, message: '密码不能为空', trigger: 'blur'}],
           name: [{required: true, message: '姓名不能为空', trigger: 'blur'}],
           phone: [{required: true, message: '联系电话不能为空', trigger: 'blur'}],
@@ -89,7 +89,9 @@
               password: this.registerForm.password,
               name: this.registerForm.name,
               phone: this.registerForm.phone,
-              email: this.registerForm.email
+              email: this.registerForm.email,
+              itype: 1
+              // 插入类型1为注册，2为管理员添加
             }).then(resp => {
                 if (resp.data.code === 200) {
                   this.$alert('注册成功', '提示', {
@@ -124,6 +126,10 @@
   }
 </script>
 <style>
+.main {
+  padding: 0 ;
+  text-align: center;
+}
   #paper {
     /*background:url("../assets/img/bg/eva1.jpg") no-repeat;*/
     background-position: center;

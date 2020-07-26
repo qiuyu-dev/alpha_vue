@@ -2,7 +2,7 @@
   <el-upload
     class="img-upload"
     ref="upload"
-    action="http://localhost:8443/api/admin/content/purchaseorder/uploadFile"
+    action="http://localhost:8443/api/admin/v1/pri/po/section/purchaseorder/uploadFile"
     with-credentials
     :on-preview="handlePreview"
     :on-remove="handleRemove"
