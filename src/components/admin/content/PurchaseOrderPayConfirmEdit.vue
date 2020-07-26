@@ -39,15 +39,15 @@
         <el-row :gutter="10">
            <el-col :span="8">
               <el-form-item label="开始日期" :label-width="formLabelWidth">
-              <el-form-item prop="beginTime">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayConfirmForm.beginTime" value-format="yyyy-MM-dd" style="width: 135px" disabled></el-date-picker>
+              <el-form-item prop="effectiveDate">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayConfirmForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 135px" disabled></el-date-picker>
               </el-form-item>
               </el-form-item>
            </el-col>
            <el-col :span="8">
               <el-form-item label="结束日期" :label-width="formLabelWidth">
-              <el-form-item prop="endTime">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayConfirmForm.endTime" value-format="yyyy-MM-dd" style="width: 135px" disabled></el-date-picker>
+              <el-form-item prop="closingDate">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayConfirmForm.closingDate" value-format="yyyy-MM-dd" style="width: 135px" disabled></el-date-picker>
               </el-form-item>
               </el-form-item>
            </el-col>
@@ -119,8 +119,8 @@ import ImgUpload from './ImgUpload'
           price: '',
           prepayment: '',
           receivable: '',
-          beginTime: '',
-          endTime: '',
+          effectiveDate: '',
+          closingDate: '',
           payTime: '',
           remark: '',
           payImg: '',
@@ -138,8 +138,8 @@ import ImgUpload from './ImgUpload'
           price: '',
           prepayment: '',
           receivable: '',
-          beginTime: '',
-          endTime: '',
+          effectiveDate: '',
+          closingDate: '',
           payTime: '',
           remark: '',
           payImg: '',

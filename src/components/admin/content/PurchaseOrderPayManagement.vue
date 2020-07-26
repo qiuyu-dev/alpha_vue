@@ -53,14 +53,14 @@
           fit>
         </el-table-column>
         <el-table-column
-          prop="beginTime"
+          prop="effectiveDate"
           :formatter="dateFormat"
           label="生效日期"
           width="100"
           fit>
         </el-table-column>
         <el-table-column
-          prop="endTime"
+          prop="closingDate"
           :formatter="dateFormat"
           label="截止日期"
           width="100"
@@ -127,8 +127,8 @@
           effectiveNumber: item.effectiveNumber,
           price: item.price,
           prepayment: item.prepayment,
-          beginTime: item.beginTime,
-          endTime: item.endTime,
+          effectiveDate: item.effectiveDate,
+          closingDate: item.closingDate,
           payTime: item.payTime,
           remark: item.remark,
           pay_img: item.pay_img          

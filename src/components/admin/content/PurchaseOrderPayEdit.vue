@@ -39,15 +39,15 @@
         <el-row :gutter="10">
            <el-col :span="12">
               <el-form-item label="开始日期" :label-width="formLabelWidth" required>
-              <el-form-item prop="beginTime">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayForm.beginTime" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
+              <el-form-item prop="effectiveDate">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
               </el-form-item>
               </el-form-item>
            </el-col>
            <el-col :span="12">
               <el-form-item label="结束日期" :label-width="formLabelWidth" required>
-              <el-form-item prop="endTime">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayForm.endTime" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
+              <el-form-item prop="closingDate">
+                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayForm.closingDate" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
               </el-form-item>
               </el-form-item>
            </el-col>
@@ -100,8 +100,8 @@ import ImgUpload from './ImgUpload'
           effectiveNumber: '',
           price: '',
           prepayment: '',
-          beginTime: '',
-          endTime: '',
+          effectiveDate: '',
+          closingDate: '',
           payTime: '',
           remark: '',
           payImg: ''          
@@ -117,8 +117,8 @@ import ImgUpload from './ImgUpload'
           effectiveNumber: '',
           price: '',
           prepayment: '',
-          beginTime: '',
-          endTime: '',
+          effectiveDate: '',
+          closingDate: '',
           payTime: '',
           remark: '',
           payImg: ''          
@@ -134,8 +134,8 @@ import ImgUpload from './ImgUpload'
                 ids: this.msg + '',
                 price: this.purchaseOrderPayForm.price,
                 prepayment: this.purchaseOrderPayForm.prepayment,
-                beginTime: this.purchaseOrderPayForm.beginTime,
-                endTime: this.purchaseOrderPayForm.endTime,
+                effectiveDate: this.purchaseOrderPayForm.effectiveDate,
+                closingDate: this.purchaseOrderPayForm.closingDate,
                 payTime: this.purchaseOrderPayForm.payTime,
                 remark: this.purchaseOrderPayForm.remark,
                 payImg: this.purchaseOrderPayForm.payImg              

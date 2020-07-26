@@ -36,15 +36,15 @@
         <el-row :gutter="10">
           <el-col :span="12">
             <el-form-item label="生效日" :label-width="formLabelWidth">
-            <el-form-item prop="beginTime">
-                <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.beginTime" value-format="yyyy-MM-dd" style="width: 65%;" disabled></el-date-picker>
+            <el-form-item prop="effectiveDate">
+                <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 65%;" disabled></el-date-picker>
             </el-form-item>
             </el-form-item>
           </el-col>
           <el-col :span="12">  
             <el-form-item label="截止日" :label-width="formLabelWidth">
-            <el-form-item prop="endTime">
-                <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.endTime" value-format="yyyy-MM-dd" style="width: 65%;" disabled></el-date-picker>
+            <el-form-item prop="closingDate">
+                <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.closingDate" value-format="yyyy-MM-dd" style="width: 65%;" disabled></el-date-picker>
             </el-form-item>
             </el-form-item>
           </el-col>
@@ -129,8 +129,8 @@
           certificateType: '',
           phonenum: '',
           insuredId: '',
-          beginTime: '',
-          endTime: '',
+          effectiveDate: '',
+          closingDate: '',
           sex: '',
           age: '',
           location: '',
@@ -154,8 +154,8 @@
           certificateType: '',
           phonenum: '',
           insuredId: '',
-          beginTime: '',
-          endTime: '',
+          effectiveDate: '',
+          closingDate: '',
           sex: '',
           age: '',
           location: '',

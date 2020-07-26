@@ -43,14 +43,14 @@
           fit>
         </el-table-column>
         <el-table-column
-          prop="beginTime"
+          prop="effectiveDate"
           :formatter="dateFormat"
           label="生效日期"
           width="100"
           fit>
         </el-table-column>
         <el-table-column
-          prop="endTime"
+          prop="closingDate"
           :formatter="dateFormat"
           label="截止日期"
           width="100"
@@ -115,8 +115,8 @@
           certificateType: item.certificateType,
           insuredId: item.insuredId,
           phonenum: item.phonenum,
-          beginTime: item.beginTime,
-          endTime: item.endTime,
+          effectiveDate: item.effectiveDate,
+          closingDate: item.closingDate,
           sex: item.sex,
           age: item.age,
           location: item.location,
