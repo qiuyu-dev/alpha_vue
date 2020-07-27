@@ -19,12 +19,12 @@
           type="selection"
           width="55">
         </el-table-column>
-        <!-- <el-table-column
-          prop="policyNumber"
-          label="保单号"
+        <el-table-column
+          prop="detailId"
+          label="ID"
           width="100">
         </el-table-column>
-        <el-table-column
+       <!--  <el-table-column
           prop="product"
           label="产品"
           fit>
@@ -123,7 +123,7 @@
       editOpt (item) {
         this.$refs.purchaseOrderPayEdit.dialogFormVisible = true
         this.$refs.purchaseOrderPayEdit.purchaseOrderPayForm = {
-          id: item.id,
+          id: item.detailId,
           batchNumber: item.batchNumber,
           ctype: item.ctype,
           effectiveNumber: item.effectiveNumber,
@@ -196,8 +196,9 @@
         } else {
           let ids = []
           checkArr.forEach(function (item) {
-            ids.push(item.id)          
-            console.log(item.id)
+            ids.push(item.detailId)          
+            console.log(item.detailId)
+            // alert(ids)
          })
           this.mymsg=ids
           this.$refs.purchaseOrderPayEdit.dialogFormVisible = true

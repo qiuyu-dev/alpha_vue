@@ -25,6 +25,12 @@
           show-overflow-tooltip
           fit>
         </el-table-column>
+         <el-table-column
+          prop="detailId"
+          label="id"
+          show-overflow-tooltip
+          fit>
+        </el-table-column>
         <el-table-column
           prop="insuredName"
           label="姓名">
@@ -51,12 +57,14 @@
           prop="effectiveDate"
           :formatter="dateFormat"
           label="生效日期"
+           width="100"
           fit>
         </el-table-column>
         <el-table-column
           prop="closingDate"
           :formatter="dateFormat"
           label="截止日期"
+          width="100"
           fit>
         </el-table-column>
         <el-table-column
@@ -111,7 +119,7 @@
       editOpt (item) {
         this.$refs.PurchaseOrderEdit.dialogFormVisible = true
         this.$refs.PurchaseOrderEdit.purchaseOrderForm = {
-          id: item.id,
+          id: item.detailId,
           eid: item.eid,
           cname: item.insuredName,
           certificateType: item.certificateType,

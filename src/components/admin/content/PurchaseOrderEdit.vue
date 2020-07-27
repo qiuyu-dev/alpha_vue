@@ -2,13 +2,13 @@
   <div style="text-align: left">
     <el-button class="add-button" @click="dialogFormVisible = true">复核</el-button>
     <el-dialog
-      title="复核采购单"
+      title="审核采购单"
       :visible.sync="dialogFormVisible"
       @close="clear">
       <el-form :model="purchaseOrderForm" style="text-align: left" ref="purchaseOrderForm">
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="被保险人姓名" :label-width="formLabelWidth" prop="cname">
+            <el-form-item label="姓名" :label-width="formLabelWidth" prop="cname">
               <el-input v-model="purchaseOrderForm.cname" autocomplete="off" readonly disabled></el-input>
             </el-form-item>
           </el-col>
@@ -28,7 +28,7 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :span="24">
-            <el-form-item label="被保险人证件号" :label-width="formLabelWidth" prop="insuredId">
+            <el-form-item label="证件号" :label-width="formLabelWidth" prop="insuredId">
               <el-input v-model="purchaseOrderForm.insuredId" autocomplete="off" readonly disabled></el-input>
             </el-form-item>
           </el-col>
@@ -37,14 +37,14 @@
           <el-col :span="12">
             <el-form-item label="生效日" :label-width="formLabelWidth">
             <el-form-item prop="effectiveDate">
-                <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 65%;" disabled></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 75%;" disabled></el-date-picker>
             </el-form-item>
             </el-form-item>
           </el-col>
           <el-col :span="12">  
             <el-form-item label="截止日" :label-width="formLabelWidth">
             <el-form-item prop="closingDate">
-                <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.closingDate" value-format="yyyy-MM-dd" style="width: 65%;" disabled></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.closingDate" value-format="yyyy-MM-dd" style="width: 75%;" disabled></el-date-picker>
             </el-form-item>
             </el-form-item>
           </el-col>
