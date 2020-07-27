@@ -85,7 +85,7 @@
 import ImgUpload from './ImgUpload'
   export default {
     name: 'purchaseOrderPayEdit',
-    props: ['msg'],
+    props: ['msg','rToId'],
     components: {ImgUpload},
     objData: {},
     num: '',
@@ -104,7 +104,7 @@ import ImgUpload from './ImgUpload'
           closingDate: '',
           payTime: '',
           remark: '',
-          payImg: ''          
+          payImg: ''
         },        
       }
     },
@@ -121,13 +121,14 @@ import ImgUpload from './ImgUpload'
           closingDate: '',
           payTime: '',
           remark: '',
-          payImg: ''          
+          payImg: ''         
         }
         this.$refs.purchaseOrderPayForm.resetFields()
         this.msg=''
+        this.rToId =''
       },
       onSubmit (purchaseOrderPayForm) {
-        alert(this.msg + '')
+       
         this.$axios.post('/admin/v1/pri/po/section/purchaseorder/pay', {
                 batchNumber: this.objData.batchNumber,
                 cid: this.objData.cid,
@@ -139,7 +140,8 @@ import ImgUpload from './ImgUpload'
                 closingDate: this.purchaseOrderPayForm.closingDate,
                 payTime: this.purchaseOrderPayForm.payTime,
                 remark: this.purchaseOrderPayForm.remark,
-                payImg: this.purchaseOrderPayForm.payImg              
+                payImg: this.purchaseOrderPayForm.payImg,
+                toId : this.rToId
               }).then(resp => {
                 if (resp && resp.data.code === 200) {
                   this.dialogFormVisible = false

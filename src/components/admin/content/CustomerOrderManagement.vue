@@ -33,6 +33,11 @@
           label="文件名"
           fit>
         </el-table-column>
+         <el-table-column
+          prop="toName"
+          label="服务企业"
+          fit>
+        </el-table-column>
         <el-table-column
           prop="seqNumber"
           label="序号"
