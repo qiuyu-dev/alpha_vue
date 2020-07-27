@@ -15,10 +15,10 @@
         style="width: 100%"
         :max-height="tableHeight"
         @selection-change="handleSelectionChange">
-        <el-table-column
+        <!-- <el-table-column
           type="selection"
           width="55">
-        </el-table-column>
+        </el-table-column> -->
         <!-- <el-table-column
           prop="policyNumber"
           label="保单号"
@@ -32,8 +32,7 @@
         <el-table-column
           prop="batchNumber"
           label="服务批号"
-          show-overflow-tooltip
-          width="120">
+          show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="payId"
@@ -42,8 +41,7 @@
         </el-table-column>
         <el-table-column
           prop="effectiveNumber"
-          label="有效客户数"
-          width="120"          
+          label="有效客户数" 
           fit>
         </el-table-column>
         <el-table-column
@@ -60,34 +58,29 @@
           prop="effectiveDate"
           :formatter="dateFormat"
           label="开始时间"
-          width="100"
           fit>
         </el-table-column>
         <el-table-column
           prop="closingDate"
           :formatter="dateFormat"
           label="结束时间"
-          width="100"
           fit>
         </el-table-column>
         <el-table-column
           prop="payTime"
           :formatter="dateFormat"
           label="付费时间"
-          width="100"
           fit>
         </el-table-column>        
         <el-table-column
           prop="status"
           :formatter="sFormat"
           label="状态"
-          width="100"
           fit>
         </el-table-column>        
         <el-table-column
           fixed="right"
-          label="操作"
-          width="120">
+          label="操作">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="editOpt(scope.row)"

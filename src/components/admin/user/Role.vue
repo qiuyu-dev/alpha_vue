@@ -45,14 +45,13 @@
         stripe
         style="width: 100%"
         :max-height="tableHeight">
-        <el-table-column
+        <!-- <el-table-column
           type="selection"
           width="55">
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="id"
-          label="id"
-          width="100">
+          label="id">
         </el-table-column>
         <el-table-column
           prop="name"
@@ -64,7 +63,7 @@
           label="角色描述"
           fit>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="状态"
           width="100">
           <template slot-scope="scope">
@@ -75,10 +74,10 @@
               @change="(value) => commitStatusChange(value, scope.row)">
             </el-switch>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
-          label="操作"
-          width="120">
+        fixed="right"
+          label="操作">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -86,11 +85,11 @@
               @click="editRole(scope.row)">
               编辑
             </el-button>
-            <el-button
+            <!-- <el-button
               type="text"
               size="small">
               删除
-            </el-button>
+            </el-button> -->
           </template>
         </el-table-column>
       </el-table>

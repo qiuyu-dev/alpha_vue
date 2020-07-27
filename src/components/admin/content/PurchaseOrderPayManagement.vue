@@ -29,10 +29,15 @@
           label="产品"
           fit>
         </el-table-column> -->
+         <el-table-column
+          prop="toName"
+          label="服务企业"
+          show-overflow-tooltip
+          fit>
+        </el-table-column>
         <el-table-column
-          prop="cname"
-          label="被保险人姓名"
-          width="120">
+          prop="insuredName"
+          label="姓名">
         </el-table-column>
         <el-table-column
           prop="certificateType"
@@ -47,7 +52,7 @@
           fit>
         </el-table-column>
         <el-table-column
-          prop="phonenum"
+          prop="phone"
           label="电话"
           show-overflow-tooltip
           fit>
@@ -56,21 +61,18 @@
           prop="effectiveDate"
           :formatter="dateFormat"
           label="生效日期"
-          width="100"
           fit>
         </el-table-column>
         <el-table-column
           prop="closingDate"
           :formatter="dateFormat"
           label="截止日期"
-          width="100"
           fit>
         </el-table-column>
         <el-table-column
-          prop="cestatus"
+          prop="status"
           :formatter="cesFormat"
           label="状态"
-          width="100"
           fit>
         </el-table-column>        
         <!-- <el-table-column
@@ -136,7 +138,7 @@
       },
       loadData () {
         var _this = this
-        this.$axios.get('/admin/v1/pri/po/share/customerenterprise/list').then(resp => {
+        this.$axios.get('/admin/v1/pri/po/share/customerenterprise/listFrom').then(resp => {
           if (resp && resp.data.code === 200) {
             _this.datas = resp.data.result
           }
@@ -170,14 +172,18 @@
       },
       cesFormat (row, column) {
         var ctype = row[column.property]
-        if (ctype == '1') {
-          return '新增'
-        } else if (ctype == '2') {
-          return '已核实'
+         if (ctype == '2') {
+          return '重新触发待申请'
         } else if (ctype == '3') {
-          return '未通过'
+          return '申请待审核'
+        } else if (ctype == '-3') {
+          return '申请未通过'
         } else if (ctype == '4') {
-          return '延续'
+          return '重新申请待审核'
+        } else if (ctype == '5') {
+          return '审核通过待付费'
+        } else if (ctype == '-5') {
+          return '审核未通过'
         }
       },
       batchFeeOpt () {        

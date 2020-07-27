@@ -19,7 +19,7 @@
           type="selection"
           width="55">
         </el-table-column> -->
-        <el-table-column type="expand">
+        <!-- <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline>
               <el-form-item>
@@ -27,7 +27,7 @@
               </el-form-item>
             </el-form>
           </template>
-        </el-table-column>
+        </el-table-column> -->
          <el-table-column
           prop="fileName"
           label="文件名"
@@ -40,8 +40,7 @@
         </el-table-column>
         <el-table-column
           prop="policyNumber"
-          label="保单号"
-          width="100">
+          label="保单号">
         </el-table-column>
         <el-table-column
           prop="product"
@@ -51,27 +50,26 @@
         <el-table-column
           prop="insuredName"
           label="姓名"
-         
           >
         </el-table-column>
-        <!-- <el-table-column
+        <el-table-column
           prop="certificateType"
           label="证件类型"
           :formatter="ctFormat"
           fit>
-        </el-table-column> -->
-        <!-- <el-table-column
+        </el-table-column>
+        <el-table-column
           prop="insuredId"
           label="证件号"
           show-overflow-tooltip
           fit>
-        </el-table-column> -->
-        <!-- <el-table-column
-          prop="phonenum"
+        </el-table-column>
+        <el-table-column
+          prop="phone"
           label="电话"
           show-overflow-tooltip
           fit>
-        </el-table-column> -->
+        </el-table-column>
         <el-table-column
           prop="effectiveDate"
           :formatter="dateFormat"
@@ -101,10 +99,8 @@
         <el-table-column
           prop="status"
           label="状态"
-          show-overflow-tooltip
-          fit>
-        </el-table-column>
-        
+          fixed="right">
+        </el-table-column>     
         <!-- <el-table-column
           fixed="right"
           label="操作"
@@ -192,7 +188,7 @@
           insuredName: item.insuredName,
           certificateType: item.certificateType,
           insuredId: item.insuredId,
-          phonenum: item.phonenum,
+          phone: item.phone,
           effectiveDate: item.effectiveDate,
           closingDate: item.closingDate,
           sex: item.sex,

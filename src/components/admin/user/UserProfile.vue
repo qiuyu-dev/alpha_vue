@@ -51,8 +51,7 @@
         <el-table-column
           prop="id"
           label="id"
-          sortable
-          width="100">
+          sortable>
         </el-table-column>
         <el-table-column
           prop="username"
@@ -89,8 +88,8 @@
           </template>
         </el-table-column> -->
         <el-table-column
-          label="操作"
-          width="120">
+        fixed="right"
+          label="操作">
           <template slot-scope="scope">
             <el-button
               @click="editUser(scope.row)"

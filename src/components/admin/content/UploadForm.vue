@@ -178,7 +178,7 @@
       },
       getOptions () {
         let _this = this
-        this.$axios.get('/admin/v1/pri/co/share/company/list').then(resp => {
+        this.$axios.get('/admin/v1/pri/co/share/companyService/list').then(resp => {
             if (resp && resp.data.code === 200) {
               _this.objData = resp.data.result
               console.log(_this.objData)
