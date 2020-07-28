@@ -26,12 +26,12 @@
           </template>
         </el-table-column> -->
         <el-table-column
-          prop="seqNumber"
+          prop="fromName"
           label="采购企业"
           fit>
         </el-table-column>
         <el-table-column
-          prop="policyNumber"
+          prop="toName"
           label="服务企业"
           width="100">
         </el-table-column>
@@ -42,12 +42,12 @@
         </el-table-column>
         <el-table-column
           prop="insuredName"
-          label="产品"
+          label="服务"
           width="120">
         </el-table-column>
         <el-table-column
           prop="certificateType"
-          label="姓名"
+          label="客户姓名"
           :formatter="ctFormat"
           fit>
         </el-table-column>
@@ -78,8 +78,14 @@
           fit>
         </el-table-column>
         <el-table-column
-          prop="state"
+          prop="status"
           label="状态"
+          width="100"
+          fit>
+        </el-table-column>  
+        <el-table-column
+          prop="detailId"
+          label="ID"
           width="100"
           fit>
         </el-table-column>        
@@ -135,7 +141,7 @@
       editOpt (item,opt) {        
         this.$refs.CustomerServiceEdit.dialogFormVisible = true
         this.$refs.CustomerServiceEdit.customerServiceForm = {
-          id: item.id,
+          id: item.detailId,
           seqNumber: item.seqNumber,
           policyNumber: item.policyNumber,
           product: item.product,
