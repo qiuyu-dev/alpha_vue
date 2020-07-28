@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import AppIndex from '@/components/home/AppIndex'
+import AdminIndex from '@/components/admin/AdminIndex'
 import Login from '@/components/Login'
 import Register from '@/components/register/Register'
 import RegisterEnterprise from '@/components/register/RegisterEnterprise'
@@ -16,6 +17,17 @@ Router.prototype.push = function push(location) {
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/redirect',
+      component: AdminIndex,
+      hidden: true,
+      children: [
+        {
+          path: '/redirect/:path(.*)',
+          component: () => import('@/views/redirect/index')
+        }
+      ]
+    },
     {
       path: '/',
       name: 'LoginIndex',

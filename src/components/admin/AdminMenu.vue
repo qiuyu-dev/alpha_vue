@@ -37,6 +37,10 @@
         },
         currentPath () {
           return this.$route.path
+        //   const { fullPath } = this.$route
+        //  return this.$router.replace({
+        //     path: '/redirect' + fullPath
+        //     })
         }
       }
     }
