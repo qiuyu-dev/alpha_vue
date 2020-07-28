@@ -32,7 +32,7 @@
         <el-table-column
           prop="batchNumber"
           label="服务批号"
-          show-overflow-tooltip>
+           width="100">
         </el-table-column>
         <el-table-column
           prop="payId"
@@ -57,18 +57,21 @@
         <el-table-column
           prop="effectiveDate"
           :formatter="dateFormat"
+           width="100"
           label="开始时间"
           fit>
         </el-table-column>
         <el-table-column
           prop="closingDate"
           :formatter="dateFormat"
+           width="100"
           label="结束时间"
           fit>
         </el-table-column>
         <el-table-column
           prop="payTime"
           :formatter="dateFormat"
+           width="100"
           label="付费时间"
           fit>
         </el-table-column>        
@@ -86,7 +89,7 @@
               @click.native.prevent="editOpt(scope.row)"
               type="text"
               size="small">
-              确认付费
+              确认收款
             </el-button>
           </template>
         </el-table-column>
@@ -136,12 +139,13 @@
           payTime: item.payTime,
           remark: item.remark,
           payImg: item.payImg,
-          confirmRemark: item.confirmRemark       
+          confirmRemark: item.confirmRemark
         }       
       },
       loadData () {
         var _this = this
         this.$axios.get('/admin/v1/pri/po/share/batchFeeMst/list').then(resp => {
+          // alert(resp.data)
           if (resp && resp.data.code === 200) {
             _this.datas = resp.data.result
           }
@@ -165,21 +169,16 @@
           return this.$moment(date).format('YYYY-MM-DD')
         }
       },
-      ctFormat (row, column) {
-        var ctype = row[column.property]
-        if (ctype == '1') {
-          return '身份证'
-        } else if (ctype == '2') {
-          return '护照'
-        }
-      },
+
       sFormat (row, column) {
         var ctype = row[column.property]
-        if (ctype == '0') {
-          return '未确认'
-        } else if (ctype == '1') {
-          return '已确认'
-        } 
+        if (ctype == '6') {
+          return '付费完成待收款'
+        } else if (ctype == '7') {
+          return '确认收款服务中'
+        }else if (ctype == '-7') {
+          return '未收款'
+        }  
       }      
     }
   }

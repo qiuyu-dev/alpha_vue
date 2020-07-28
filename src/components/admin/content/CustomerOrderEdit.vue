@@ -38,8 +38,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="电话" :label-width="formLabelWidth2" prop="phonenum">
-              <el-input v-model="customerOrderForm.phonenum" autocomplete="off" placeholder="电话"></el-input>
+            <el-form-item label="电话" :label-width="formLabelWidth2" prop="phone">
+              <el-input v-model="customerOrderForm.phone" autocomplete="off" placeholder="电话"></el-input>
             </el-form-item>
           </el-col>           
         </el-row>
@@ -127,7 +127,7 @@
           product: '',
           insuredName: '',
           certificateType: '',
-          phonenum: '',
+          phone: '',
           insuredId: '',
           effectiveDate: '',
           closingDate: '',
@@ -158,7 +158,7 @@
           certificateType: [
             {required: true, message: '请选择证件类型', triger: 'change'}
           ],
-          phonenum: [
+          phone: [
             {required: true, message: '请输入电话', triger: 'blur'},
             {min: 1, max: 20, message: '长度1-20', triger: 'blur'}
           ],
@@ -206,7 +206,7 @@
           product: '',
           insuredName: '',
           certificateType: '',
-          phonenum: '',
+          phone: '',
           insuredId: '',
           effectiveDate: '',
           closingDate: '',
@@ -230,7 +230,7 @@
                 product: this.customerOrderForm.product,
                 insuredName: this.customerOrderForm.insuredName,
                 certificateType: this.customerOrderForm.certificateType,
-                phonenum: this.customerOrderForm.phonenum,
+                phone: this.customerOrderForm.phone,
                 insuredId: this.customerOrderForm.insuredId,
                 effectiveDate: this.customerOrderForm.effectiveDate,
                 closingDate: this.customerOrderForm.closingDate,

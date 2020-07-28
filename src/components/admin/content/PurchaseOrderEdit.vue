@@ -21,8 +21,8 @@
             </el-form-item>          
           </el-col>
           <el-col :span="10">
-            <el-form-item label="电话" :label-width="formLabelWidth" prop="phonenum">
-              <el-input v-model="purchaseOrderForm.phonenum" autocomplete="off" readonly disabled></el-input>
+            <el-form-item label="电话" :label-width="formLabelWidth" prop="phone">
+              <el-input v-model="purchaseOrderForm.phone" autocomplete="off" readonly disabled></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -103,8 +103,8 @@
         <el-form-item prop="cpedId" style="height: 0">
           <el-input type="hidden" v-model="purchaseOrderForm.cpedId" autocomplete="off"></el-input>
         </el-form-item> 
-        <el-form-item prop="cestatus" style="height: 0">
-          <el-input type="hidden" v-model="purchaseOrderForm.cestatus" autocomplete="off"></el-input>
+        <el-form-item prop="status" style="height: 0">
+          <el-input type="hidden" v-model="purchaseOrderForm.status" autocomplete="off"></el-input>
         </el-form-item>                                 
         </el-form>
       <div slot="footer" class="dialog-footer">
@@ -127,7 +127,7 @@
           eid: '',          
           cname: '',
           certificateType: '',
-          phonenum: '',
+          phone: '',
           insuredId: '',
           effectiveDate: '',
           closingDate: '',
@@ -135,7 +135,7 @@
           age: '',
           location: '',
           remark: '',
-          cestatus: '',
+          status: '',
           fromType: '',
           fromId: '',
           cpemId: '',
@@ -160,7 +160,7 @@
           age: '',
           location: '',
           remark: '',
-          cestatus: '',
+          status: '',
           fromType: '',
           fromId: '',
           cpemId: '',

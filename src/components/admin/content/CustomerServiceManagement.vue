@@ -15,11 +15,8 @@
         style="width: 100%"
         :max-height="tableHeight"
         @selection-change="handleSelectionChange">
-        <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column>
-        <el-table-column type="expand">
+       
+        <!-- <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline>
               <el-form-item>
@@ -27,30 +24,30 @@
               </el-form-item>
             </el-form>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="seqNumber"
-          label="序号"
+          label="采购企业"
           fit>
         </el-table-column>
         <el-table-column
           prop="policyNumber"
-          label="保单号"
+          label="服务企业"
           width="100">
         </el-table-column>
         <el-table-column
           prop="product"
-          label="产品"
+          label="备案编号"
           fit>
         </el-table-column>
         <el-table-column
           prop="insuredName"
-          label="被保险人姓名"
+          label="产品"
           width="120">
         </el-table-column>
         <el-table-column
           prop="certificateType"
-          label="证件类型"
+          label="姓名"
           :formatter="ctFormat"
           fit>
         </el-table-column>
@@ -61,7 +58,7 @@
           fit>
         </el-table-column>
         <el-table-column
-          prop="phonenum"
+          prop="phone"
           label="电话"
           show-overflow-tooltip
           fit>
@@ -145,7 +142,7 @@
           insuredName: item.insuredName,
           certificateType: item.certificateType,
           insuredId: item.insuredId,
-          phonenum: item.phonenum,
+          phone: item.phone,
           effectiveDate: item.effectiveDate,
           closingDate: item.closingDate,
           sex: item.sex,
@@ -159,15 +156,15 @@
       },
       loadData () {
         var _this = this
-        this.$axios.get('/admin/v1/pri/po/share/purchaseservice/list').then(resp => {
+        this.$axios.get('/admin/v1/pri/sc/share/customer/service/list').then(resp => {
           if (resp && resp.data.code === 200) {
             _this.datas = resp.data.result
           }
         })
         // this.datas=[
-        //     {"id":141,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张十","certificateType":"1","phonenum":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试10","state":"1"},
-        //     {"id":140,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张九","certificateType":"1","phonenum":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试9","state":"1"},
-        //     {"id":85,"seqNumber":"123456","policyNumber":"333331","product":"太平人寿新安康","insuredName":"李四","certificateType":"2","phonenum":"1388889999","insuredId":"654321","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"2","age":23,"location":"天津","remark":"测试2","state":"1"}]
+        //     {"id":141,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张十","certificateType":"1","phone":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试10","state":"1"},
+        //     {"id":140,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张九","certificateType":"1","phone":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试9","state":"1"},
+        //     {"id":85,"seqNumber":"123456","policyNumber":"333331","product":"太平人寿新安康","insuredName":"李四","certificateType":"2","phone":"1388889999","insuredId":"654321","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"2","age":23,"location":"天津","remark":"测试2","state":"1"}]
       },
       toggleSelection (rows) {
         if (rows) {
