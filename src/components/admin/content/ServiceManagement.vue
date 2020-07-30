@@ -34,7 +34,7 @@
         <el-table-column prop="id" label="ID" show-overflow-tooltip fit></el-table-column>
         <el-table-column prop="company.name" label="企业" show-overflow-tooltip fit></el-table-column>
         <el-table-column prop="recordNumber" label="备案编号"></el-table-column>
-        <el-table-column prop="product" label="产品全称"></el-table-column>
+        <el-table-column prop="product" label="服务全称"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button @click="editService(scope.row)" type="text" size="small">编辑</el-button>

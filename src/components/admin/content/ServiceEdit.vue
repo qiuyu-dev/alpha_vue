@@ -14,7 +14,7 @@
         </el-form-item>
         <el-form-item prop="product">
           <el-input type="text" v-model="serviceForm.product"
-                    auto-complete="off" placeholder="产品全称"></el-input>
+                    auto-complete="off" placeholder="服务全称"></el-input>
         </el-form-item>
         <el-form-item style="width: 100%">
           <el-button type="primary" style="width: 40%;background: #505458;border: none" v-on:click="addservice">添加</el-button>
@@ -33,7 +33,7 @@ export default {
       formLabelWidth: '120px',
       rules: {
         recordNumber: [{required: true, message: '备案编号不能为空', trigger: 'blur'}],
-        product: [{required: true, message: '产品全称不能为空', trigger: 'blur'}]
+        product: [{required: true, message: '服务全称不能为空', trigger: 'blur'}]
       },
       serviceForm: {
         recordNumber: '',
