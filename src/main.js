@@ -151,7 +151,8 @@ router.beforeEach((to, from, next) => {
   }
   if (store.state.username && to.path.startsWith('/login')) {
     next({
-      name: 'Dashboard'
+      // name: 'Dashboard'
+      name: Admin
     })
   }
   // 如果前端没有登录信息则直接拦截，如果有则判断后端是否正常登录（防止构造参数绕过）
@@ -190,13 +191,12 @@ axios.interceptors.response.use(
 
 const initAdminMenu = (router, store) => {
   // 防止重复触发加载菜单操作
-  if (store.state.adminMenus.length > 0) {
-    console.log('111')
+  if (store.state.adminMenus.length > 0) {    
     return
   }
   axios.get('/admin/v1/pri/menu/currentuser').then(resp => {
     if (resp && resp.status === 200) {
-      console.log(resp.data.result)
+      //console.log(resp.data.result)
       var fmtRoutes = formatRoutes(resp.data.result)
       router.addRoutes(fmtRoutes)
       store.commit('initAdminMenu', fmtRoutes)

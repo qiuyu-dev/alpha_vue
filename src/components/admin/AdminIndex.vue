@@ -9,7 +9,7 @@
         <admin-menu></admin-menu>
       </el-aside>
       <el-main>
-        <router-view/>
+        <router-view v-if="isRouterAlive" />
       </el-main>
     </el-container>
   </el-container>
@@ -22,13 +22,32 @@
   export default {
     name: 'AdminIndex',
     components: {AdminMenu, Header},
+    provide () {
+      return {
+        reload: this.reload
+      }
+    },
     data () {
       return {
-        dialogVisible: false
+        dialogVisible: false,
+        isRouterAlive: true
       }
+    },
+    methods: {
+      reload () {
+        this.isRouterAlive = false
+        this.$nextTick(function () {
+          this.isRouterAlive = true
+          })
+       }
     },
     mounted () {
       // this.$router.replace('/admin/dashboard')
+    },
+    computed: {
+      key () {
+        return this.$route.fullPath
+      }
     }
   }
 </script>

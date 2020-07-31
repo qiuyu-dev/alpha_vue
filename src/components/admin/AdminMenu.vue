@@ -1,6 +1,7 @@
 <template>
   <el-menu
     :default-active="currentPath"
+    @select="handleSelect"
     class="el-menu-admin"
     router
     mode="vertical"
@@ -25,6 +26,7 @@
 
 <script>
     export default {
+      inject: ['reload'],
       name: 'AdminMenu',
       data () {
         return {
@@ -36,11 +38,14 @@
           return this.$store.state.adminMenus
         },
         currentPath () {
-          return this.$route.path
-        //   const { fullPath } = this.$route
-        //  return this.$router.replace({
-        //     path: '/redirect' + fullPath
-        //     })
+          return this.$route.path         
+        }
+      },
+      methods: {
+        handleSelect (index) {
+          if (index === this.$route.path) {
+            this.reload()
+          }
         }
       }
     }
