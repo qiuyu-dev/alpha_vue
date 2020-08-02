@@ -158,6 +158,7 @@
           this.$refs.uploadForm.validate((valid) => {
              if (valid) {
                 //手动上传文件，在点击确认的时候 校验通过才会去请求上传文件的url
+                this.$refs.excelUpload.action = this.$axios.defaults.baseURL + "/admin/v1/pri/co/share/uploadFile";
                 this.$refs.excelUpload.submit();
                 // this.$axios.post('/admin/content/uploadFileProcess', {
                 //   url: _url,

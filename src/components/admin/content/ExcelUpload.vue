@@ -31,7 +31,7 @@
     <div class="text item">
     <el-table :data="tableData" border highlight-current-row style="width: 100%;">
           <el-table-column  :label="tableTitle" >
-              <el-table-column v-for="(item,i) in tableData" :index="(i)" :prop="item" :label="item" :key='item'>
+              <el-table-column v-for="(item,i) in tableHeader" :index="(i)" :prop="item" :label="item" :key='item'>
             </el-table-column>
         </el-table-column>
     </el-table>
@@ -47,25 +47,26 @@ import { export_excel_to_json, export_json_to_excel } from '@/vendor/Export2Exce
     name: 'excelUpload',
     data () {
       return {
+        loading: false,
         fileList: [],
         url: '',
         fileTemp: '',
         file: '',
-        da: '',
-        tableData2: '',
+        excelData: {
+          header: null,
+          results: null
+        },
         tableData: [],
-        tableHeader: [],
-        tableTitle: ''
+        tableHeader: []
       }
     },
     methods: {
       beforeUpload (file) {
         console.log('beforeUpload...')
       },
-      generateData ({ tableTitle, header, results }) {
-        this.tableTitle = tableTitle
-        this.tableHeader = header
-        this.tableData = results        
+      generateData ({ header, results }) {
+        this.excelData.header = header
+        this.excelData.results = results       
       },
       handleDrop(e) {
         console.log("handleDrop")
@@ -87,47 +88,35 @@ import { export_excel_to_json, export_json_to_excel } from '@/vendor/Export2Exce
         e.dataTransfer.dropEffect = 'copy'
       },
       readerData (itemFile) {
-        if (itemFile.name.split('.')[1] != 'xls' && itemFile.name.split('.')[1] != 'xlsx') {
-            this.$message({message: '上传文件格式错误，请上传xls、xlsx文件！',type: 'warning'});
-          } else {
-            const reader = new FileReader()
-            reader.onload = e => {
-                const data = e.target.result
-                const fixedData = this.fixdata(data)
-                const workbook = XLSX.read(btoa(fixedData), { type: 'base64' })
-                const firstSheetName = workbook.SheetNames[0] // 第一张表 sheet1
-                const worksheet = workbook.Sheets[firstSheetName] // 读取sheet1表中的数据
-                //delete worksheet['!merges']
-                //let A_l = worksheet['!ref'].split(':')[1] //当excel存在标题行时
-                worksheet['!ref'] = 'A1:${A_l}'
-                const tableTitle = firstSheetName
-                const header = this.get_header_row(worksheet)
-                const results = XLSX.utils.sheet_to_json(worksheet)
-                console.log('.......' + results)
-                this.generateData({ tableTitle, header, results })
-              }
-                reader.readAsArrayBuffer(itemFile)
+        this.loading = true
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = e => {
+            const data = e.target.result
+            const workbook = XLSX.read(data, { type: 'array' })
+            const firstSheetName = workbook.SheetNames[0]
+            const worksheet = workbook.Sheets[firstSheetName]
+            const header = this.getHeaderRow(worksheet)
+            const results = XLSX.utils.sheet_to_json(worksheet)
+            this.generateData({ header, results })
+            this.loading = false
+            resolve()
           }
-      },
-      fixdata (data) {
-        let o = ''
-        let l = 0
-        const w = 10240
-        for (; l < data.byteLength / w; ++l) 
-        o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)))
-        o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)))
-        return o
-      },
-      get_header_row (sheet) {
+          reader.readAsArrayBuffer(rawFile)
+        })
+      },      
+      getHeaderRow(sheet) {
         const headers = []
         const range = XLSX.utils.decode_range(sheet['!ref'])
         let C
-        const R = range.s.r /* start in the first row */
+        const R = range.s.r
+        /* start in the first row */
         for (C = range.s.c; C <= range.e.c; ++C) { /* walk every column in the range */
-            var cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })] /* find the cell in the first row */
-            var hdr = 'UNKNOWN ' + C // <-- replace with your desired defaultif (cell && cell.t) 
-            hdr = XLSX.utils.format_cell(cell)
-            headers.push(hdr)
+          const cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })]
+          /* find the cell in the first row */
+          let hdr = 'UNKNOWN ' + C // <-- replace with your desired default
+          if (cell && cell.t) hdr = XLSX.utils.format_cell(cell)
+          headers.push(hdr)
         }
         return headers
       }, 
