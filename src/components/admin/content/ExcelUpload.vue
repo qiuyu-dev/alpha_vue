@@ -20,23 +20,20 @@
     >
     <!-- <i class="el-icon-upload"></i>
     <div class="ec-upload__text">将文件拖到此处,或<em>点击上传</em></div> -->
-    <el-button size="small" type="primary">点击上传</el-button>
-    <div slot="tip" class="el-
-    ">只能上传xlsx/xls的excel文件</div>
+    <el-button size="small" type="primary" @click="handleUpload">点击上传</el-button>
+    <div slot="tip" class="el-">只能上传xlsx/xls的excel文件</div>
   </el-upload>
-<el-card class="box-card">
+  <el-card class="box-card">
     <div slot="header" class="clearfix">
         <span>数据预览</span>
     </div>
     <div class="text item">
     <el-table :data="tableData" border highlight-current-row style="width: 100%;">
-          <el-table-column  :label="tableTitle" >
-              <el-table-column v-for="(item,i) in tableHeader" :index="(i)" :prop="item" :label="item" :key='item'>
-            </el-table-column>
-        </el-table-column>
+      <el-table-column v-for="(item,i) in tableHeader" :index="(i)" :prop="item" :label="item" :key='item'>
+      </el-table-column>      
     </el-table>
     </div>
-</el-card>  
+  </el-card>  
   </div>
 </template>
 
@@ -63,6 +60,15 @@ import { export_excel_to_json, export_json_to_excel } from '@/vendor/Export2Exce
     methods: {
       beforeUpload (file) {
         console.log('beforeUpload...')
+        const isLt1M = file.size / 1024 / 1024 < 1
+        if (isLt1M) {
+          return true
+        }
+        this.$message({
+          message: 'Please do not upload files larger than 1m in size.',
+          type: 'warning'
+        })
+        return false
       },
       generateData ({ header, results }) {
         this.excelData.header = header
@@ -127,12 +133,12 @@ import { export_excel_to_json, export_json_to_excel } from '@/vendor/Export2Exce
         // 判断上传文件格式
         if (this.fileTemp) {
           if ((this.fileTemp.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
-              if (this.fileTemp.size < 5*1024*1024 ) {//文件大小须小于5M
+              if (this.fileTemp.size < 1*1024*1024 ) {//文件大小须小于1M
                   this.sayhello()                 
               } else {
                   this.$message({
                   type:'warning',
-                  message:'文件不能大于5M！'
+                  message:'文件不能大于1M！'
                   })
                   return false
               }
