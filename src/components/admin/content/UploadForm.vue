@@ -118,10 +118,9 @@
         }
       }, 
       handlePreview (file) {
-        // console.log(file)
         // 此处的 file 是整个文件
+        // console.log(file)        
         console.log('preview..')
-        console.log(file.response)
       },
       handleRemove (file, fileList) {
         console.log('handleRemove ...')
@@ -134,12 +133,15 @@
       beforeRemove (file, fileList) {
         return this.$confirm(`确定移除 ${file.name}？`)
       },
-      handleSuccess (response) {
-        this.uploadForm.url = response
+      handleSuccess (response) {        
         console.log('handleSuccess...')
-        console.log(this.uploadForm.url)
-        this.$emit('onUpload')
-        this.$message.warning('上传成功')
+        console.log(response)
+        if(response.code == 200){
+          this.$emit('onUpload')
+          this.$message.warning('上传成功')
+        }else {
+          this.$alert('上传失败[' + response.message + ']')
+        }        
       },
       onSubmit () {
         var _cid  = this.uploadForm.cid;
@@ -160,8 +162,7 @@
                 //手动上传文件，在点击确认的时候 校验通过才会去请求上传文件的url
                 this.$refs.excelUpload.action = this.$axios.defaults.baseURL + "/admin/v1/pri/co/share/uploadFile";
                 this.$refs.excelUpload.submit();
-                // this.$axios.post('/admin/content/uploadFileProcess', {
-                //   url: _url,
+                // this.$axios.post('/admin/v1/pri/co/share/uploadFile', {                  
                 //   cid: _cid
                 //   }).then(resp => {
                 //     if (resp && resp.data.code === 200) {
@@ -182,13 +183,11 @@
         this.$axios.get('/admin/v1/pri/co/share/companyService/list').then(resp => {
             if (resp && resp.data.code === 200) {
               _this.objData = resp.data.result
-              console.log(_this.objData)
-
+              //console.log(_this.objData)
             }
           }).catch((error) =>{
             console.log(error)
-          })        
-
+          })
       }
     },
     mounted () {
