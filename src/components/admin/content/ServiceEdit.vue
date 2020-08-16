@@ -12,8 +12,8 @@
           <el-input type="text" v-model="serviceForm.recordNumber"
                     auto-complete="off" placeholder="备案编号"></el-input>
         </el-form-item>
-        <el-form-item prop="product">
-          <el-input type="text" v-model="serviceForm.product"
+        <el-form-item prop="name">
+          <el-input type="text" v-model="serviceForm.name"
                     auto-complete="off" placeholder="服务全称"></el-input>
         </el-form-item>
         <el-form-item style="width: 100%">
@@ -33,11 +33,11 @@ export default {
       formLabelWidth: '120px',
       rules: {
         recordNumber: [{required: true, message: '备案编号不能为空', trigger: 'blur'}],
-        product: [{required: true, message: '服务全称不能为空', trigger: 'blur'}]
+        name: [{required: true, message: '服务全称不能为空', trigger: 'blur'}]
       },
       serviceForm: {
         recordNumber: '',
-        product: ''
+        name: ''
       }
     }
   },
@@ -45,14 +45,14 @@ export default {
     clear () {
       this.serviceForm = {
         recordNumber: '',
-        product: ''
+        name: ''
       }
     },
     addservice () {
       this.$axios
-        .post('/admin/v1/pri/sc/section/save/service', {
+        .post('/admin/v1/pub/product/save', {
           recordNumber: this.serviceForm.recordNumber,
-          product: this.serviceForm.product
+          name: this.serviceForm.name
 
         })
         .then(resp => {

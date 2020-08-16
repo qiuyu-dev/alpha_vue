@@ -15,108 +15,102 @@
         style="width: 100%"
         :max-height="tableHeight"
         @selection-change="handleSelectionChange">
-        <!-- <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column> -->
-        <!-- <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="left" inline>
-              <el-form-item>
-                <span>证件号：{{ props.row.insuredId }}，电话：{{ props.row.phone }}</span>
-              </el-form-item>
-            </el-form>
-          </template>
-        </el-table-column> -->
+         <el-table-column type="expand">
+           <template slot-scope="scope">
+              <ul> 
+          <li v-for="item in scope.row.customerProducts" :key="item.id">
+            客户：<alpah-subject-name :asid="item.customerSubjectId.toString()"></alpah-subject-name>
+        ， 服务：<product-name :pid="item.productId.toString()"></product-name>
+,开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}
+         ，结束日:{{item.closingDate|dateformat('YYYY-MM-DD')}}
+            </li>
+            </ul>  
+           </template>
+
+        </el-table-column>
          <el-table-column
-          prop="fileName"
+          prop="cpExcelMst.fileName"
           label="文件名"
           fit>
         </el-table-column>
          <el-table-column
-          prop="toName"
-          label="服务企业"
+          label="采购企业"
           fit>
+          <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.cpExcelMst.paySubjectId.toString()"></alpah-subject-name>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="seqNumber"
-          label="序号"
-          fit>
+          label="服务企业" fit>
+           <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="policyNumber"
+          prop="outTradeNo"
           label="保单号">
         </el-table-column>
         <el-table-column
-          prop="product"
-          label="产品"
-          fit>
+          prop="customerName"
+          label="客户">
         </el-table-column>
-        <el-table-column
-          prop="insuredName"
-          label="姓名"
-          >
+         <el-table-column
+          label="类型"
+          show-overflow-tooltip fit>
+           <template slot-scope="scope">
+          <type-name :tid="scope.row.customerSubject.recordType.toString()"></type-name>
+          </template>
         </el-table-column>
-        <el-table-column
-          prop="certificateType"
-          label="证件类型"
-          :formatter="ctFormat"
-          fit>
-        </el-table-column>
-        <el-table-column
-          prop="insuredId"
+         <el-table-column
+          prop="customerSubject.recordNumber"
           label="证件号"
-          show-overflow-tooltip
-          fit>
+          show-overflow-tooltip fit>
         </el-table-column>
         <el-table-column
-          prop="phone"
-          label="电话"
-          show-overflow-tooltip
-          fit>
+          label="产品">
+          <template slot-scope="scope">
+          <product-name :pid="scope.row.productId.toString()"></product-name>
+          </template>
         </el-table-column>
-        <el-table-column
+         <el-table-column
           prop="effectiveDate"
           :formatter="dateFormat"
-          label="生效日期"
-          width="100"
+          label="生效日"
+           width="100"
           fit>
         </el-table-column>
         <el-table-column
           prop="closingDate"
           :formatter="dateFormat"
-          label="截止日期"
+          label="截止日"
           width="100"
           fit>
         </el-table-column>
-  <el-table-column
-          prop="operator"
-          label="操作员"
-          show-overflow-tooltip
-          fit>
+        <el-table-column
+        prop="remark"
+          label="备注">
         </el-table-column>
-         <el-table-column
-          prop="explanation"
-          label="说明"
-          show-overflow-tooltip
-          fit>
+        <!-- <el-table-column
+        prop="operator"
+          label="操作员">
+        </el-table-column> -->
+        <el-table-column
+          label="状态" >
+          <template slot-scope="scope">
+          <state-name :sid="scope.row.state.toString()"></state-name>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="status"
-          label="状态"
-          fixed="right">
-        </el-table-column>     
-        <!-- <el-table-column
           fixed="right"
           label="操作"
           width="120">
           <template slot-scope="scope">
-            <el-button
+            <!-- <el-button
               @click.native.prevent="editOpt(scope.row)"
               type="text"
               size="small">
               编辑
-            </el-button>
+            </el-button> -->
             <el-button
               @click.native.prevent="deleteOpt(scope.row.id)"
               type="text"
@@ -124,13 +118,9 @@
               删除
             </el-button>
           </template>
-        </el-table-column> -->
+        </el-table-column>
       </el-table>
       <el-row>
-      <!-- <div style="margin: 20px 0 20px 0;float: left">
-        <el-button @click="toggleSelection()">取消选择</el-button>
-        <el-button @click="batchOpt()">批量删除</el-button>
-      </div> -->
       <!-- <div style="margin: 20px 0 20px 0;float: right">
         <customer-order-edit @onSubmit="loadData()" ref="CustomerOrderEdit"></customer-order-edit>
       </div> -->
@@ -141,145 +131,168 @@
       </el-card>
   </div>
 </template>
-
 <script>
-  import CustomerOrderEdit from './CustomerOrderEdit'
-  import UploadForm from './UploadForm'
-  export default {
-    name: 'CustomerOrderManagement',
-    components: {CustomerOrderEdit, UploadForm},
-    data () {
-      return {
-        datas: [],
-        multipleSelection: []
+import CustomerOrderEdit from './CustomerOrderEdit'
+import UploadForm from './UploadForm'
+import AlpahSubjectName from '@/components/common/AlpahSubjectName.vue'
+import ProductName from '@/components/common/ProductName.vue'
+import StateName from '@/components/common/StateName.vue'
+import TypeName from '@/components/common/TypeName.vue'
+
+export default {
+  name: 'CustomerOrderManagement',
+  components: {CustomerOrderEdit, UploadForm, AlpahSubjectName, ProductName, StateName, TypeName},
+  data () {
+    return {
+      datas: [],
+      multipleSelection: []
+    }
+  },
+  mounted () {
+    this.loadData()
+  },
+  computed: {
+    tableHeight () {
+      return window.innerHeight - 320
+    }
+  },
+  methods: {
+    dateFormat (row, column) {
+      var date = row[column.property]
+      if (date !== null && date !== undefined) {
+        return this.$moment(date).format('YYYY-MM-DD')
       }
     },
-    mounted () {
-      this.loadData()
-    },
-    computed: {
-      tableHeight () {
-        return window.innerHeight - 320
+    deleteOpt (id) {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios
+          .get('/admin/v1/pri/cpExcel/deleteDetail/byId?detailId=' + id).then(resp => {
+            if (resp && resp.data.code === 200) {
+              this.loadData()
+            } else {
+              this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
+            }
+          })
       }
+      ).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
-    methods: {
-      deleteOpt (id) {
-        this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-            this.$axios
-              .post('/admin/v1/pri/co/section/delete', {id: id}).then(resp => {
-              if (resp && resp.data.code === 200) {
-                this.loadData()
-              }
-            })
-          }
-        ).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
-      },
-      editOpt (item) {
-        this.$refs.CustomerOrderEdit.dialogFormVisible = true
-        this.$refs.CustomerOrderEdit.customerOrderForm = {
-          id: item.id,
-          seqNumber: item.seqNumber,
-          policyNumber: item.policyNumber,
-          product: item.product,
-          insuredName: item.insuredName,
-          certificateType: item.certificateType,
-          insuredId: item.insuredId,
-          phone: item.phone,
-          effectiveDate: item.effectiveDate,
-          closingDate: item.closingDate,
-          sex: item.sex,
-          age: item.age.toString(), // 不加验证报错
-          location: item.location,
-          remark: item.remark,
-          state: item.state,
-          cpExcelMst: item.cpExcelMst
-        }
-        // this.$refs.edit.category = {
-        //   id: item.category.id.toString()
-        // }
-      },
-      loadData () {
-        var _this = this
-        this.$axios.get('/admin/v1/pri/co/share/customerorder/listCpExcels').then(resp => {
-          if (resp && resp.data.code === 200) {
-            _this.datas = resp.data.result
-          }
-        })
-      },
-      toggleSelection (rows) {
-        if (rows) {
-          rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row)
-          })
+    editOpt (item) {
+      this.$refs.CustomerOrderEdit.dialogFormVisible = true
+      this.$refs.CustomerOrderEdit.customerOrderForm = {
+        id: item.id,
+        seqNumber: item.seqNumber,
+        policyNumber: item.outTradeNo,
+        product: item.productName,
+        insuredName: item.customerName,
+        certificateType: item.customerSubject.certificateType,
+        insuredId: item.customerSubject.recordNumber,
+        phone: item.customerSubject.phone,
+        effectiveDate: item.effectiveDate,
+        closingDate: item.closingDate,
+        sex: item.sex,
+        age: item.age.toString(), // 不加验证报错
+        location: item.location,
+        remark: item.remark,
+        state: item.state,
+        cpExcelMst: item.cpExcelMst
+      }
+      // this.$refs.edit.category = {
+      //   id: item.category.id.toString()
+      // }
+    },
+    loadData () {
+      var _this = this
+      this.$axios.get('/admin/v1/pri/cpExcel/detailList?step=1').then(resp => {
+        if (resp && resp.data.code === 200) {
+          _this.datas = resp.data.result
         } else {
-          this.$refs.multipleTable.clearSelection()
+          this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
         }
-      },
-      handleSelectionChange (val) {
-        this.multipleSelection = val
-      },
-      batchOpt () {
-        this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.deleteIds()
-        }).catch(() => {
+      })
+    },
+    toggleSelection (rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
+    batchOpt () {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteIds()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    deleteIds () {
+      let checkArr = this.multipleSelection
+      let ids = []
+      checkArr.forEach(function (item) {
+        ids.push(item.id)
+        console.log(item.id)
+      })
+      this.$axios.get('/admin/v1/pri/co/section/deleteByIds',
+        {
+          params: {
+            ids: ids + ''
+          }
+        }
+      ).then(resp => {
+        if (resp && resp.data.code === 200) {
+          this.loadData()
           this.$message({
             type: 'info',
-            message: '已取消删除'
-          })
-        })          
-      },
-      deleteIds () {
-        let checkArr = this.multipleSelection
-        let ids = []
-        checkArr.forEach(function (item) {
-           ids.push(item.id)
-           console.log(item.id)
-         })
-         this.$axios.get('/admin/v1/pri/co/section/deleteByIds',
-         {
-           params: {
-             ids: ids + ''
-           }
-         }
-         ).then(resp => {
-          if (resp && resp.data.code === 200) {
-             this.loadData()
-             this.$message({
-               type: 'info',
-               message: resp.data.message})         
-          }
-        })
-      },
-      dateFormat (row, column) {
-        var date = row[column.property]
-        if (date !== null && date !== undefined) {
-          return this.$moment(date).format('YYYY-MM-DD')
+            message: resp.data.message})
+        } else {
+          this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
         }
-      },
-      ctFormat (row, column) {
-        var ctype = row[column.property]
-        if (ctype == '1') {
-          return '身份证'
-        } else if (ctype == '2') {
-          return '护照'
-        }
+      })
+    },
+    dateFormat (row, column) {
+      var date = row[column.property]
+      if (date !== null && date !== undefined) {
+        return this.$moment(date).format('YYYY-MM-DD')
+      }
+    },
+    ctFormat (row, column) {
+      var ctype = row[column.property]
+      if (ctype == '1') {
+        return '身份证'
+      } else if (ctype == '2') {
+        return '护照'
       }
     }
   }
+}
 </script>
 
 <style scoped>
+.div-inline{ display:inline} 
 </style>

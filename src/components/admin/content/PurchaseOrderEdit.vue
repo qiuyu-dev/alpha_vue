@@ -7,71 +7,85 @@
       @close="clear">
       <el-form :model="purchaseOrderForm" style="text-align: left" ref="purchaseOrderForm">
         <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="姓名" :label-width="formLabelWidth" prop="cname">
-              <el-input v-model="purchaseOrderForm.cname" autocomplete="off" readonly disabled></el-input>
+          <el-col :span="6">
+            <el-form-item label="姓名:" :label-width="formLabelWidth" prop="cname">
+              <label>{{purchaseOrderForm.cname}}</label>
+             
+              <!-- <el-input v-model="purchaseOrderForm.cname" autocomplete="off" readonly disabled></el-input> -->
             </el-form-item>
           </el-col>
-          <el-col :span="6">     
-            <el-form-item label="证件类型" :label-width="formLabelWidth" prop="certificateType">
-            <el-select class="select" v-model="purchaseOrderForm.certificateType" placeholder="请选择证件类型" disabled>
-              <el-option label="身份证" value="1"></el-option>
-              <el-option label="护照" value="2"></el-option>
-            </el-select>
-            </el-form-item>          
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="电话" :label-width="formLabelWidth" prop="phone">
-              <el-input v-model="purchaseOrderForm.phone" autocomplete="off" readonly disabled></el-input>
+         
+          <el-col :span="8">
+            <el-form-item label="电话：" :label-width="formLabelWidth" prop="phone">
+               <label>{{purchaseOrderForm.phone}}</label>
+              <!-- <el-input v-model="purchaseOrderForm.phone" autocomplete="off" readonly disabled></el-input> -->
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
-          <el-col :span="24">
-            <el-form-item label="证件号" :label-width="formLabelWidth" prop="insuredId">
-              <el-input v-model="purchaseOrderForm.insuredId" autocomplete="off" readonly disabled></el-input>
+           <!-- <el-col :span="6">     
+            <el-form-item label="证件类型：" :label-width="formLabelWidth" prop="certificateType"> -->
+              <!-- <type-name :tid="purchaseOrderForm.certificateType"></type-name> -->
+              <!-- <label>{{purchaseOrderForm.certificateType}}</label> -->
+            <!-- <el-select class="select" v-model="purchaseOrderForm.certificateType" placeholder="请选择证件类型" disabled>
+              <el-option label="身份证" value="1"></el-option>
+              <el-option label="护照" value="2"></el-option>
+            </el-select> -->
+            <!-- </el-form-item>          
+          </el-col> -->
+          <el-col :span="10">
+            <el-form-item label="证件号：" :label-width="formLabelWidth" prop="insuredId">
+               <label>{{purchaseOrderForm.insuredId}}</label>
+              <!-- <el-input v-model="purchaseOrderForm.insuredId" autocomplete="off" readonly disabled></el-input> -->
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="生效日" :label-width="formLabelWidth">
+            <el-form-item label="生效日：" :label-width="formLabelWidth">
             <el-form-item prop="effectiveDate">
-                <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 75%;" disabled></el-date-picker>
+               <label>{{purchaseOrderForm.effectiveDate|dateformat('YYYY-MM-DD')}}</label>
+                <!-- <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 75%;" disabled></el-date-picker> -->
             </el-form-item>
             </el-form-item>
           </el-col>
           <el-col :span="12">  
-            <el-form-item label="截止日" :label-width="formLabelWidth">
+            <el-form-item label="截止日：" :label-width="formLabelWidth">
             <el-form-item prop="closingDate">
-                <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.closingDate" value-format="yyyy-MM-dd" style="width: 75%;" disabled></el-date-picker>
+               <label>{{purchaseOrderForm.closingDate|dateformat('YYYY-MM-DD')}}</label>
+                <!-- <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderForm.closingDate" value-format="yyyy-MM-dd" style="width: 75%;" disabled></el-date-picker> -->
             </el-form-item>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="6">         
-            <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
-            <el-select class="select" v-model="purchaseOrderForm.sex" placeholder="请选择性别" disabled>
+            <el-form-item label="性别：" :label-width="formLabelWidth" prop="sex">
+              <label>{{purchaseOrderForm.sex}}</label>
+               
+            <!-- <el-select class="select" v-model="purchaseOrderForm.sex" placeholder="请选择性别" disabled>
               <el-option label="男" value="1"></el-option>
               <el-option label="女" value="2"></el-option>
-            </el-select>
+            </el-select> -->
             </el-form-item>
           </el-col>
-          <el-col :span="6">
-            <el-form-item label="年龄" :label-width="formLabelWidth" prop="age">
-              <el-input v-model="purchaseOrderForm.age" autocomplete="off" readonly disabled></el-input>
+          <el-col :span="7">
+            <el-form-item label="年龄：" :label-width="formLabelWidth" prop="age">
+               <label>{{purchaseOrderForm.age}}</label>
+              <!-- <el-input v-model="purchaseOrderForm.age" autocomplete="off" readonly disabled></el-input> -->
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="所在地" :label-width="formLabelWidth" prop="location">
-              <el-input v-model="purchaseOrderForm.location" autocomplete="off" readonly disabled></el-input>
+          <el-col :span="7">
+            <el-form-item label="所在地：" :label-width="formLabelWidth" prop="location">
+               <label>{{purchaseOrderForm.location}}</label>
+              <!-- <el-input v-model="purchaseOrderForm.location" autocomplete="off" readonly disabled></el-input> -->
             </el-form-item>
           </el-col>        
         </el-row>
         <el-row :gutter="10">
-        <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
-           <el-input v-model="purchaseOrderForm.remark" autocomplete="off" readonly disabled></el-input>
+        <el-form-item label="备注：" :label-width="formLabelWidth" prop="remark">
+           <label>{{purchaseOrderForm.remark}}</label>
+           <!-- <el-input v-model="purchaseOrderForm.remark" autocomplete="off" readonly disabled></el-input> -->
         </el-form-item>
         </el-row>
         <el-row :gutter="10">
@@ -116,8 +130,11 @@
 </template>
 
 <script>
+import TypeName from '@/components/common/TypeName.vue'
   export default {
     name: 'PurchaseOrderEdit',
+     components: { TypeName},
+   
     data () {
       return {
         dialogFormVisible: false,
@@ -185,7 +202,7 @@
         // this.$refs.purchaseOrderForm.validate((valid) => {
           // if (valid) {
             this.$axios
-              .post('/admin/v1/pri/po/section/purchaseorder', {
+              .post('/admin/v1/pri/cpExcel/detail/verify', {
                 id: _id,
                 reson: _reson,
                 opt: _opt
@@ -193,7 +210,11 @@
                 if (resp && resp.data.code === 200) {
                   this.dialogFormVisible = false
                   this.$emit('onSubmit')
-                }
+                } else {
+                  this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
+               }
             })
           // } else {
           //   console.log('error submit')

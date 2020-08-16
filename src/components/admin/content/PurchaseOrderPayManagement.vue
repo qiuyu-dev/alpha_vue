@@ -16,24 +16,64 @@
         :max-height="tableHeight"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="detailId" label="ID" width="100"></el-table-column>
+      <el-table-column type="expand">
+        <template slot-scope="scope">
+           <ul>
+          <li v-for="item in scope.row.batchFeeMsts" :key="item.id">
+            批号：{{item.batchNumber}}
+    ，开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}，结束日{{item.closingDate|dateformat('YYYY-MM-DD')}}  
+    ，状态：<state-name :sid="item.state.toString()"></state-name>
+     ，备注：{{item.remark}}，收款备注：{{item.confirmRemark}}
+            </li>
+          </ul>
+           </template>
+        </el-table-column>
+        <el-table-column type="selection" prop="id" label="ID" width="55"></el-table-column>
+
+        <!-- <el-table-column prop="detailId" label="ID" width="100"></el-table-column> -->
         <!--  <el-table-column
           prop="product"
           label="产品"
           fit>
         </el-table-column>-->
-        
-        <el-table-column prop="toName" label="服务企业" show-overflow-tooltip fit></el-table-column>
-        <el-table-column prop="insuredName" label="姓名"></el-table-column>
-        <el-table-column prop="certificateType" label="证件类型" :formatter="ctFormat" fit></el-table-column>
-        <el-table-column prop="insuredId" label="证件号" show-overflow-tooltip fit></el-table-column>
-        <el-table-column prop="phone" label="电话" show-overflow-tooltip fit></el-table-column>
-        <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日期" fit></el-table-column>
-        <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日期" fit></el-table-column>
-        <el-table-column prop="status" :formatter="cesFormat" label="状态" fit></el-table-column>
-         <el-table-column prop="toId" label="企业id"></el-table-column>
-        <!-- <el-table-column
+          <el-table-column
+          prop="cpExcelMst.fileName"
+          label="文件名"
+          fit>
+        </el-table-column>
+        <el-table-column  label="付费方" show-overflow-tooltip fit>
+          <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.cpExcelMst.paySubjectId.toString()"></alpah-subject-name>
+          </template>
+        </el-table-column>
+              <el-table-column  label="收费方" show-overflow-tooltip fit>
+          <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
+          </template>
+        </el-table-column>
+        <el-table-column prop="outTradeNo" label="保单号"></el-table-column>
+        <el-table-column prop="customerName" label="客户"></el-table-column>
+        <!-- <el-table-column prop="certificateType" label="证件类型" :formatter="ctFormat" fit></el-table-column> -->
+        <!-- <el-table-column prop="customerSubject.recordNumber" label="证件号" show-overflow-tooltip fit></el-table-column> -->
+        <!-- <el-table-column prop="phone" label="电话" show-overflow-tooltip fit></el-table-column> -->
+        <el-table-column  label="产品">
+<template slot-scope="scope">
+          <product-name :pid="scope.row.productId.toString()"></product-name>
+          </template>
+
+        </el-table-column>
+        <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日" width="100"
+          fit></el-table-column>
+        <!-- <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日期" fit></el-table-column> -->
+         <el-table-column prop="confirmRemark" label="备注"></el-table-column>
+         <!-- <el-table-column prop="operator" label="操作员"></el-table-column>     -->
+         <el-table-column
+          label="状态" >
+          <template slot-scope="scope">
+          <state-name :sid="scope.row.state.toString()"></state-name>
+          </template>
+        </el-table-column>  
+                <!-- <el-table-column
           fixed="right"
           label="操作"
           width="120">
@@ -58,29 +98,32 @@
 </template>
 
 <script>
-import PurchaseOrderPayEdit from "./PurchaseOrderPayEdit";
+import PurchaseOrderPayEdit from './PurchaseOrderPayEdit'
+import AlpahSubjectName from '@/components/common/AlpahSubjectName.vue'
+import ProductName from '@/components/common/ProductName.vue'
+import StateName from '@/components/common/StateName.vue'
 export default {
-  name: "PurchaseOrderPayManagement",
-  components: { PurchaseOrderPayEdit },
-  data() {
+  name: 'PurchaseOrderPayManagement',
+  components: { PurchaseOrderPayEdit, AlpahSubjectName,ProductName,StateName},
+  data () {
     return {
       datas: [],
       multipleSelection: [],
       mymsg: [],
       mytoid: ''
-    };
+    }
   },
-  mounted() {
-    this.loadData();
+  mounted () {
+    this.loadData()
   },
   computed: {
-    tableHeight() {
-      return window.innerHeight - 320;
-    },
+    tableHeight () {
+      return window.innerHeight - 320
+    }
   },
   methods: {
-    editOpt(item) {
-      this.$refs.purchaseOrderPayEdit.dialogFormVisible = true;
+    editOpt (item) {
+      this.$refs.purchaseOrderPayEdit.dialogFormVisible = true
       this.$refs.purchaseOrderPayEdit.purchaseOrderPayForm = {
         id: item.detailId,
         batchNumber: item.batchNumber,
@@ -94,102 +137,83 @@ export default {
         remark: item.remark,
         pay_img: item.pay_img,
         toId: item.toId
-      };
+      }
     },
-    loadData() {
-      var _this = this;
+    loadData () {
+      var _this = this
       this.$axios
-        .get("/admin/v1/pri/po/share/customerenterprise/listFrom")
+        .get('/admin/v1/pri/cpExcel/detailList?step=3')
         .then((resp) => {
           if (resp && resp.data.code === 200) {
-            _this.datas = resp.data.result;
+            _this.datas = resp.data.result
+          } else {
+            this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
           }
-        });
+        })
     },
-    toggleSelection(rows) {
+    toggleSelection (rows) {
       if (rows) {
         rows.forEach((row) => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
       } else {
-        this.$refs.multipleTable.clearSelection();
+        this.$refs.multipleTable.clearSelection()
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    handleSelectionChange (val) {
+      this.multipleSelection = val
     },
-    dateFormat(row, column) {
-      var date = row[column.property];
+    dateFormat (row, column) {
+      var date = row[column.property]
       if (date !== null && date !== undefined) {
-        return this.$moment(date).format("YYYY-MM-DD");
+        return this.$moment(date).format('YYYY-MM-DD')
       }
     },
-    ctFormat(row, column) {
-      var ctype = row[column.property];
-      if (ctype == "1") {
-        return "身份证";
-      } else if (ctype == "2") {
-        return "护照";
-      }
-    },
-    cesFormat(row, column) {
-      var ctype = row[column.property];
-      if (ctype == "2") {
-        return "重新触发待申请";
-      } else if (ctype == "3") {
-        return "申请待审核";
-      } else if (ctype == "-3") {
-        return "申请未通过";
-      } else if (ctype == "4") {
-        return "重新申请待审核";
-      } else if (ctype == "5") {
-        return "审核通过可付费";
-      } else if (ctype == "-5") {
-        return "审核未通过";
-      }
-    },
-    batchFeeOpt() {
-      let toName1 = "";
-      let toName2 = "";
-      let display = "";
-      let bool1 = true;
-      let thistoid = '';
-      let checkArr = this.multipleSelection;
+ 
+
+    batchFeeOpt () {
+      let toName1 = ''
+      let toName2 = ''
+      let display = ''
+      let bool1 = true
+      let thistoid = ''
+      let checkArr = this.multipleSelection
       let ids = []
       if (checkArr.length === 0) {
-        display = '请选择人员'
+        display = '请选择'
         bool1 = false
       } else {
-        
         checkArr.forEach(function (item) {
-          ids.push(item.detailId)
+          // alert(item.id)
+          ids.push(item.id)
           console.log(item.detailId)
           if (toName1 === '') {
-            toName1 = item.toName
-            thistoid= item.toId
+            toName1 = item.cpExcelMst.chargeSubjectId
+            thistoid = item.toId
           } else {
-            toName2 = item.toName
+            toName2 = item.cpExcelMst.chargeSubjectId
             if (toName1 !== toName2) {
               display = '选择同一服务企业'
               bool1 = false
             }
           }
         })
-        }
-        if (!bool1) {
-          this.$alert(display, '提示', {
-            confirmButtonText: '确定'
-          })
-          return false
-        }
-        // this.$refs.multipleTable.selection
-        this.mytoid = thistoid
-        this.mymsg = ids
-        this.$refs.purchaseOrderPayEdit.dialogFormVisible = bool1
-      
-    },
-  },
-};
+      }
+      if (!bool1) {
+        this.$alert(display, '提示', {
+          confirmButtonText: '确定'
+        })
+        return false
+      }
+      // this.$refs.multipleTable.selection
+      this.mytoid = thistoid
+      this.mymsg = ids
+      this.$refs.purchaseOrderPayEdit.dialogFormVisible = bool1
+    }
+  }
+}
 </script>
 
 <style scoped>

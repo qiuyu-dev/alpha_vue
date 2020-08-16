@@ -19,59 +19,106 @@
           type="selection"
           width="55">
         </el-table-column> -->
+        <el-table-column type="expand">
+        <template slot-scope="scope">
+              <ul> 
+          <li v-for="item in scope.row.customerProducts" :key="item.id">
+            客户：<alpah-subject-name :asid="item.customerSubjectId.toString()"></alpah-subject-name>
+        ， 服务：<product-name :pid="item.productId.toString()"></product-name>
+,开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}
+         ，结束日:{{item.closingDate|dateformat('YYYY-MM-DD')}}
+            </li>
+            </ul>  
+           </template>
+        </el-table-column>
          <el-table-column
-          prop="fromName"
+          prop="cpExcelMst.fileName"
+          label="文件名"
+          fit>
+        </el-table-column>
+         <el-table-column
           label="采购企业"
           show-overflow-tooltip
           fit>
+           <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.cpExcelMst.paySubjectId.toString()"></alpah-subject-name>
+          </template>
         </el-table-column>
          <el-table-column
-          prop="detailId"
-          label="id"
+        
+          label="服务企业">
+          <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
+          </template>
+        </el-table-column>
+         <!-- <el-table-column
+          prop="id"
+          label="ID"
           show-overflow-tooltip
           fit>
+        </el-table-column> -->
+         <el-table-column
+          prop="outTradeNo"
+          label="保单号">
         </el-table-column>
         <el-table-column
-          prop="insuredName"
-          label="姓名">
+          prop="customerSubject.name"
+          label="客户">
         </el-table-column>
         <el-table-column
-          prop="certificateType"
-          label="证件类型"
-          :formatter="ctFormat"
-          fit>
+          label="类型"
+          show-overflow-tooltip fit>
+           <template slot-scope="scope">
+          <type-name :tid="scope.row.customerSubject.recordType.toString()"></type-name>
+          </template>
         </el-table-column>
+         <!-- <el-form-item prop="certificateType" style="height: 0">
+          <el-input type="hidden" v-model="purchaseOrderForm.certificateType" autocomplete="off"></el-input>
+        </el-form-item>  -->
         <el-table-column
-          prop="insuredId"
+          prop="customerSubject.recordNumber"
           label="证件号"
           show-overflow-tooltip
           fit>
         </el-table-column>
-        <el-table-column
-          prop="phone"
+         <el-table-column
+          prop="productName"
+          label="产品"
+          show-overflow-tooltip fit>
+        </el-table-column>
+        <!-- <el-table-column
+          prop="customerSubject.phone"
           label="电话"
           show-overflow-tooltip
           fit>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="effectiveDate"
-          :formatter="dateFormat"
-          label="生效日期"
+           :formatter="dateFormat"
+          label="生效日"
            width="100"
           fit>
         </el-table-column>
         <el-table-column
           prop="closingDate"
           :formatter="dateFormat"
-          label="截止日期"
+          label="截止日"
           width="100"
           fit>
         </el-table-column>
         <el-table-column
-          prop="status"
-          :formatter="cesFormat"
-          label="状态"
-          fit>
+        prop="remark"
+          label="备注">
+        </el-table-column>
+         <!-- <el-table-column
+        prop="operator"
+          label="操作员">
+        </el-table-column> -->
+        <el-table-column
+          label="状态" >
+          <template slot-scope="scope">
+          <state-name :sid="scope.row.state.toString()"></state-name>
+          </template>
         </el-table-column>        
         <el-table-column
           fixed="right"
@@ -98,9 +145,14 @@
 
 <script>
   import PurchaseOrderEdit from './PurchaseOrderEdit'
+  import AlpahSubjectName from '@/components/common/AlpahSubjectName.vue'
+  import ProductName from '@/components/common/ProductName.vue'
+  import StateName from '@/components/common/StateName.vue'
+  import TypeName from '@/components/common/TypeName.vue'
+
   export default {
     name: 'PurchaseOrderEditManagement',
-    components: {PurchaseOrderEdit},
+    components: {PurchaseOrderEdit, AlpahSubjectName,ProductName,StateName, TypeName},
     data () {
       return {
         datas: [],
@@ -119,12 +171,12 @@
       editOpt (item) {
         this.$refs.PurchaseOrderEdit.dialogFormVisible = true
         this.$refs.PurchaseOrderEdit.purchaseOrderForm = {
-          id: item.detailId,
+          id: item.id,
           eid: item.eid,
-          cname: item.insuredName,
+          cname: item.customerSubject.name,
           certificateType: item.certificateType,
-          insuredId: item.insuredId,
-          phone: item.phone,
+          insuredId: item.customerSubject.recordNumber,
+          phone: item.customerSubject.phone,
           effectiveDate: item.effectiveDate,
           closingDate: item.closingDate,
           sex: item.sex,
@@ -141,9 +193,13 @@
       },
       loadData () {
         var _this = this
-        this.$axios.get('/admin/v1/pri/po/share/customerenterprise/listTo').then(resp => {
+        this.$axios.get('/admin/v1/pri/cpExcel/detailList?step=2').then(resp => {
           if (resp && resp.data.code === 200) {
             _this.datas = resp.data.result
+          } else {
+            this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
           }
         })       
       },
@@ -163,30 +219,6 @@
         var date = row[column.property]
         if (date !== null && date !== undefined) {
           return this.$moment(date).format('YYYY-MM-DD')
-        }
-      },
-      ctFormat (row, column) {
-        var ctype = row[column.property]
-        if (ctype == '1') {
-          return '身份证'
-        } else if (ctype == '2') {
-          return '护照'
-        }
-      },
-      cesFormat (row, column) {
-        var ctype = row[column.property]
-        if (ctype == '2') {
-          return '重新触发待申请'
-        } else if (ctype == '3') {
-          return '申请待审核'
-        } else if (ctype == '-3') {
-          return '申请未通过'
-        } else if (ctype == '4') {
-          return '重新申请待审核'
-        } else if (ctype == '5') {
-          return '审核通过待付费'
-        } else if (ctype == '-5') {
-          return '审核未通过'
         }
       }
     }

@@ -9,11 +9,6 @@
         ref="customerServiceForm">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="服务" :label-width="formLabelWidth" prop="product">
-              <el-input v-model="customerServiceForm.product" autocomplete="off" readonly="true" disabled></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
             <el-form-item label="客户姓名" :label-width="formLabelWidth" prop="insuredName">
               <el-input
                 v-model="customerServiceForm.insuredName"
@@ -23,9 +18,21 @@
               ></el-input>
             </el-form-item>
           </el-col>
+           <el-col :span="12">
+            <el-form-item label="电话" :label-width="formLabelWidth" prop="phone">
+              <el-input v-model="customerServiceForm.phone" autocomplete="off" readonly="true"  disabled></el-input>
+            </el-form-item>
+          </el-col>
+          
+          
         </el-row>
         <el-row>
           <el-col :span="8">
+            <el-form-item label="服务" :label-width="formLabelWidth" prop="product">
+              <el-input v-model="customerServiceForm.product" autocomplete="off" readonly="true" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <!-- <el-col :span="8">
             <div style="margin: 10px 0 10px 0;">
               <el-form-item label="证件类型" :label-width="formLabelWidth" prop="certificateType">
                 <el-select
@@ -39,20 +46,14 @@
                 </el-select>
               </el-form-item>
             </div>
-          </el-col>
-          <el-col :span="12">
+          </el-col> -->
+          <!-- <el-col :span="12">
             <el-form-item label="证件号" :label-width="formLabelWidth" prop="insuredId">
               <el-input v-model="customerServiceForm.insuredId" autocomplete="off" readonly="true" disabled></el-input>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="电话" :label-width="formLabelWidth" prop="phone">
-              <el-input v-model="customerServiceForm.phone" autocomplete="off" readonly="true"  disabled></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+       
         <el-row>
           <el-col :span="10">
             <el-form-item label="生效日" :label-width="formLabelWidth">
@@ -83,11 +84,11 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <!-- <el-row>
           <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
             <el-input v-model="customerServiceForm.remark" autocomplete="off" readonly="true"  disabled></el-input>
           </el-form-item>
-        </el-row>
+        </el-row> -->
         <div style="margin: 10px 0 10px 0;">
           <el-form-item label="操作" :label-width="formLabelWidth" prop="opt">
             <el-select
@@ -123,29 +124,29 @@
 
 <script>
 export default {
-  name: "CustomerServiceEdit",
-  data() {
+  name: 'CustomerServiceEdit',
+  data () {
     return {
       dialogFormVisible: false,
-      formLabelWidth: "120px",
+      formLabelWidth: '120px',
       customerServiceForm: {
-        id: "",
-        seqNumber: "",
-        policyNumber: "",
-        product: "",
-        insuredName: "",
-        certificateType: "",
-        phone: "",
-        insuredId: "",
-        effectiveDate: "",
-        closingDate: "",
-        sex: "",
-        age: "",
-        location: "",
-        remark: "",
-        opt: "",
-        state: "",
-        reson: "",
+        id: '',
+        seqNumber: '',
+        policyNumber: '',
+        product: '',
+        insuredName: '',
+        certificateType: '',
+        phone: '',
+        insuredId: '',
+        effectiveDate: '',
+        closingDate: '',
+        sex: '',
+        age: '',
+        location: '',
+        remark: '',
+        opt: '',
+        state: '',
+        reson: ''
       },
       rules: {
         // seqNumber: [
@@ -202,58 +203,62 @@ export default {
         // location: [{ min: 1, max: 100, message: "长度1-100", triger: "blur" }],
         reson: [
           {required: true, message: '请输入说明', triger: 'blur'},
-          {min: 1, max: 100, message: '长度1-30', triger: 'blur'}],
-      },
-    };
+          {min: 1, max: 100, message: '长度1-30', triger: 'blur'}]
+      }
+    }
   },
   methods: {
-    clear() {
+    clear () {
       this.customerServiceForm = {
-        id: "",
-        seqNumber: "",
-        policyNumber: "",
-        product: "",
-        insuredName: "",
-        certificateType: "",
-        phone: "",
-        insuredId: "",
-        effectiveDate: "",
-        closingDate: "",
-        sex: "",
-        age: "",
-        location: "",
-        remark: "",
-        opt: "",
-        state: "",
-        reson: "",
-      };
-      this.$refs.customerServiceForm.resetFields();
+        id: '',
+        seqNumber: '',
+        policyNumber: '',
+        product: '',
+        insuredName: '',
+        certificateType: '',
+        phone: '',
+        insuredId: '',
+        effectiveDate: '',
+        closingDate: '',
+        sex: '',
+        age: '',
+        location: '',
+        remark: '',
+        opt: '',
+        state: '',
+        reson: ''
+      }
+      this.$refs.customerServiceForm.resetFields()
     },
-    onSubmit(customerServiceForm) {
+    onSubmit (customerServiceForm) {
       this.$refs.customerServiceForm.validate((valid) => {
         if (valid) {
           this.$axios
-            .post("/admin/v1/pri/sc/section/customer/complaint", {
+            .post('/admin/v1/pri/customerProduct/complaint', {
               id: this.customerServiceForm.id,
-              remark: this.customerServiceForm.remark,
+              // remark: this.customerServiceForm.remark,
               opt: this.customerServiceForm.opt,
-              state: this.customerServiceForm.state,
+              // state: this.customerServiceForm.state,
               reson: this.customerServiceForm.reson
             })
             .then((resp) => {
               if (resp && resp.data.code === 200) {
-                this.dialogFormVisible = false;
-                this.$emit("onSubmit");
+                this.dialogFormVisible = false
+                this.$emit('onSubmit')
+              } else {
+                this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
               }
-            });
+            })
         } else {
-          console.log("error submit");
-          return false;
+          console.log('error submit')
+          return false
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

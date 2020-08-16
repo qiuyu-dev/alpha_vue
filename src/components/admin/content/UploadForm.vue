@@ -1,13 +1,13 @@
 <template>
   <div style="text-align: left">
-    <el-button class="add-button" @click="dialogFormVisible = true">Excel上传</el-button>
+    <el-button class="add-button" @click="dialogFormVisible = true">客户单Excel上传</el-button>
     <el-dialog
-      title="Excel上传"
+      title="客户单Excel上传"
       :visible.sync="dialogFormVisible"
       @close="clear">
       <el-form :model="uploadForm" :rules="rules" style="text-align: left" ref="uploadForm">
-        <el-form-item label="服务商" :label-width="formLabelWidth" prop="cid">
-        <el-select @change="getOptions" v-model="uploadForm.cid" placeholder="请选择服务商">
+        <el-form-item label="服务商" :label-width="formLabelWidth" prop="chargeid">
+        <el-select @change="getOptions" v-model="uploadForm.chargeid" placeholder="请选择服务商">
           <el-option v-for="(item,index) in objData" :key="index" :value="item.id" :label="item.name"/>
         </el-select>
         </el-form-item>
@@ -16,7 +16,7 @@
             <el-upload
               class="excel-upload"
               ref="excelUpload"
-              action="http://localhost:8443/api/admin/v1/pri/co/share/uploadFile"
+              action="http://localhost:8443/api/admin/v1/pri/cpExcel/excelUpload"
               with-credentials
               :on-change="handleChange"
               :on-preview="handlePreview"
@@ -52,148 +52,154 @@
 </template>
 
 <script>
-  // import ExcelUpload from './ExcelUpload'
-  export default {
-    name: 'uploadForm',
-    // components: {ExcelUpload},
-    data () {
-      return {
-        formLabelWidth: '120px',
-        dialogFormVisible: false,
-        fileList: [],
-        objData: [],
-        uploadForm: {
-          cid: ''          
-        },        
-        rules:{
-          category: [
-              {required: true, message: '请选择服务商', triger: 'change'}
-            ]
-        }        
+// import ExcelUpload from './ExcelUpload'
+export default {
+  name: 'uploadForm',
+  // components: {ExcelUpload},
+  data () {
+    return {
+      formLabelWidth: '120px',
+      dialogFormVisible: false,
+      fileList: [],
+      objData: [],
+      uploadForm: {
+        chargeid: ''
+      },
+      rules: {
+        category: [
+          {required: true, message: '请选择服务商', triger: 'change'}
+        ]
       }
+    }
+  },
+  methods: {
+    getData () {
+      return this.uploadForm
     },
-    methods: {
-      getData () {
-        return this.uploadForm
-      },
-      clear () {
-        this.uploadForm = {
-          cid: ''
-        }
-        this.fileTemp == null
-        // this.$refs.excelUpload.clearFiles()
-        // this.$refs.uploadForm.resetFields()
-      },
-      beforeUpload (file) {
-        console.log('beforeUpload...')
-      },      
-      // excel表上传
-      handleChange (file, fileList) {
-        console.log('handleChange..')
-        this.fileTemp = file.raw
-        // 判断上传文件格式
-        if (this.fileTemp) {
-          if ((this.fileTemp.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
-              if (this.fileTemp.size < 5*1024*1024 ) {//文件大小须小于5M
-                  return true                 
-              } else {
-                  this.$message({
-                  type:'warning',
-                  message:'文件不能大于5M！'
-                  })
-                  return false
-              }
-            } else {
-              this.$message({
-                type:'warning',
-                message:'文件格式错误，请删除后重新上传！'
-                })
-                return false
-            }
+    clear () {
+      this.uploadForm = {
+        chargeid: ''
+      }
+      this.fileTemp == null
+      // this.$refs.excelUpload.clearFiles()
+      // this.$refs.uploadForm.resetFields()
+    },
+    beforeUpload (file) {
+      console.log('beforeUpload...')
+    },
+    // excel表上传
+    handleChange (file, fileList) {
+      console.log('handleChange..')
+      this.fileTemp = file.raw
+      // 判断上传文件格式
+      if (this.fileTemp) {
+        if ((this.fileTemp.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
+          if (this.fileTemp.size < 5 * 1024 * 1024) { // 文件大小须小于5M
+            return true
+          } else {
+            this.$message({
+              type: 'warning',
+              message: '文件不能大于5M！'
+            })
+            return false
+          }
         } else {
           this.$message({
-            type:'warning',
-            message:'请上传文件！'
+            type: 'warning',
+            message: '文件格式错误，请删除后重新上传！'
           })
+          return false
         }
-      }, 
-      handlePreview (file) {
-        // 此处的 file 是整个文件
-        // console.log(file)        
-        console.log('preview..')
-      },
-      handleRemove (file, fileList) {
-        console.log('handleRemove ...')
-        // console.log(file, fileList)
-        this.fileTemp = null
-      },      
-      handleExceed (files, fileList) {
-        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-      },
-      beforeRemove (file, fileList) {
-        return this.$confirm(`确定移除 ${file.name}？`)
-      },
-      handleSuccess (response) {        
-        console.log('handleSuccess...')
-        console.log(response)
-        if(response.code == 200){
-          this.$emit('onUpload')
-          this.$message.warning('上传成功')
-        }else {
-          this.$alert('上传失败[' + response.message + ']')
-        }        
-      },
-      onSubmit () {
-        var _cid  = this.uploadForm.cid;
-        if (_cid == ''){          
-          this.$alert("请选择服务商", '提示', {
-                  confirmButtonText: '确定'
-                })
-          return
-        } 
-        if (this.fileTemp == null){          
-          this.$alert("请选择excel文件上传", '提示', {
-                  confirmButtonText: '确定'
-                })
-          return
-        }
-          this.$refs.uploadForm.validate((valid) => {
-             if (valid) {
-                //手动上传文件，在点击确认的时候 校验通过才会去请求上传文件的url
-                this.$refs.excelUpload.action = this.$axios.defaults.baseURL + "/admin/v1/pri/co/share/uploadFile";
-                this.$refs.excelUpload.submit();
-                // this.$axios.post('/admin/v1/pri/co/share/uploadFile', {                  
-                //   cid: _cid
-                //   }).then(resp => {
-                //     if (resp && resp.data.code === 200) {
-                //       this.dialogFormVisible = false
-                //       this.$emit('onUpload')
-                //       console.log(resp.data.message)
-                //     }
-                //   })
-              } else {
-               console.log('error submit')
-               return false               
-             }
-          })          
-        
-      },
-      getOptions () {
-        let _this = this
-        this.$axios.get('/admin/v1/pri/co/share/companyService/list').then(resp => {
-            if (resp && resp.data.code === 200) {
-              _this.objData = resp.data.result
-              //console.log(_this.objData)
-            }
-          }).catch((error) =>{
-            console.log(error)
-          })
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '请上传文件！'
+        })
       }
     },
-    mounted () {
-      this.getOptions()
-    } 
+    handlePreview (file) {
+      // console.log(file)
+      // 此处的 file 是整个文件
+      console.log('preview..')
+      console.log(file.response)
+    },
+    handleRemove (file, fileList) {
+      console.log('handleRemove ...')
+      // console.log(file, fileList)
+      this.fileTemp = null
+    },
+    handleExceed (files, fileList) {
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    },
+    beforeRemove (file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    handleSuccess (response) {
+      if (response.code === 200) {
+        console.log('handleSuccess...')
+        this.$emit('onUpload')
+        this.$message.warning('上传成功')
+      } else {
+        this.$alert(response.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
+      }
+    },
+    onSubmit () {
+      var _chargeid = this.uploadForm.chargeid
+      if (_chargeid == '') {
+        this.$alert('请选择服务商', '提示', {
+          confirmButtonText: '确定'
+        })
+        return
+      }
+      if (this.fileTemp == null) {
+        this.$alert('请选择excel文件上传', '提示', {
+          confirmButtonText: '确定'
+        })
+        return
+      }
+      this.$refs.uploadForm.validate((valid) => {
+        if (valid) {
+          // 手动上传文件，在点击确认的时候 校验通过才会去请求上传文件的url
+          this.$refs.excelUpload.action = this.$axios.defaults.baseURL + '/admin/v1/pri/co/share/uploadFile'
+          this.$refs.excelUpload.submit();
+          // this.$axios.post('/admin/content/uploadFileProcess', {
+          //   url: _url,
+          //   chargeid: _chargeid
+          //   }).then(resp => {
+          //     if (resp && resp.data.code === 200) {
+          //       this.dialogFormVisible = false
+          //       this.$emit('onUpload')
+          //       console.log(resp.data.message)
+          //     }
+          //   })
+        } else {
+          console.log('error submit')
+          return false
+        }
+      })
+    },
+    getOptions () {
+      let _this = this
+      this.$axios.get('admin/v1/pub/alphaSubject/charge/list').then(resp => {
+        if (resp && resp.data.code === 200) {
+          _this.objData = resp.data.result
+          console.log(_this.objData)
+        } else {
+          this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
+        }
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+  },
+  mounted () {
+    this.getOptions()
   }
+}
 </script>
 
 <style scoped>

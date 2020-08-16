@@ -26,7 +26,7 @@
         </el-form-item>
         <el-form-item>
           <el-input type="text" v-model="loginForm.email"
-                    auto-complete="off" placeholder="E-Mail"></el-input>
+                    auto-complete="off" placeholder="E-Mail" @blur="validEmail()"></el-input>
         </el-form-item>
         <el-form-item prop="crop" style="height: 0">
           <el-input type="hidden" v-model="loginForm.crop"></el-input>
@@ -77,6 +77,9 @@
           }
         },
         register () {
+           if(this.validEmail()){
+                return 
+              }
           this.$axios
             .post('/register', {
               username: this.loginForm.username,
@@ -98,11 +101,22 @@
                 this.$emit('onSubmit')
               } else {
                 this.$alert(resp.data.message, '提示', {
-                  confirmButtonText: '确定'
-                })
+                    confirmButtonText: '确定'
+                  })
               }
             })
             .catch(failResponse => {})
+        },
+        validEmail() {
+          const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          if(!reg.test(this.loginForm.email)){
+            this.$alert('邮箱格式不正确', '提示', {
+                      confirmButtonText: '确定'
+                    })
+            return true
+          } else {
+            return false
+          }
         }
       }
     }

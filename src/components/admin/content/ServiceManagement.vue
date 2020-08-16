@@ -8,8 +8,8 @@
         <el-form-item label="备案编号" label-width="120px" prop="recordNumber">
           <el-input v-model="selectedService.recordNumber" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="产品全称" label-width="120px" prop="product">
-          <el-input v-model="selectedService.product" autocomplete="off"></el-input>
+        <el-form-item label="服务全称" label-width="120px" prop="name">
+          <el-input v-model="selectedService.name" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -32,9 +32,13 @@
         style="width: 100%"
         :max-height="tableHeight">
         <el-table-column prop="id" label="ID" show-overflow-tooltip fit></el-table-column>
-        <el-table-column prop="company.name" label="企业" show-overflow-tooltip fit></el-table-column>
+        <el-table-column  label="企业" show-overflow-tooltip fit>
+          <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.alphaSubjectId.toString()"></alpah-subject-name>  
+          </template>
+        </el-table-column>
         <el-table-column prop="recordNumber" label="备案编号"></el-table-column>
-        <el-table-column prop="product" label="服务全称"></el-table-column>
+        <el-table-column prop="name" label="服务全称"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button @click="editService(scope.row)" type="text" size="small">编辑</el-button>
@@ -55,9 +59,12 @@
 
 <script>
 import ServiceEdit from './ServiceEdit'
+import AlpahSubjectName from '@/components/common/AlpahSubjectName.vue'
+import ProductName from '@/components/common/ProductName.vue'
+import StateName from '@/components/common/StateName.vue'
 export default {
   name: 'ServiceManagement',
-  components: { ServiceEdit },
+  components: { ServiceEdit, AlpahSubjectName, ProductName, StateName },
   data () {
     return {
       services: [],
@@ -76,20 +83,23 @@ export default {
   methods: {
     listService () {
       var _this = this
-      this.$axios.get('/admin/v1/pri/sc/share/service/list').then((resp) => {
-        // alert(resp.data)
+      this.$axios.get('/admin/v1/pub/product/list').then((resp) => {
         if (resp && resp.data.code === 200) {
           _this.services = resp.data.result
+        } else {
+          this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
         }
       })
     },
     onSubmit (service) {
       let _this = this
       this.$axios
-        .post('/admin/v1/pri/sc/section/save/service', {
+        .post('/admin/v1/pub/product/save', {
           id: service.id,
           recordNumber: service.recordNumber,
-          product: service.product
+          name: service.name
         })
         .then((resp) => {
           if (resp && resp.data.code === 200) {
@@ -98,7 +108,9 @@ export default {
             // 修改后重新请求信息，实现视图更新
             this.listService()
           } else {
-            this.$alert(resp.data.message)
+            this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
           }
         })
     },

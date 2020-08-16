@@ -13,24 +13,24 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">        
-            <el-form-item label="保单号" :label-width="formLabelWidth2" prop="policyNumber">
+            <el-form-item label="保单号" :label-width="formLabelWidth2" prop="outTradeNo">
               <el-input v-model="customerOrderForm.policyNumber" autocomplete="off" placeholder="保单号"></el-input>
             </el-form-item>
           </el-col>        
           <el-col :span="8">
-            <el-form-item label="产品" :label-width="formLabelWidth2" prop="product">
+            <el-form-item label="产品" :label-width="formLabelWidth2" prop="productName">
               <el-input v-model="customerOrderForm.product" autocomplete="off" placeholder="产品"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="被保险人姓名" :label-width="formLabelWidth" prop="insuredName">
+            <el-form-item label="被保险人姓名" :label-width="formLabelWidth" prop="customerName">
               <el-input v-model="customerOrderForm.insuredName" autocomplete="off" placeholder="姓名">></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">        
-            <el-form-item label="证件类型" :label-width="formLabelWidth2" prop="certificateType">
+            <el-form-item label="证件类型" :label-width="formLabelWidth2" prop="customerType">
               <el-select class="select" v-model="customerOrderForm.certificateType" placeholder="请选择分类">
                 <el-option label="身份证" value="1"></el-option>
                 <el-option label="护照" value="2"></el-option>
@@ -38,7 +38,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="电话" :label-width="formLabelWidth2" prop="phone">
+            <el-form-item label="电话" :label-width="formLabelWidth2" prop="customerPhone">
               <el-input v-model="customerOrderForm.phone" autocomplete="off" placeholder="电话"></el-input>
             </el-form-item>
           </el-col>           
@@ -244,8 +244,12 @@
                 if (resp && resp.data.code === 200) {
                   this.dialogFormVisible = false
                   this.$emit('onSubmit')
+                } else {
+                  this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
                 }
-            })
+              })
           } else {
             console.log('error submit')
             return false

@@ -23,6 +23,10 @@
             // 清空路由，防止路由重复加载
             const newRouter = createRouter()
             _this.$router.matcher = newRouter.matcher
+          } else {
+            this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
           }
         }).catch(failResponse => {})
       }

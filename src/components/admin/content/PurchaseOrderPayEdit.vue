@@ -4,13 +4,14 @@
     <el-dialog
       title="采购单付费"
       :visible.sync="dialogFormVisible"
-      @close="clear">
-      
+      @close="clear">    
       <el-form :model="purchaseOrderPayForm" style="text-align: left" ref="purchaseOrderPayForm">
         <el-row :gutter="10">
           <el-col :span="12">
-            <el-form-item label="服务批次" :label-width="formLabelWidth" prop="batchNumber">
-              <el-input v-model="objData.batchNumber" autocomplete="off" placeholder="服务批次" disabled style="width:200%"></el-input>
+            <el-form-item label="服务批次:" :label-width="formLabelWidth" prop="batchNumber">
+              <label>{{objData.batchNumber}}</label>
+               
+              <!-- <el-input v-model="objData.batchNumber" autocomplete="off" placeholder="服务批次" disabled style="width:200%"></el-input> -->
             </el-form-item>
           </el-col>
           <!-- <el-col :span="12">
@@ -21,8 +22,9 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="有效客户数" :label-width="formLabelWidth" prop="effectiveNumber">
-              <el-input v-model="msg.length" placeholder="有效客户数" autocomplete="off" disabled></el-input>
+            <el-form-item label="有效客户数:" :label-width="formLabelWidth" prop="effectiveNumber">
+              <label>{{msg.length}}</label>
+              <!-- <el-input v-model="msg.length" placeholder="有效客户数" autocomplete="off" disabled></el-input> -->
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -40,26 +42,26 @@
            <el-col :span="12">
               <el-form-item label="开始日期" :label-width="formLabelWidth" required>
               <el-form-item prop="effectiveDate">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
+                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayForm.effectiveDate" value-format="yyyy-MM-dd" style="width: 70%;"></el-date-picker>
               </el-form-item>
               </el-form-item>
            </el-col>
            <el-col :span="12">
               <el-form-item label="结束日期" :label-width="formLabelWidth" required>
               <el-form-item prop="closingDate">
-                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayForm.closingDate" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
+                  <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayForm.closingDate" value-format="yyyy-MM-dd" style="width: 70%;"></el-date-picker>
               </el-form-item>
               </el-form-item>
            </el-col>
         </el-row>
         <el-row :gutter="10">
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <el-form-item label="付费日期" :label-width="formLabelWidth" required>
             <el-form-item prop="payTime">
                 <el-date-picker type="date" placeholder="选择日期" v-model="purchaseOrderPayForm.payTime" value-format="yyyy-MM-dd" style="width: 65%;"></el-date-picker>
             </el-form-item>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col :span="12">
             <el-form-item label="付费凭证" :label-width="formLabelWidth" prop="payImg">
               <el-input v-model="purchaseOrderPayForm.payImg" autocomplete="off" placeholder="图片 URL"></el-input>
@@ -129,24 +131,26 @@ import ImgUpload from './ImgUpload'
       },
       onSubmit (purchaseOrderPayForm) {
        
-        this.$axios.post('/admin/v1/pri/po/section/purchaseorder/pay', {
+        this.$axios.post('/admin/v1/pri/batchFee/pay', {
                 batchNumber: this.objData.batchNumber,
-                cid: this.objData.cid,
+                // cid: this.objData.cid,
                 effectiveNumber: this.msg.length,
                 ids: this.msg + '',
                 price: this.purchaseOrderPayForm.price,
                 prepayment: this.purchaseOrderPayForm.prepayment,
                 effectiveDate: this.purchaseOrderPayForm.effectiveDate,
                 closingDate: this.purchaseOrderPayForm.closingDate,
-                payTime: this.purchaseOrderPayForm.payTime,
+                // payTime: this.purchaseOrderPayForm.payTime,
                 remark: this.purchaseOrderPayForm.remark,
-                payImg: this.purchaseOrderPayForm.payImg,
-                toId : this.rToId
+                payImg: this.purchaseOrderPayForm.payImg//,
+                // toId : this.rToId
               }).then(resp => {
                 if (resp && resp.data.code === 200) {
                   this.dialogFormVisible = false
                   this.$emit('onSubmit')
-                }
+                }else {
+          this.$alert(resp.data.message)
+        }
             })
           
         
@@ -156,11 +160,15 @@ import ImgUpload from './ImgUpload'
       },
       getData () {
         let _this = this
-        this.$axios.get('/admin/v1/pri/po/section/purchaseorderpay/BatchFeeMstData').then(resp => {
+        this.$axios.get('/admin/v1/pri/batchFee/BatchFeeMstData').then(resp => {
             if (resp && resp.data.code === 200) {
               _this.objData = resp.data.result
               console.log(_this.objData)
 
+            } else {
+              this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
             }
           }).catch((error) =>{
             console.log(error)

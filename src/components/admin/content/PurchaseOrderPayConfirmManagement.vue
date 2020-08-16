@@ -15,6 +15,18 @@
         style="width: 100%"
         :max-height="tableHeight"
         @selection-change="handleSelectionChange">
+         <el-table-column type="expand">
+        <template slot-scope="scope">
+          <!-- {{scope.row.customerProducts}} -->
+          <ul>
+          <li v-for="item in scope.row.batchFeeDetails">
+             客户：<alpah-subject-name :asid="item.cpExcelDetail.customerSubjectId.toString()"></alpah-subject-name>
+        ， 产品：<product-name :pid="item.cpExcelDetail.productId.toString()"></product-name>
+，开始日：{{item.cpExcelDetail.effectiveDate|dateformat('YYYY-MM-DD')}}
+            </li>
+          </ul>
+           </template>
+        </el-table-column>
         <!-- <el-table-column
           type="selection"
           width="55">
@@ -34,53 +46,69 @@
           label="服务批号"
            width="100">
         </el-table-column>
-        <el-table-column
-          prop="payId"
-          label="服务商"          
+         <el-table-column
+          label="采购企业"
           fit>
+          <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.paySubjectId.toString()"></alpah-subject-name>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="服务企业" fit>
+          <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.chargeSubjectId.toString()"></alpah-subject-name>
+          </template>
         </el-table-column>
         <el-table-column
           prop="effectiveNumber"
-          label="有效客户数" 
+          label="有效数"
           fit>
         </el-table-column>
         <el-table-column
-          prop="price"
-          label="服务单价"          
-          fit>
-        </el-table-column>        
+          label="服务单价"
+               fit>
+           <template slot-scope="scope">
+         {{(scope.row.price / 100).toFixed(2)}}
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="prepayment"
-          label="预付款"          
+          label="预付款"
           fit>
+          <template slot-scope="scope">
+         {{(scope.row.prepayment / 100).toFixed(2)}}
+          </template>
+          </el-table-column>
+      <el-table-column
+          label="应收款"
+          fit>
+          <template slot-scope="scope">
+         {{(scope.row.receivable / 100).toFixed(2)}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="effectiveDate"
           :formatter="dateFormat"
            width="100"
-          label="开始时间"
+          label="开始日"
           fit>
         </el-table-column>
         <el-table-column
           prop="closingDate"
           :formatter="dateFormat"
            width="100"
-          label="结束时间"
+          label="结束日"
           fit>
         </el-table-column>
         <el-table-column
-          prop="payTime"
-          :formatter="dateFormat"
-           width="100"
-          label="付费时间"
-          fit>
-        </el-table-column>        
-        <el-table-column
-          prop="status"
-          :formatter="sFormat"
-          label="状态"
-          fit>
-        </el-table-column>        
+          prop="img"
+            width="0" >
+        </el-table-column>
+         <el-table-column
+          label="状态" >
+          <template slot-scope="scope">
+          <state-name :sid="scope.row.state.toString()"></state-name>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed="right"
           label="操作">
@@ -105,83 +133,80 @@
 </template>
 
 <script>
-  import PurchaseOrderPayConfirmEdit from './PurchaseOrderPayConfirmEdit'
-  export default {
-    name: 'PurchaseOrderPayConfirmManagement',
-    components: {PurchaseOrderPayConfirmEdit},
-    data () {
-      return {
-        datas: [],
-        multipleSelection: []        
+import PurchaseOrderPayConfirmEdit from './PurchaseOrderPayConfirmEdit'
+import AlpahSubjectName from '@/components/common/AlpahSubjectName.vue'
+import ProductName from '@/components/common/ProductName.vue'
+import StateName from '@/components/common/StateName.vue'
+export default {
+  name: 'PurchaseOrderPayConfirmManagement',
+  components: {PurchaseOrderPayConfirmEdit, AlpahSubjectName, ProductName, StateName},
+  data () {
+    return {
+      datas: [],
+      multipleSelection: []
+    }
+  },
+  mounted () {
+    this.loadData()
+  },
+  computed: {
+    tableHeight () {
+      return window.innerHeight - 320
+    }
+  },
+  methods: {
+    editOpt (item) {
+      this.$refs.purchaseOrderPayConfirmEdit.dialogFormVisible = true
+      this.$refs.purchaseOrderPayConfirmEdit.purchaseOrderPayConfirmForm = {
+        id: item.id,
+        batchNumber: item.batchNumber,
+        payId: item.payId,
+        effectiveNumber: item.effectiveNumber,
+        price: (item.price/ 100).toFixed(2),
+        prepayment: (item.prepayment/ 100).toFixed(2),
+        receivable: (item.receivable/ 100).toFixed(2),
+        effectiveDate: item.effectiveDate,
+        closingDate: item.closingDate,
+        payTime: item.payTime,
+        remark: item.remark,
+        payImg: item.payImg,
+        img: item.img,
+        confirmRemark: item.confirmRemark
       }
     },
-    mounted () {
-      this.loadData()
-    },
-    computed: {
-      tableHeight () {
-        return window.innerHeight - 320
-      }
-    },
-    methods: {
-      editOpt (item) {
-        this.$refs.purchaseOrderPayConfirmEdit.dialogFormVisible = true
-        this.$refs.purchaseOrderPayConfirmEdit.purchaseOrderPayConfirmForm = {
-          id: item.id,
-          batchNumber: item.batchNumber,
-          payId: item.payId,
-          effectiveNumber: item.effectiveNumber,
-          price: item.price,
-          prepayment: item.prepayment,
-          receivable: item.receivable.toString(),
-          effectiveDate: item.effectiveDate,
-          closingDate: item.closingDate,
-          payTime: item.payTime,
-          remark: item.remark,
-          payImg: item.payImg,
-          confirmRemark: item.confirmRemark
-        }       
-      },
-      loadData () {
-        var _this = this
-        this.$axios.get('/admin/v1/pri/po/share/batchFeeMst/list').then(resp => {
-          // alert(resp.data)
-          if (resp && resp.data.code === 200) {
-            _this.datas = resp.data.result
-          }
-        })
-      },
-      toggleSelection (rows) {
-        if (rows) {
-          rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row)
-          })
+    loadData () {
+      var _this = this
+      this.$axios.get('/admin/v1/pri/batchFee/list').then(resp => {
+        // alert(resp.data)
+        if (resp && resp.data.code === 200) {
+          _this.datas = resp.data.result
         } else {
-          this.$refs.multipleTable.clearSelection()
+          this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
         }
-      },
-      handleSelectionChange (val) {
-        this.multipleSelection = val
-      },     
-      dateFormat (row, column) {
-        var date = row[column.property]
-        if (date !== null && date !== undefined) {
-          return this.$moment(date).format('YYYY-MM-DD')
-        }
-      },
-
-      sFormat (row, column) {
-        var ctype = row[column.property]
-        if (ctype == '6') {
-          return '付费完成待收款'
-        } else if (ctype == '7') {
-          return '确认收款服务中'
-        }else if (ctype == '-7') {
-          return '未收款'
-        }  
-      }      
+      })
+    },
+    toggleSelection (rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
+    dateFormat (row, column) {
+      var date = row[column.property]
+      if (date !== null && date !== undefined) {
+        return this.$moment(date).format('YYYY-MM-DD')
+      }
     }
   }
+}
 </script>
 
 <style scoped>

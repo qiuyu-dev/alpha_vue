@@ -10,11 +10,11 @@
         <el-form-item label="姓名" label-width="120px" prop="name">
           <el-input v-model="selectedUser.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" label-width="120px" prop="phone">
+        <el-form-item label="电话号码" label-width="120px" prop="phone">
           <el-input v-model="selectedUser.phone" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" label-width="120px" prop="email">
-          <el-input v-model="selectedUser.email" autocomplete="off"></el-input>
+          <el-input v-model="selectedUser.email" autocomplete="off" @blur="validEmail(selectedUser.email)"></el-input>
         </el-form-item>
         <el-form-item label="密码" label-width="120px" prop="password">
           <el-button type="warning" @click="resetPassword(selectedUser.username)">重置密码</el-button>
@@ -65,7 +65,7 @@
         </el-table-column>
         <el-table-column
           prop="phone"
-          label="手机号"
+          label="电话号码"
           fit>
         </el-table-column>
         <el-table-column
@@ -145,14 +145,22 @@
           this.$axios.get('/admin/user/list').then(resp => {
             if (resp && resp.data.code === 200) {
               _this.users = resp.data.result
+            } else {
+              this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
             }
           })
         },
         listRoles () {
           var _this = this
-          this.$axios.get('/admin/role/listbycurruser').then(resp => {
+          this.$axios.get('/admin/role/listbyuser').then(resp => {
             if (resp && resp.data.code === 200) {
               _this.roles = resp.data.result
+            } else {
+              this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
             }
           })
         },
@@ -168,6 +176,10 @@
                 } else {
                   this.$message('用户 [' + user.username + '] 已禁用')
                 }
+              } else {
+                this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
               }
             })
           } else {
@@ -177,6 +189,9 @@
         },
         onSubmit (user) {
           let _this = this
+          if (this.validEmail(user.email)) {
+                return 
+          }
           // 根据视图绑定的角色 id 向后端传送角色信息
           let roles = []
           for (let i = 0; i < _this.selectedRolesIds.length; i++) {
@@ -199,7 +214,9 @@
               // 修改角色后重新请求用户信息，实现视图更新
               this.listUsers()
             } else {
-              this.$alert(resp.data.message)
+              this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
             }
           })
         },
@@ -218,9 +235,24 @@
           }).then(resp => {
             if (resp && resp.data.code === 200) {
               this.$alert('密码已重置为 123')
+          } else {
+            this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
           }
           })
-        }
+        },
+        validEmail(email) {
+            const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            if(!reg.test(email)){
+              this.$alert('邮箱格式不正确', '提示', {
+                        confirmButtonText: '确定'
+                      })
+              return true
+            } else {
+              return false
+            }
+          }
       }
     }
 </script>

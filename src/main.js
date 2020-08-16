@@ -145,6 +145,10 @@ Vue.config.productionTip = false
 
 // Vue.use(ElementUI)
 
+Vue.filter('dateformat', function (dataStr, pattern = 'YYYY-MM-DD') {
+  return moment(dataStr).format(pattern)
+})
+
 router.beforeEach((to, from, next) => {
   if (store.state.username && to.path.startsWith('/admin')) {
     initAdminMenu(router, store)

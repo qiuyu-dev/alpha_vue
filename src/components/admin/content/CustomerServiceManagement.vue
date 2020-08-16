@@ -16,79 +16,101 @@
         :max-height="tableHeight"
         @selection-change="handleSelectionChange">
        
-        <!-- <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="left" inline>
-              <el-form-item>
-                <span>{{ props.row.remark }}</span>
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <!-- <el-form label-position="left" inline v-for="item in scope.row.complaints" :key="item.id" >
+              <el-form-item >
+                <span> {{item.remark}}
+         ，日期:{{item.createTime|dateformat('YYYY-MM-DD')}}
+         ，操作员:{{item.operator}}</span>
               </el-form-item>
-            </el-form>
+            </el-form> -->
+               <ul> 
+          <li v-for="item in scope.row.complaints" :key="item.id">
+           <span> {{item.remark}}
+         ，日期:{{item.createTime|dateformat('YYYY-MM-DD')}}
+         ，操作员:{{item.operator}}</span>
+            </li>
+            </ul>  
           </template>
-        </el-table-column> -->
+        </el-table-column>
         <el-table-column
-          prop="fromName"
           label="采购企业"
           fit>
+            <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.sourceMst.paySubjectId.toString()"></alpah-subject-name>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="toName"
           label="服务企业"
           width="100">
+           <template slot-scope="scope">
+          <alpah-subject-name :asid="scope.row.sourceMst.chargeSubjectId.toString()"></alpah-subject-name>
+          </template>
         </el-table-column>
-        <el-table-column
-          prop="product"
+        <!-- <el-table-column
+          prop="productId"
           label="备案编号"
           fit>
-        </el-table-column>
-        <el-table-column
-          prop="insuredName"
-          label="服务"
-          width="120">
-        </el-table-column>
-        <el-table-column
-          prop="certificateType"
-          label="客户姓名"
+        </el-table-column> -->
+           <el-table-column
+          label="客户"
+           prop="customerSubject.name"
           :formatter="ctFormat"
-          fit>
+          fit>        
         </el-table-column>
-        <el-table-column
-          prop="insuredId"
+           <el-table-column
+          label="电话"
+           prop="customerSubject.phone"
+          :formatter="ctFormat"
+          fit>        
+        </el-table-column>
+         <el-table-column
+          label="服务"
+           prop="product.name"
+          width="120">
+          
+        </el-table-column>
+        <!-- <el-table-column
+          prop="customerSubjectId"
           label="证件号"
           show-overflow-tooltip
           fit>
         </el-table-column>
         <el-table-column
-          prop="phone"
+          prop="customerSubjectId"
           label="电话"
           show-overflow-tooltip
-          fit>
-        </el-table-column>
+          fit> 
+        </el-table-column> -->
         <el-table-column
           prop="effectiveDate"
           :formatter="dateFormat"
-          label="生效日期"
+          label="生效日"
           width="100"
           fit>
         </el-table-column>
         <el-table-column
           prop="closingDate"
           :formatter="dateFormat"
-          label="截止日期"
+          label="截止日"
           width="100"
           fit>
         </el-table-column>
         <el-table-column
-          prop="status"
           label="状态"
           width="100"
           fit>
+          <template slot-scope="scope">
+          <state-name :sid="scope.row.state.toString()"></state-name>
+          </template>
         </el-table-column>  
-        <el-table-column
+        <!-- <el-table-column
           prop="detailId"
           label="ID"
           width="100"
           fit>
-        </el-table-column>        
+        </el-table-column>         -->
         <el-table-column
           fixed="right"
           label="操作"
@@ -120,9 +142,13 @@
 
 <script>
   import CustomerServiceEdit from './CustomerServiceEdit'
+  import AlpahSubjectName from '@/components/common/AlpahSubjectName.vue'
+  import ProductName from '@/components/common/ProductName.vue'
+  import StateName from '@/components/common/StateName.vue'
+
   export default {
     name: 'CustomerServicetManagement',
-    components: {CustomerServiceEdit},
+    components: {CustomerServiceEdit, AlpahSubjectName,ProductName,StateName},
     data () {
       return {
         datas: [],
@@ -138,33 +164,38 @@
       }
     },
     methods: {
-      editOpt (item,opt) {        
+      editOpt (item,opt) {    
+         
         this.$refs.CustomerServiceEdit.dialogFormVisible = true
         this.$refs.CustomerServiceEdit.customerServiceForm = {
-          id: item.detailId,
-          seqNumber: item.seqNumber,
-          policyNumber: item.policyNumber,
-          product: item.product,
-          insuredName: item.insuredName,
-          certificateType: item.certificateType,
-          insuredId: item.insuredId,
-          phone: item.phone,
+          id: item.id,
+          // seqNumber: item.seqNumber,
+          // policyNumber: item.policyNumber,
+          product: item.product.name,
+          insuredName: item.customerSubject.name,
+          // certificateType: item.certificateType,
+          // insuredId: item.insuredId,
+          phone: item.customerSubject.phone,
           effectiveDate: item.effectiveDate,
           closingDate: item.closingDate,
-          sex: item.sex,
-          age: item.age.toString(), // 不加验证报错
-          location: item.location,
+          // sex: item.sex,
+          // age: item.age.toString(), // 不加验证报错
+          // location: item.location,
           remark: item.remark,
           opt: opt,
-          state: item.state,
-          reson: item.reson
+          // state: item.state,
+          // reson: item.reson
         }       
       },
       loadData () {
         var _this = this
-        this.$axios.get('/admin/v1/pri/sc/share/customer/service/list').then(resp => {
+        this.$axios.get('/admin/v1/pri/customerProduct/list').then(resp => {
           if (resp && resp.data.code === 200) {
             _this.datas = resp.data.result
+          } else {
+            this.$alert(resp.data.message, '提示', {
+                    confirmButtonText: '确定'
+                  })
           }
         })
         // this.datas=[
@@ -188,14 +219,6 @@
         var date = row[column.property]
         if (date !== null && date !== undefined) {
           return this.$moment(date).format('YYYY-MM-DD')
-        }
-      },
-      ctFormat (row, column) {
-        var ctype = row[column.property]
-        if (ctype == '1') {
-          return '身份证'
-        } else if (ctype == '2') {
-          return '护照'
         }
       }
     }
