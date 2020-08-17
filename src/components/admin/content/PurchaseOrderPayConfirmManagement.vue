@@ -99,10 +99,10 @@
           label="结束日"
           fit>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="img"
             width="0" >
-        </el-table-column>
+        </el-table-column> -->
          <el-table-column
           label="状态" >
           <template slot-scope="scope">

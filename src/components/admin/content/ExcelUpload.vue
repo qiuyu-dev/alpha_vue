@@ -3,7 +3,7 @@
   <el-upload
     class="excel-upload"
     ref="excelUpload"
-    action="http://localhost:8443/api/admin/v1/pri/co/share/uploadFile"
+    action="http://localhost:8443/api/admin/v1/pri/cpExcel/excelUpload/test"
     with-credentials
     :on-change="handleChange"
     :on-preview="handlePreview"

@@ -25,7 +25,7 @@
          ，操作员:{{item.operator}}</span>
               </el-form-item>
             </el-form> -->
-               <ul> 
+            <ul> 
           <li v-for="item in scope.row.complaints" :key="item.id">
            <span> {{item.remark}}
          ，日期:{{item.createTime|dateformat('YYYY-MM-DD')}}
@@ -53,16 +53,15 @@
           label="备案编号"
           fit>
         </el-table-column> -->
-           <el-table-column
+        <el-table-column
           label="客户"
-           prop="customerSubject.name"
+          prop="customerSubject.name"
           :formatter="ctFormat"
           fit>        
         </el-table-column>
-           <el-table-column
+        <el-table-column
           label="电话"
-           prop="customerSubject.phone"
-          :formatter="ctFormat"
+          prop="customerSubject.phone"          
           fit>        
         </el-table-column>
          <el-table-column
@@ -198,10 +197,6 @@
                   })
           }
         })
-        // this.datas=[
-        //     {"id":141,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张十","certificateType":"1","phone":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试10","state":"1"},
-        //     {"id":140,"seqNumber":"12345","policyNumber":"222221","product":"中国平安幸福久久","insuredName":"张九","certificateType":"1","phone":"1366667777","insuredId":"110110198001010000","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"1","age":33,"location":"北京","remark":"测试9","state":"1"},
-        //     {"id":85,"seqNumber":"123456","policyNumber":"333331","product":"太平人寿新安康","insuredName":"李四","certificateType":"2","phone":"1388889999","insuredId":"654321","effectiveDate":"2020-06-30T16:00:00.000+00:00","closingDate":"2020-07-31T16:00:00.000+00:00","sex":"2","age":23,"location":"天津","remark":"测试2","state":"1"}]
       },
       toggleSelection (rows) {
         if (rows) {

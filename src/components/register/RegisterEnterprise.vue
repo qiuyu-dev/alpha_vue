@@ -13,8 +13,8 @@
     </el-form-item>
     <el-form-item label="企业类型" :label-width="formLabelWidth" prop="ctype">
       <el-select v-model="registerForm.ctype" placeholder="请选择企业类型">
-          <el-option label="保险商" value="1"></el-option>
-          <el-option label="服务商" value="2"></el-option>
+          <el-option label="保险商" value="2"></el-option>
+          <el-option label="服务商" value="3"></el-option>
         </el-select>
     </el-form-item>             
     <el-form-item label="账号" :label-width="formLabelWidth" prop="username">
