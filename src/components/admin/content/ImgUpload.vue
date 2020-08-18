@@ -2,7 +2,7 @@
   <el-upload
     class="img-upload"
     ref="upload"
-    action="http://localhost:8443/api/admin/v1/pri/batchFee/uploadFile"
+    action="http://39.101.189.30:8443/api/admin/v1/pri/batchFee/uploadFile"
     with-credentials
     :on-preview="handlePreview"
     :on-remove="handleRemove"

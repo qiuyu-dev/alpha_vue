@@ -16,7 +16,7 @@
             <el-upload
               class="excel-upload"
               ref="excelUpload"
-              action="http://localhost:8443/api/admin/v1/pri/cpExcel/excelUpload"
+              action="http://39.101.189.30:8443/api/admin/v1/pri/cpExcel/excelUpload"
               with-credentials
               :on-change="handleChange"
               :on-preview="handlePreview"
