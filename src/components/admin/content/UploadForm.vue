@@ -35,7 +35,7 @@
               <!-- <i class="el-icon-upload"></i>
               <div class="ec-upload__text">将文件拖到此处,或<em>点击上传</em></div> -->
               <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传xlsx/xls的excel文件,且不超过5M</div>
+              <div slot="tip" class="el-upload__tip">只能上传xlsx/xls的excel文件,且不超过500kb</div>
             </el-upload>
         </el-form-item>
         <el-form-item prop="id" style="height: 0">
@@ -93,12 +93,12 @@ export default {
       // 判断上传文件格式
       if (this.fileTemp) {
         if ((this.fileTemp.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
-          if (this.fileTemp.size < 5 * 1024 * 1024) { // 文件大小须小于5M
+          if (this.fileTemp.size < 500 * 1024) { // 文件大小须小于500kb
             return true
           } else {
             this.$message({
               type: 'warning',
-              message: '文件不能大于5M！'
+              message: '文件不能大于500kb！'
             })
             return false
           }
@@ -167,8 +167,8 @@ export default {
         })
         return false
       }
-      if (this.fileTemp.size > 5 * 1024 * 1024) {
-        this.$alert('上传excel文件大小须小于5M', '提示', {
+      if (this.fileTemp.size > 500 * 1024) {
+        this.$alert('上传excel文件大小须小于500kb', '提示', {
           confirmButtonText: '确定'
         })
         return false

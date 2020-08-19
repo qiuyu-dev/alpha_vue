@@ -35,7 +35,7 @@ export default {
           this.name = '企业机构代码'
           break
         default:
-          this.name = 'other'
+          this.name = tid
           break
       }
     }
