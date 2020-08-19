@@ -16,7 +16,7 @@
             <el-upload
               class="excel-upload"
               ref="excelUpload"
-              action="http://39.101.189.30:8443/api/admin/v1/pri/cpExcel/excelUpload"
+              action="http://localhost:8443/api/admin/v1/pri/cpExcel/excelUpload"
               with-credentials
               :on-change="handleChange"
               :on-preview="handlePreview"
@@ -35,8 +35,7 @@
               <!-- <i class="el-icon-upload"></i>
               <div class="ec-upload__text">将文件拖到此处,或<em>点击上传</em></div> -->
               <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-
-              ">只能上传xlsx/xls的excel文件</div>
+              <div slot="tip" class="el-upload__tip">只能上传xlsx/xls的excel文件,且不超过5M</div>
             </el-upload>
         </el-form-item>
         <el-form-item prop="id" style="height: 0">
@@ -145,35 +144,40 @@ export default {
                   })
       }
     },
+    isExcel(file) {
+      return /\.(xlsx|xls|csv)$/.test(file.name)
+    },
     onSubmit () {
       var _chargeid = this.uploadForm.chargeid
       if (_chargeid == '') {
         this.$alert('请选择服务商', '提示', {
           confirmButtonText: '确定'
         })
-        return
+        return false
       }
       if (this.fileTemp == null) {
         this.$alert('请选择excel文件上传', '提示', {
           confirmButtonText: '确定'
         })
-        return
+        return false
+      }      
+      if (!this.isExcel(this.fileTemp)) {
+        this.$alert('请选择excel文件上传', '提示', {
+          confirmButtonText: '确定'
+        })
+        return false
+      }
+      if (this.fileTemp.size > 5 * 1024 * 1024) {
+        this.$alert('上传excel文件大小须小于5M', '提示', {
+          confirmButtonText: '确定'
+        })
+        return false
       }
       this.$refs.uploadForm.validate((valid) => {
         if (valid) {
           // 手动上传文件，在点击确认的时候 校验通过才会去请求上传文件的url
-          this.$refs.excelUpload.action = this.$axios.defaults.baseURL + '/admin/v1/pri/cpExcel/excelUpload'
-          this.$refs.excelUpload.submit();
-          // this.$axios.post('/admin/content/uploadFileProcess', {
-          //   url: _url,
-          //   chargeid: _chargeid
-          //   }).then(resp => {
-          //     if (resp && resp.data.code === 200) {
-          //       this.dialogFormVisible = false
-          //       this.$emit('onUpload')
-          //       console.log(resp.data.message)
-          //     }
-          //   })
+          this.$refs.excelUpload.action = this.$axios.defaults.baseURL + '/admin/v1/pri/cpExcel/excelUpload'        
+          this.$refs.excelUpload.submit();          
         } else {
           console.log('error submit')
           return false
