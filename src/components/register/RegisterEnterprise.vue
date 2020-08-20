@@ -13,8 +13,8 @@
     </el-form-item>
     <el-form-item label="企业类型" :label-width="formLabelWidth" prop="ctype">
       <el-select v-model="registerForm.ctype" placeholder="请选择企业类型">
-          <el-option label="保险商" value="2"></el-option>
-          <el-option label="服务商" value="3"></el-option>
+          <el-option label="保险企业" value="2"></el-option>
+          <el-option label="服务企业" value="3"></el-option>
         </el-select>
     </el-form-item>             
     <el-form-item label="账号" :label-width="formLabelWidth" prop="username">
@@ -38,8 +38,8 @@
                 auto-complete="off" placeholder="email" @blur="validEmail()"></el-input>
     </el-form-item>       
     <el-form-item style="width: 100%">
-      <el-button type="primary" style="width: 40%;background: #505458;border: none" v-on:click="register">注册</el-button>
-      <router-link to="login"><el-button type="primary" style="width: 40%;background: #505458;border: none">返回</el-button></router-link>
+      <el-button type="primary" v-on:click="register">注册</el-button>
+      <router-link to="login"><el-button type="primary">返回</el-button></router-link>
     </el-form-item>
   </el-form>
   </div>
