@@ -78,7 +78,7 @@
 </script>
 <style>
   #paper {
-    /*background:url("../assets/img/bg/eva1.jpg") no-repeat;*/
+    /* background:url("../../assets/img/bg/back3.jpeg") no-repeat; */
     background-position: center;
     height: 100%;
     width: 100%;

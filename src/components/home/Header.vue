@@ -1,7 +1,8 @@
 <template>
-  <el-card class="admin-header">
+  <el-card class="admin-header">  
+    <link rel ="shortcut icon" type="image/x-icon" href="@/static/logo1.ico">  
     <a href="/index">
-      <img src="../../assets/img/icon/icon2.png" alt="" width="50px" style="float: left;margin-top: -5px;">
+      <!-- <img src="../../assets/img/icon/logo1.png" alt="" width="50px" style="float: left;margin-top: -5px;"> -->
     </a>
     <span style="font-size: 30px;font-weight: bold;position:absolute;left: 100px">阿尔法</span>
     <i class="el-icon-switch-button" v-on:click="logout" style="font-size: 40px;float: right"></i>

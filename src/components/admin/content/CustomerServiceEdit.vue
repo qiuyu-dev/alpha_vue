@@ -1,7 +1,7 @@
 <template>
   <div style="text-align: left">
-    <el-button class="add-button" @click="dialogFormVisible = true">服务</el-button>
-    <el-dialog title="服务评价" :visible.sync="dialogFormVisible" @close="clear">
+    <el-button class="add-button" @click="dialogFormVisible = true"  type="primary">服务</el-button>
+    <el-dialog title="服务评价" :visible.sync="dialogFormVisible" @close="clear"  width="50%">
       <el-form
         :model="customerServiceForm"
         :rules="rules"
@@ -9,27 +9,28 @@
         ref="customerServiceForm">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="客户姓名" :label-width="formLabelWidth" prop="insuredName">
-              <el-input
+            <el-form-item label="客户姓名：" :label-width="formLabelWidth" prop="insuredName">
+              {{customerServiceForm.insuredName}}
+              <!-- <el-input
                 v-model="customerServiceForm.insuredName"
                 autocomplete="off"
                 readonly="true"
                 disabled
-              ></el-input>
+              ></el-input> -->
             </el-form-item>
           </el-col>
-           <el-col :span="12">
-            <el-form-item label="电话" :label-width="formLabelWidth" prop="phone">
-              <el-input v-model="customerServiceForm.phone" autocomplete="off" readonly="true"  disabled></el-input>
+           <el-col :span="16">
+            <el-form-item label="电话：" :label-width="formLabelWidth" prop="phone">
+               {{customerServiceForm.phone}}
+              <!-- <el-input v-model="customerServiceForm.phone" autocomplete="off" readonly="true"  disabled></el-input> -->
             </el-form-item>
           </el-col>
-          
-          
         </el-row>
         <el-row>
-          <el-col :span="8">
-            <el-form-item label="服务" :label-width="formLabelWidth" prop="product">
-              <el-input v-model="customerServiceForm.product" autocomplete="off" readonly="true" disabled></el-input>
+          <el-col :span="16">
+            <el-form-item label="服务：" :label-width="formLabelWidth" prop="product">
+              {{customerServiceForm.product}}
+              <!-- <el-input v-model="customerServiceForm.product" autocomplete="off" readonly="true" disabled></el-input> -->
             </el-form-item>
           </el-col>
           <!-- <el-col :span="8">
@@ -52,35 +53,36 @@
               <el-input v-model="customerServiceForm.insuredId" autocomplete="off" readonly="true" disabled></el-input>
             </el-form-item>
           </el-col> -->
-        </el-row>
-       
+        </el-row>      
         <el-row>
-          <el-col :span="10">
-            <el-form-item label="生效日" :label-width="formLabelWidth">
-              <el-form-item prop="effectiveDate">
-                <el-date-picker
+          <el-col :span="8">
+            <el-form-item label="开始日：" :label-width="formLabelWidth">
+              <!-- <el-form-item prop="effectiveDate"> -->
+                 {{customerServiceForm.effectiveDate|dateformat('YYYY-MM-DD')}}
+                <!-- <el-date-picker
                   type="date"
                   placeholder="选择日期"
                   v-model="customerServiceForm.effectiveDate"
                   value-format="yyyy-MM-dd"
                   style="width: 100%;"
                   disabled
-                ></el-date-picker>
-              </el-form-item>
+                ></el-date-picker> -->
+              <!-- </el-form-item> -->
             </el-form-item>
           </el-col>
-          <el-col :span="10">
-            <el-form-item label="截止日" :label-width="formLabelWidth">
-              <el-form-item prop="closingDate" readonly="true">
-                <el-date-picker
+          <el-col :span="8">
+            <el-form-item label="结束日：" :label-width="formLabelWidth">
+              <!-- <el-form-item prop="closingDate" readonly="true"> -->
+                 {{customerServiceForm.closingDate|dateformat('YYYY-MM-DD')}}
+                <!-- <el-date-picker
                   type="date"
                   placeholder="选择日期"
                   v-model="customerServiceForm.closingDate"
                   value-format="yyyy-MM-dd"
                   style="width: 100%;"
                   disabled
-                ></el-date-picker>
-              </el-form-item>
+                ></el-date-picker> -->
+              <!-- </el-form-item> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -104,7 +106,9 @@
         </div>
         <el-row>
           <el-form-item label="说明" :label-width="formLabelWidth" prop="reson">
+            <el-col :span="16">
             <el-input v-model="customerServiceForm.reson" autocomplete="off"></el-input>
+               </el-col>
           </el-form-item>
         </el-row>
         <el-form-item prop="id" style="height: 0">
@@ -115,7 +119,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <!-- <el-button @click="dialogFormVisible = false">取 消</el-button> -->
         <el-button type="primary" @click="onSubmit(customerServiceForm)">确 定</el-button>
       </div>
     </el-dialog>

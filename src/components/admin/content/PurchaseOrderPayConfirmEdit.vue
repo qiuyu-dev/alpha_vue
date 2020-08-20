@@ -7,10 +7,16 @@
       @close="clear">
       <el-form :model="purchaseOrderPayConfirmForm" style="text-align: left" ref="purchaseOrderPayConfirmForm">
         <el-row :gutter="10">
-          <el-col :span="12">
+          <el-col :span="16">
             <el-form-item label="服务批次：" :label-width="formLabelWidth" prop="batchNumber">
              <label>{{purchaseOrderPayConfirmForm.batchNumber}}</label>
               <!-- <el-input v-model="purchaseOrderPayConfirmForm.batchNumber" autocomplete="off" placeholder="服务批次" disabled></el-input> -->
+            </el-form-item>
+          </el-col>
+           <el-col :span="8">
+            <el-form-item label="客户数：" :label-width="formLabelWidth" prop="effectiveNumber">
+              <label>{{purchaseOrderPayConfirmForm.effectiveNumber}}</label>
+              <!-- <el-input v-model="purchaseOrderPayConfirmForm.effectiveNumber" placeholder="有效客户数" autocomplete="off" disabled></el-input> -->
             </el-form-item>
           </el-col>
           <!-- <el-col :span="12">
@@ -22,23 +28,23 @@
           </el-col> -->
         </el-row>
         <el-row :gutter="10">
-          <el-col :span="6">
-            <el-form-item label="客户数：" :label-width="formLabelWidth" prop="effectiveNumber">
-              <label>{{purchaseOrderPayConfirmForm.effectiveNumber}}</label>
-              <!-- <el-input v-model="purchaseOrderPayConfirmForm.effectiveNumber" placeholder="有效客户数" autocomplete="off" disabled></el-input> -->
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
+         
+          <el-col :span="8">
             <el-form-item label="总单价：" :label-width="formLabelWidth" prop="price">
               <label>{{purchaseOrderPayConfirmForm.price}}</label>
               <!-- <el-input v-model="purchaseOrderPayConfirmForm.price" autocomplete="off" disabled></el-input> -->
             </el-form-item>
           </el-col>
-           <el-col :span="6">
+           <el-col :span="8">
             <el-form-item label="预付款：" :label-width="formLabelWidth" prop="prepayment">
                <label>{{purchaseOrderPayConfirmForm.prepayment}}</label>
               <!-- <el-input v-model="purchaseOrderPayConfirmForm.prepayment" autocomplete="off" disabled></el-input> -->
             </el-form-item>
+           </el-col>
+           <el-col :span="8">
+             <el-form-item label="应收款" :label-width="formLabelWidth" prop="receivable" required>
+              <el-input v-model="purchaseOrderPayConfirmForm.receivable" autocomplete="off" ></el-input>
+             </el-form-item>
            </el-col>
         </el-row>
         <el-row :gutter="10">
@@ -59,11 +65,7 @@
               </el-form-item>
               </el-form-item>
            </el-col>
-           <el-col :span="8">
-             <el-form-item label="应收款" :label-width="formLabelWidth" prop="receivable" required>
-              <el-input v-model="purchaseOrderPayConfirmForm.receivable" autocomplete="off" ></el-input>
-             </el-form-item>
-           </el-col>
+           
         </el-row>
         <el-row :gutter="10">
           <!-- <el-col :span="12">
@@ -83,7 +85,7 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :span="24">
-            <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
+            <el-form-item label="备注：" :label-width="formLabelWidth" prop="remark">
                <label>{{purchaseOrderPayConfirmForm.remark}}</label>              
             <!-- <el-input v-model="purchaseOrderPayConfirmForm.remark" autocomplete="off" readonly></el-input> -->
             </el-form-item>
@@ -101,7 +103,7 @@
         </el-form-item>
         </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <!-- <el-button @click="dialogFormVisible = false">取 消</el-button> -->
         <el-button type="primary" @click="onSubmit()">确 定</el-button>
       </div>
     </el-dialog>

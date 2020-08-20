@@ -1,25 +1,28 @@
 <template>
   <div style="text-align: left">
-    <el-button class="add-button" @click="dialogFormVisible = true">添加服务</el-button>
+    <el-button class="add-button" @click="dialogFormVisible = true" type="primary" >添加服务</el-button>
     <el-dialog
       title="添加服务"
       :visible.sync="dialogFormVisible"
       @close="clear"
-      width="25%">
+      width="30%">
       <el-form :model="serviceForm" :rules="rules" label-position="left"
-               label-width="0px">
-        <el-form-item prop="recordNumber">
+               label-width="80px">
+        <el-form-item prop="recordNumber" label="备案编号">
           <el-input type="text" v-model="serviceForm.recordNumber"
-                    auto-complete="off" placeholder="备案编号"></el-input>
+                    auto-complete="off" ></el-input>
         </el-form-item>
-        <el-form-item prop="name">
+        <el-form-item prop="name" label="服务全称">
           <el-input type="text" v-model="serviceForm.name"
-                    auto-complete="off" placeholder="服务全称"></el-input>
+                    auto-complete="off" ></el-input>
         </el-form-item>
-        <el-form-item style="width: 100%">
-          <el-button type="primary" style="width: 40%;background: #505458;border: none" v-on:click="addservice">添加</el-button>
-        </el-form-item>
+        <!-- <el-form-item style="width: 100%">
+          <el-button type="primary"  v-on:click="addservice">确定</el-button>
+        </el-form-item> -->
       </el-form>
+      <div slot="footer" class="dialog-footer">
+         <el-button type="primary"  v-on:click="addservice">确定</el-button>
+         </div>
     </el-dialog>
   </div>
 </template>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-row style="margin: 18px 0px 0px 18px ">
+    <el-row>
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-        <el-breadcrumb-item>系统功能</el-breadcrumb-item> -->
+        <el-breadcrumb-item>系统功能</el-breadcrumb-item>-->
         <el-breadcrumb-item>客户单上传</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
@@ -12,123 +12,79 @@
         ref="multipleTable"
         :data="datas"
         stripe
-        style="width: 100%"
         :max-height="tableHeight"
-        @selection-change="handleSelectionChange">
-         <el-table-column type="expand">
-           <template slot-scope="scope">
-              <ul> 
-          <li v-for="item in scope.row.customerProducts" :key="item.id">
-            客户：<alpah-subject-name :asid="item.customerSubjectId.toString()"></alpah-subject-name>
-        ， 服务：<product-name :pid="item.productId.toString()"></product-name>
-,开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}
-         ，结束日:{{item.closingDate|dateformat('YYYY-MM-DD')}}
-            </li>
-            </ul>  
-           </template>
-
-        </el-table-column>
-         <el-table-column
-          prop="cpExcelMst.fileName"
-          label="文件名"
-          fit>
-        </el-table-column>
-         <el-table-column
-          label="采购企业"
-          fit>
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="expand">
           <template slot-scope="scope">
-          <alpah-subject-name :asid="scope.row.cpExcelMst.paySubjectId.toString()"></alpah-subject-name>
+            <ul>
+              <li v-for="item in scope.row.customerProducts" :key="item.id">
+                客户：
+                <alpah-subject-name :asid="item.customerSubjectId.toString()"></alpah-subject-name>， 服务：
+                <product-name :pid="item.productId.toString()"></product-name>
+                ,开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}
+                ，结束日:{{item.closingDate|dateformat('YYYY-MM-DD')}}
+              </li>
+            </ul>
           </template>
         </el-table-column>
-        <el-table-column
-          label="服务企业" fit>
-           <template slot-scope="scope">
-          <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="outTradeNo"
-          label="保单号">
-        </el-table-column>
-        <el-table-column
-          prop="customerName"
-          label="客户">
-        </el-table-column>
-         <el-table-column
-          label="类型"
-          show-overflow-tooltip fit>
-           <template slot-scope="scope">
-          <type-name :tid="scope.row.customerSubject.recordType.toString()"></type-name>
-          </template>
-        </el-table-column>
-         <el-table-column
-          prop="customerSubject.recordNumber"
-          label="证件号"
-          show-overflow-tooltip fit>
-        </el-table-column>
-        <el-table-column
-          label="产品">
+        <el-table-column prop="cpExcelMst.fileName" label="文件名"></el-table-column>
+        <el-table-column label="采购企业">
           <template slot-scope="scope">
-          <product-name :pid="scope.row.productId.toString()"></product-name>
+            <alpah-subject-name :asid="scope.row.cpExcelMst.paySubjectId.toString()"></alpah-subject-name>
           </template>
         </el-table-column>
-         <el-table-column
-          prop="effectiveDate"
-          :formatter="dateFormat"
-          label="生效日"
-           width="100"
-          fit>
+        <el-table-column label="服务企业">
+          <template slot-scope="scope">
+            <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
+          </template>
         </el-table-column>
-        <el-table-column
-          prop="closingDate"
-          :formatter="dateFormat"
-          label="截止日"
-          width="100"
-          fit>
+        <el-table-column prop="outTradeNo" label="保单号"></el-table-column>
+        <el-table-column prop="customerName" label="客户"></el-table-column>
+        <el-table-column label="类型">
+          <template slot-scope="scope">
+            <type-name :tid="scope.row.customerSubject.recordType.toString()"></type-name>
+          </template>
         </el-table-column>
-        <el-table-column
-        prop="remark"
-          label="备注">
+        <el-table-column prop="customerSubject.recordNumber" label="证件号" show-overflow-tooltip></el-table-column>
+        <el-table-column label="产品">
+          <template slot-scope="scope">
+            <product-name :pid="scope.row.productId.toString()"></product-name>
+          </template>
         </el-table-column>
+        <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日" width="100"></el-table-column>
+        <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日" width="100"></el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
         <!-- <el-table-column
         prop="operator"
           label="操作员">
-        </el-table-column> -->
-        <el-table-column
-          label="状态" >
+        </el-table-column>-->
+        <el-table-column label="状态">
           <template slot-scope="scope">
-          <state-name :sid="scope.row.state.toString()"></state-name>
+            <state-name :sid="scope.row.state.toString()"></state-name>
           </template>
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="120">
+        <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <!-- <el-button
               @click.native.prevent="editOpt(scope.row)"
               type="text"
               size="small">
               编辑
-            </el-button> -->
-            <el-button
-              @click.native.prevent="deleteOpt(scope.row.id)"
-              type="text"
-              size="small">
-              删除
-            </el-button>
+            </el-button>-->
+            <el-button @click.native.prevent="deleteOpt(scope.row.id)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-row>
-      <!-- <div style="margin: 20px 0 20px 0;float: right">
+        <!-- <div style="margin: 20px 0 20px 0;float: right">
         <customer-order-edit @onSubmit="loadData()" ref="CustomerOrderEdit"></customer-order-edit>
-      </div> -->
-      <div style="margin: 20px 0 20px 0;float: right">
-        <upload-form @onUpload="loadData()" ref="UploadForm"></upload-form>
-      </div>
+        </div>-->
+        <div style="margin: 20px 0 20px 0;float: right">
+          <upload-form @onUpload="loadData()" ref="UploadForm"></upload-form>
+        </div>
       </el-row>
-      </el-card>
+    </el-card>
   </div>
 </template>
 <script>
@@ -141,7 +97,14 @@ import TypeName from '@/components/common/TypeName.vue'
 
 export default {
   name: 'CustomerOrderManagement',
-  components: {CustomerOrderEdit, UploadForm, AlpahSubjectName, ProductName, StateName, TypeName},
+  components: {
+    CustomerOrderEdit,
+    UploadForm,
+    AlpahSubjectName,
+    ProductName,
+    StateName,
+    TypeName
+  },
   data () {
     return {
       datas: [],
@@ -168,24 +131,26 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        this.$axios
-          .get('/admin/v1/pri/cpExcel/deleteDetail/byId?detailId=' + id).then(resp => {
-            if (resp && resp.data.code === 200) {
-              this.loadData()
-            } else {
-              this.$alert(resp.data.message, '提示', {
-                    confirmButtonText: '确定'
-                  })
-            }
-          })
-      }
-      ).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
       })
+        .then(() => {
+          this.$axios
+            .get('/admin/v1/pri/cpExcel/deleteDetail/byId?detailId=' + id)
+            .then((resp) => {
+              if (resp && resp.data.code === 200) {
+                this.loadData()
+              } else {
+                this.$alert(resp.data.message, '提示', {
+                  confirmButtonText: '确定'
+                })
+              }
+            })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     editOpt (item) {
       this.$refs.CustomerOrderEdit.dialogFormVisible = true
@@ -213,19 +178,21 @@ export default {
     },
     loadData () {
       var _this = this
-      this.$axios.get('/admin/v1/pri/cpExcel/detailList?step=1').then(resp => {
-        if (resp && resp.data.code === 200) {
-          _this.datas = resp.data.result
-        } else {
-          this.$alert(resp.data.message, '提示', {
-                    confirmButtonText: '确定'
-                  })
-        }
-      })
+      this.$axios
+        .get('/admin/v1/pri/cpExcel/detailList?step=1')
+        .then((resp) => {
+          if (resp && resp.data.code === 200) {
+            _this.datas = resp.data.result
+          } else {
+            this.$alert(resp.data.message, '提示', {
+              confirmButtonText: '确定'
+            })
+          }
+        })
     },
     toggleSelection (rows) {
       if (rows) {
-        rows.forEach(row => {
+        rows.forEach((row) => {
           this.$refs.multipleTable.toggleRowSelection(row)
         })
       } else {
@@ -240,14 +207,16 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        this.deleteIds()
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
       })
+        .then(() => {
+          this.deleteIds()
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     deleteIds () {
       let checkArr = this.multipleSelection
@@ -256,24 +225,25 @@ export default {
         ids.push(item.id)
         console.log(item.id)
       })
-      this.$axios.get('/admin/v1/pri/co/section/deleteByIds',
-        {
+      this.$axios
+        .get('/admin/v1/pri/co/section/deleteByIds', {
           params: {
             ids: ids + ''
           }
-        }
-      ).then(resp => {
-        if (resp && resp.data.code === 200) {
-          this.loadData()
-          this.$message({
-            type: 'info',
-            message: resp.data.message})
-        } else {
-          this.$alert(resp.data.message, '提示', {
-                    confirmButtonText: '确定'
-                  })
-        }
-      })
+        })
+        .then((resp) => {
+          if (resp && resp.data.code === 200) {
+            this.loadData()
+            this.$message({
+              type: 'info',
+              message: resp.data.message
+            })
+          } else {
+            this.$alert(resp.data.message, '提示', {
+              confirmButtonText: '确定'
+            })
+          }
+        })
     },
     dateFormat (row, column) {
       var date = row[column.property]
@@ -294,5 +264,7 @@ export default {
 </script>
 
 <style scoped>
-.div-inline{ display:inline} 
+.div-inline {
+  display: inline;
+}
 </style>

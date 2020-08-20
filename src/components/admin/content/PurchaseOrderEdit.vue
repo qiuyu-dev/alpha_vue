@@ -4,10 +4,10 @@
     <el-dialog
       title="审核采购单"
       :visible.sync="dialogFormVisible"
-      @close="clear">
+      @close="clear"  width="50%">
       <el-form :model="purchaseOrderForm" style="text-align: left" ref="purchaseOrderForm">
         <el-row :gutter="10">
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="姓名:" :label-width="formLabelWidth" prop="cname">
               <label>{{purchaseOrderForm.cname}}</label>
              
@@ -15,7 +15,7 @@
             </el-form-item>
           </el-col>
          
-          <el-col :span="8">
+          <el-col :span="16">
             <el-form-item label="电话：" :label-width="formLabelWidth" prop="phone">
                <label>{{purchaseOrderForm.phone}}</label>
               <!-- <el-input v-model="purchaseOrderForm.phone" autocomplete="off" readonly disabled></el-input> -->
@@ -33,7 +33,7 @@
             </el-select> -->
             <!-- </el-form-item>          
           </el-col> -->
-          <el-col :span="10">
+          <el-col :span="16">
             <el-form-item label="证件号：" :label-width="formLabelWidth" prop="insuredId">
                <label>{{purchaseOrderForm.insuredId}}</label>
               <!-- <el-input v-model="purchaseOrderForm.insuredId" autocomplete="off" readonly disabled></el-input> -->
@@ -41,7 +41,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="10">
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="生效日：" :label-width="formLabelWidth">
             <el-form-item prop="effectiveDate">
                <label>{{purchaseOrderForm.effectiveDate|dateformat('YYYY-MM-DD')}}</label>
@@ -49,7 +49,7 @@
             </el-form-item>
             </el-form-item>
           </el-col>
-          <el-col :span="12">  
+          <el-col :span="8">  
             <el-form-item label="截止日：" :label-width="formLabelWidth">
             <el-form-item prop="closingDate">
                <label>{{purchaseOrderForm.closingDate|dateformat('YYYY-MM-DD')}}</label>
@@ -59,7 +59,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="10">
-          <el-col :span="6">         
+          <el-col :span="8">         
             <el-form-item label="性别：" :label-width="formLabelWidth" prop="sex">
               <label>{{purchaseOrderForm.sex}}</label>
                
@@ -69,13 +69,13 @@
             </el-select> -->
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="年龄：" :label-width="formLabelWidth" prop="age">
                <label>{{purchaseOrderForm.age}}</label>
               <!-- <el-input v-model="purchaseOrderForm.age" autocomplete="off" readonly disabled></el-input> -->
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="所在地：" :label-width="formLabelWidth" prop="location">
                <label>{{purchaseOrderForm.location}}</label>
               <!-- <el-input v-model="purchaseOrderForm.location" autocomplete="off" readonly disabled></el-input> -->
@@ -96,13 +96,15 @@
             </el-select>
             </el-form-item>       
             <el-form-item label="说明" :label-width="formLabelWidth" prop="reson">
+               <el-col :span="16">
               <el-input v-model="purchaseOrderForm.reson" autocomplete="off"></el-input>
+              </el-col>
             </el-form-item>
         </el-row>                 
         <el-form-item prop="id" style="height: 0">
           <el-input type="hidden" v-model="purchaseOrderForm.id" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item prop="eid" style="height: 0">
+        <!-- <el-form-item prop="eid" style="height: 0">
           <el-input type="hidden" v-model="purchaseOrderForm.eid" autocomplete="off"></el-input>
         </el-form-item>          
         <el-form-item prop="fromType" style="height: 0">
@@ -116,14 +118,14 @@
         </el-form-item>    
         <el-form-item prop="cpedId" style="height: 0">
           <el-input type="hidden" v-model="purchaseOrderForm.cpedId" autocomplete="off"></el-input>
-        </el-form-item> 
+        </el-form-item>  -->
         <el-form-item prop="status" style="height: 0">
           <el-input type="hidden" v-model="purchaseOrderForm.status" autocomplete="off"></el-input>
         </el-form-item>                                 
         </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>        
-        <el-button type="primary" @click="onSubmit()">确 定</el-button>
+        <!-- <el-button @click="dialogFormVisible = false">取 消</el-button>         -->
+        <el-button type="primary" @click="onSubmit()" >确 定</el-button>
       </div>
     </el-dialog>
   </div>

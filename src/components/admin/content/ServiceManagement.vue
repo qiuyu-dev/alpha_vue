@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-dialog title="修改服务信息" :visible.sync="dialogFormVisible">
+    <el-dialog title="修改服务信息" :visible.sync="dialogFormVisible"  width="30%">
       <el-form v-model="selectedService" style="text-align: left" ref="dataForm">
-        <el-form-item label="id" label-width="120px" prop="id">
+        <el-form-item label="id" label-width="80px" prop="id">
           <label>{{selectedService.id}}</label>
         </el-form-item>
         <el-form-item label="备案编号" label-width="120px" prop="recordNumber">
@@ -13,8 +13,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="onSubmit(selectedService)">确 定</el-button>
+        <!-- <el-button @click="dialogFormVisible = false">取 消</el-button> -->
+        <el-button  @click="onSubmit(selectedService)">确 定</el-button>
       </div>
     </el-dialog>
     <el-row style="margin: 18px 0px 0px 18px ">

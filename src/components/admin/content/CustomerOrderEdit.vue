@@ -1,6 +1,6 @@
 <template>
   <div style="text-align: left">
-    <el-button class="add-button" @click="dialogFormVisible = true">添加客户单</el-button>
+    <el-button class="add-button" @click="dialogFormVisible = true" type="primary">添加客户单</el-button>
     <el-dialog
       title="添加/修改客户单"
       :visible.sync="dialogFormVisible"

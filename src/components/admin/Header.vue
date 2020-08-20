@@ -1,7 +1,7 @@
 <template>
   <el-card class="admin-header">
     <a href="#">
-      <img src="../../assets/img/icon/icon2.png" alt="" width="50px" style="float: left;margin-top: -5px;">
+      <img src="../../assets/img/icon/logo1.png" alt="" width="70px" style="float: left;margin-top: -3px;">
     </a>
     <span style="font-size: 30px;font-weight: bold;position:absolute;left: 100px">阿尔法</span>
     <i class="el-icon-switch-button" v-on:click="logout" style="font-size: 40px;float: right"></i>
@@ -40,6 +40,7 @@
     opacity: 0.85;
     line-height: 40px;
     min-width: 900px;
+    color: #2c3e50;
   }
   .el-icon-switch-button {
     cursor: pointer;

@@ -1,10 +1,11 @@
 <template>
   <div style="text-align: left">
-    <el-button class="add-button" @click="dialogFormVisible = true">客户单Excel上传</el-button>
+    <el-button class="add-button" @click="dialogFormVisible = true" type="primary">客户单Excel上传</el-button>
     <el-dialog
       title="客户单Excel上传"
       :visible.sync="dialogFormVisible"
-      @close="clear">
+      @close="clear"
+       width="40%">
       <el-form :model="uploadForm" :rules="rules" style="text-align: left" ref="uploadForm">
         <el-form-item label="服务商" :label-width="formLabelWidth" prop="chargeid">
         <el-select @change="getOptions" v-model="uploadForm.chargeid" placeholder="请选择服务商">
@@ -43,7 +44,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <!-- <el-button @click="dialogFormVisible = false">取 消</el-button> -->
         <el-button type="primary" @click="onSubmit()">确 定</el-button>
       </div>
     </el-dialog>
@@ -93,7 +94,7 @@ export default {
       // 判断上传文件格式
       if (this.fileTemp) {
         if ((this.fileTemp.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
-          if (this.fileTemp.size < 500 * 1024) { // 文件大小须小于500kb
+          if (this.fileTemp.size < 0.5 * 1024 * 1024) { // 文件大小须小于500kb
             return true
           } else {
             this.$message({
@@ -167,7 +168,7 @@ export default {
         })
         return false
       }
-      if (this.fileTemp.size > 500 * 1024) {
+      if (this.fileTemp.size > 0.5 * 1024 * 1024) {
         this.$alert('上传excel文件大小须小于500kb', '提示', {
           confirmButtonText: '确定'
         })
