@@ -119,7 +119,7 @@ export default {
   text-align: center;
 }
   #paper {
-    background:url("../assets/img/bg/back2.jpeg") no-repeat;
+    background:url("../assets/img/bg/back1.jpeg") no-repeat;
     background-position: center;
     height: 100%;
     width: 100%;

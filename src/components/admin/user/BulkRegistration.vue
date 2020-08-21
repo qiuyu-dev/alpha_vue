@@ -6,7 +6,7 @@
       :visible.sync="dialogFormVisible"
       @close="clear"
       width="40%">
-      <el-form :model="loginForm" :rules="rules"
+      <el-form :model="loginForm" :rules="rules" ref="loginForm" 
                label-width="80px">
         <el-form-item label="账号" prop="username">
           <el-input type="text" v-model="loginForm.username"
@@ -16,15 +16,15 @@
           <el-input type="password" v-model="loginForm.password"
                     auto-complete="off" ></el-input>
         </el-form-item>
-        <el-form-item label="姓名">
+        <el-form-item label="姓名" prop="name">
           <el-input type="text" v-model="loginForm.name"
                     auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="电话号码">
+        <el-form-item label="联系电话" prop="phone">
           <el-input type="text" v-model="loginForm.phone"
                     auto-complete="off" ></el-input>
         </el-form-item>
-        <el-form-item  label="E-Mail">
+        <el-form-item  label="E-Mail" prop="email">
           <el-input type="text" v-model="loginForm.email"
                     auto-complete="off"></el-input>
         </el-form-item>
@@ -40,7 +40,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
           <el-button type="primary" v-on:click="register">确定</el-button>
-          </div>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -51,10 +51,13 @@
       data () {
         return {
           dialogFormVisible: false,
-          formLabelWidth: '120px',
+          formLabelWidth: '120px', 
           rules: {
             username: [{required: true, message: '账号不能为空', trigger: 'blur'}],
-            password: [{required: true, message: '密码不能为空', trigger: 'blur'}]
+            password: [{required: true, message: '密码不能为空', trigger: 'blur'}],
+            name: [{required: true, message: '姓名不能为空', trigger: 'blur'}],
+            phone: [{required: true, message: '联系电话不能为空', trigger: 'blur'}],
+            email: [{required: true, message: 'E-Mail不能为空', trigger: 'blur'}]
           },
           loginForm: {
             username: '',
@@ -80,40 +83,44 @@
           }
         },
         register () {
-           if(this.validEmail()){
-                return 
+          this.$refs.loginForm.validate((valid) => {
+            if (valid) {
+              if(this.validEmail()){
+                    return 
               }
-          this.$axios
-            .post('/register', {
-              username: this.loginForm.username,
-              password: this.loginForm.password,
-              name: this.loginForm.name,
-              phone: this.loginForm.phone,
-              email: this.loginForm.email,
-              crop: this.loginForm.crop,
-              orgcode: this.loginForm.orgcode,
-              itype: 2
-              // 插入类型1为注册，2为管理员添加
-            })
-            .then(resp => {
-              if (resp.data.code === 200) {
-                this.$alert('注册成功', '提示', {
-                  confirmButtonText: '确定'
+              this.$axios
+                .post('/register', {
+                  username: this.loginForm.username,
+                  password: this.loginForm.password,
+                  name: this.loginForm.name,
+                  phone: this.loginForm.phone,
+                  email: this.loginForm.email,
+                  crop: this.loginForm.crop,
+                  orgcode: this.loginForm.orgcode,
+                  itype: 2
+                  // 插入类型1为注册，2为管理员添加
                 })
-                this.clear()
-                this.$emit('onSubmit')
-              } else {
-                this.$alert(resp.data.message, '提示', {
-                    confirmButtonText: '确定'
-                  })
-              }
+                .then(resp => {
+                  if (resp.data.code === 200) {
+                    this.$alert('注册成功', '提示', {
+                      confirmButtonText: '确定'
+                    })
+                    this.clear()
+                    this.$emit('onSubmit')
+                  } else {
+                    this.$alert(resp.data.message, '提示', {
+                        confirmButtonText: '确定'
+                      })
+                  }
+                })
+                .catch(failResponse => {})
+            }
             })
-            .catch(failResponse => {})
         },
         validEmail() {
           const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           if(!reg.test(this.loginForm.email)){
-            this.$alert('邮箱格式不正确', '提示', {
+            this.$alert('E-mail格式不正确', '提示', {
                       confirmButtonText: '确定'
                     })
             return true

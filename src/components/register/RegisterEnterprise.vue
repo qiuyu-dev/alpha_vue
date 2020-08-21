@@ -57,7 +57,7 @@
           password: [{required: true, message: '密码不能为空', trigger: 'blur'}],
           name: [{required: true, message: '姓名不能为空', trigger: 'blur'}],
           phone: [{required: true, message: '联系电话不能为空', trigger: 'blur'}],
-          email: [{required: true, message: 'email不能为空', trigger: 'blur'}]
+          email: [{required: true, message: 'E-Mail不能为空', trigger: 'blur'}]
         },
         checked: true,
         registerForm: {
@@ -113,7 +113,7 @@
      validEmail() {
         const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         if(!reg.test(this.registerForm.email)){
-           this.$alert('邮箱格式不正确', '提示', {
+           this.$alert('E-Mail格式不正确', '提示', {
                     confirmButtonText: '确定'
                   })
            return true

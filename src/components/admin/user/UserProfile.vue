@@ -1,7 +1,7 @@
 <template>
   <div style="text-align: left">
     <el-dialog
-      title="修改用户信息"
+      title="用户信息"
       :visible.sync="dialogFormVisible" width="40%">
       <el-form v-model="selectedUser" ref="dataForm"  label-width="80px">
         <el-form-item label="账号"  prop="username">
@@ -14,12 +14,12 @@
           <el-input v-model="selectedUser.name" autocomplete="off" ></el-input>
        </el-col>
         </el-form-item>
-        <el-form-item label="电话号码" lprop="phone" >
+        <el-form-item label="联系电话" lprop="phone" >
           <el-col :span="16">
           <el-input v-model="selectedUser.phone" autocomplete="off"></el-input>
        </el-col>
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
+        <el-form-item label="E-Mail" prop="email">
           <el-col :span="16">
           <el-input v-model="selectedUser.email" autocomplete="off" @blur="validEmail(selectedUser.email)"></el-input>
       </el-col>
@@ -60,11 +60,11 @@
           type="selection"
           width="55">
         </el-table-column> -->
-        <el-table-column
+        <!-- <el-table-column
           prop="id"
           label="id"
           sortable>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="username"
           label="账号">
@@ -75,11 +75,11 @@
         </el-table-column>
         <el-table-column
           prop="phone"
-          label="电话号码">
+          label="联系电话">
         </el-table-column>
         <el-table-column
           prop="email"
-          label="邮箱">
+          label="E-Mail">
         </el-table-column>
         <!-- <el-table-column
           label="状态"
@@ -251,7 +251,7 @@ export default {
     validEmail (email) {
       const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       if (!reg.test(email)) {
-        this.$alert('邮箱格式不正确', '提示', {
+        this.$alert('E-Mail格式不正确', '提示', {
           confirmButtonText: '确定'
         })
         return true
