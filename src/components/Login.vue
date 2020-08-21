@@ -1,7 +1,7 @@
 <template>
   <div id="paper" class="main">
   <el-form ref="loginForm" :model="loginForm" :rules="loginRules"  class="login-container">
-    <h3>保险数据应用平台</h3>
+    <h3> 基于区块链的健康数据管理应用平台</h3>
     <el-form-item prop="username">
       <el-input
         ref="username"
@@ -119,7 +119,7 @@ export default {
   text-align: center;
 }
   #paper {
-    background:url("../assets/img/bg/back1.jpeg") no-repeat;
+    background:url("../assets/img/bg/back2.jpeg") no-repeat;
     background-position: center;
     height: 100%;
     width: 100%;

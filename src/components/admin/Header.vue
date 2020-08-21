@@ -1,9 +1,9 @@
 <template>
   <el-card class="admin-header">
-    <a href="#">
+    <!-- <a href="#">
       <img src="../../assets/img/icon/logo1.png" alt="" width="70px" style="float: left;margin-top: -3px;">
-    </a>
-    <span style="font-size: 30px;font-weight: bold;position:absolute;left: 100px">阿尔法</span>
+    </a> -->
+    <span style="font-size: 15px;font-weight: bold;position:absolute;left: 5px">基于区块链的健康数据管理应用平台</span>
     <i class="el-icon-switch-button" v-on:click="logout" style="font-size: 40px;float: right"></i>
   </el-card>
 </template>

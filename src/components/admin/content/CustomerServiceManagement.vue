@@ -50,7 +50,7 @@
           label="备案编号"
           fit>
         </el-table-column>-->
-        <el-table-column label="客户" prop="customerSubject.name" :formatter="ctFormat"></el-table-column>
+        <el-table-column label="客户" prop="customerSubject.name"></el-table-column>
         <el-table-column label="电话" prop="customerSubject.phone"></el-table-column>
         <el-table-column label="服务" prop="product.name"></el-table-column>
         <!-- <el-table-column
