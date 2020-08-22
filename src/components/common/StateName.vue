@@ -34,10 +34,10 @@ export default {
           this.name = '重新触发待申请'
           break
         case '3':
-          this.name = '申请通过待审核'
+          this.name = '待审核'
           break
         case '4':
-          this.name = '重新申请待审核'
+          this.name = '修改待审核'
           break
         case '5':
           this.name = '审核通过可付费'

@@ -33,7 +33,7 @@
       <el-input type="text" v-model.trim="registerForm.phone"
                 auto-complete="off" placeholder="联系电话"></el-input>
     </el-form-item>
-    <el-form-item label="email" :label-width="formLabelWidth" prop="email">
+    <el-form-item label="E-Mail" :label-width="formLabelWidth" prop="email">
       <el-input type="text" v-model.trim="registerForm.email"
                 auto-complete="off" placeholder="email" @blur="validEmail()"></el-input>
     </el-form-item>       

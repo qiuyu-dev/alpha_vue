@@ -2,7 +2,7 @@
   <div style="text-align: left">
     <el-dialog
       title="用户信息"
-      :visible.sync="dialogFormVisible" width="40%">
+      :visible.sync="dialogFormVisible" @close="closeDialog" width="40%">
       <el-form v-model="selectedUser" ref="dataForm"  label-width="80px">
         <el-form-item label="账号"  prop="username">
           <el-col :span="8">
@@ -46,7 +46,7 @@
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
         <el-breadcrumb-item>系统功能</el-breadcrumb-item> -->
-        <el-breadcrumb-item>用户信息</el-breadcrumb-item>
+        <el-breadcrumb-item></el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
     <el-card style="margin: 18px 2%;width: 95%">
@@ -54,7 +54,6 @@
         :data="users"
         stripe
         :default-sort = "{prop: 'id', order: 'ascending'}"
-
         :max-height="tableHeight">
         <!-- <el-table-column
           type="selection"
@@ -146,6 +145,10 @@ export default {
     }
   },
   methods: {
+    closeDialog () {      
+      this.listUsers()
+      this.listRoles()
+    },
     listUsers () {
       var _this = this
       this.$axios.get('/admin/user/list').then(resp => {

@@ -4,7 +4,7 @@
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
         <el-breadcrumb-item>系统功能</el-breadcrumb-item>-->
-        <el-breadcrumb-item>客户单上传</el-breadcrumb-item>
+        <el-breadcrumb-item>客户单维护</el-breadcrumb-item>
       </el-breadcrumb>
     </el-row>
     <el-card style="margin: 18px 2%;width: 95%">
@@ -20,10 +20,10 @@
             <ul>
               <li v-for="item in scope.row.customerProducts" :key="item.id">
                 客户：
-                <alpah-subject-name :asid="item.customerSubjectId.toString()"></alpah-subject-name>， 服务：
-                <product-name :pid="item.productId.toString()"></product-name>
-                ,开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}
-                ，结束日:{{item.closingDate|dateformat('YYYY-MM-DD')}}
+                <alpah-subject-name :asid="item.customerSubjectId.toString()"></alpah-subject-name>
+                ，服务：<product-name :pid="item.productId.toString()"></product-name>
+                ，开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}
+                ，结束日：{{item.closingDate|dateformat('YYYY-MM-DD')}}
               </li>
             </ul>
           </template>
@@ -39,7 +39,7 @@
             <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
           </template>
         </el-table-column>
-        <el-table-column prop="outTradeNo" label="保单号"></el-table-column>
+        <el-table-column prop="outTradeNo" label="保单号" show-overflow-tooltip></el-table-column>
         <el-table-column prop="customerName" label="客户"></el-table-column>
         <el-table-column label="类型">
           <template slot-scope="scope">
