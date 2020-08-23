@@ -54,6 +54,9 @@ export default {
         case '9':
           this.name = '服务完成且评价'
           break
+        case '-5':
+          this.name = '审核驳回'
+          break
         default:
           this.name = 'other'
           break

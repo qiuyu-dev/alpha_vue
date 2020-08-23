@@ -35,7 +35,7 @@
     </el-form-item>
     <el-form-item label="E-Mail" :label-width="formLabelWidth" prop="email">
       <el-input type="text" v-model.trim="registerForm.email"
-                auto-complete="off" placeholder="email" @blur="validEmail()"></el-input>
+                auto-complete="off" placeholder="E-Mail" @blur="validEmail()"></el-input>
     </el-form-item>       
     <el-form-item style="width: 100%">
       <el-button type="primary" v-on:click="register">注册</el-button>
@@ -50,14 +50,14 @@
       return {
         formLabelWidth: '120px',
         rules: {
-          orgcode: [{required: true, message: '组织机构代码不能为空', trigger: 'blur'}],
-          crop: [{required: true, message: ' 企业名称不能为空', trigger: 'blur'}],
+          orgcode: [{required: true, message: '请输入组织机构代码', trigger: 'blur'}],
+          crop: [{required: true, message: '请输入企业名称', trigger: 'blur'}],
           ctype: [{required: true, message: '请选择公司类型', trigger: 'blur'}],
-          username: [{required: true, message: '账号不能为空', trigger: 'blur'}],
-          password: [{required: true, message: '密码不能为空', trigger: 'blur'}],
-          name: [{required: true, message: '姓名不能为空', trigger: 'blur'}],
-          phone: [{required: true, message: '联系电话不能为空', trigger: 'blur'}],
-          email: [{required: true, message: 'E-Mail不能为空', trigger: 'blur'}]
+          username: [{required: true, message: '请输入账号', trigger: 'blur'}],
+          password: [{required: true, message: '请输入密码', trigger: 'blur'}],
+          name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
+          phone: [{required: true, message: '请输入联系电话', trigger: 'blur'}],
+          email: [{required: true, message: '请输入E-Mail', trigger: 'blur'}]
         },
         checked: true,
         registerForm: {

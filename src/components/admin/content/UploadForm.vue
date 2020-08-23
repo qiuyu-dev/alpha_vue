@@ -7,7 +7,7 @@
       @close="clear"
        width="40%">
       <el-form :model="uploadForm" :rules="rules" style="text-align: left" ref="uploadForm">
-        <el-form-item label="服务商" :label-width="formLabelWidth" prop="chargeid">
+        <el-form-item label="服务商" :label-width="formLabelWidth" prop="chargeid" required>
         <el-select @change="getOptions" v-model="uploadForm.chargeid" placeholder="请选择服务商">
           <el-option v-for="(item,index) in objData" :key="index" :value="item.id" :label="item.name"/>
         </el-select>

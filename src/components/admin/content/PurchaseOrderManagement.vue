@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row style="margin: 18px 0px 0px 18px ">
+    <el-row>
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
         <el-breadcrumb-item>系统功能</el-breadcrumb-item>-->
@@ -24,10 +24,10 @@
             <ul>
               <li v-for="item in scope.row.customerProducts" :key="item.id">
                 客户：
-                <alpah-subject-name :asid="item.customerSubjectId.toString()"></alpah-subject-name>， 服务：
-                <product-name :pid="item.productId.toString()"></product-name>
-                ,开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}
-                ，结束日:{{item.closingDate|dateformat('YYYY-MM-DD')}}
+                <alpah-subject-name :asid="item.customerSubjectId.toString()"></alpah-subject-name>
+                ，服务：<product-name :pid="item.productId.toString()"></product-name>
+                ，开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}
+                ，结束日：{{item.closingDate|dateformat('YYYY-MM-DD')}}
               </li>
             </ul>
           </template>
@@ -43,13 +43,7 @@
             <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
           </template>
         </el-table-column>
-        <!-- <el-table-column
-          prop="id"
-          label="ID"
-          show-overflow-tooltip
-          fit>
-        </el-table-column>-->
-        <el-table-column prop="outTradeNo" label="保单号"></el-table-column>
+        <el-table-column prop="outTradeNo" label="保单号"  show-overflow-tooltip></el-table-column>
         <el-table-column prop="customerSubject.name" label="客户"></el-table-column>
         <el-table-column label="类型">
           <template slot-scope="scope">
@@ -79,9 +73,10 @@
             <state-name :sid="scope.row.state.toString()"></state-name>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="120">
+        <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
-            <el-button @click.native.prevent="editOpt(scope.row)" type="text" size="small">审核</el-button>
+            <el-button @click.native.prevent="editOpt(scope.row,'1')" type="text" size="small">通过</el-button>
+            <el-button @click.native.prevent="editOpt(scope.row,'2')" type="text" size="small">驳回</el-button>   
           </template>
         </el-table-column>
       </el-table>
@@ -125,13 +120,13 @@ export default {
     },
   },
   methods: {
-    editOpt(item) {
+    editOpt(item, opt) {
       this.$refs.PurchaseOrderEdit.dialogFormVisible = true;
       this.$refs.PurchaseOrderEdit.purchaseOrderForm = {
         id: item.id,
-        eid: item.eid,
+        // eid: item.eid,
         cname: item.customerSubject.name,
-        certificateType: item.certificateType,
+        // certificateType: item.certificateType,
         insuredId: item.customerSubject.recordNumber,
         phone: item.customerSubject.phone,
         effectiveDate: item.effectiveDate,
@@ -140,12 +135,13 @@ export default {
         age: item.age,
         location: item.location,
         remark: item.remark,
-        status: item.status,
-        fromType: item.fromType,
-        fromId: item.fromId,
-        cpemId: item.cpemId,
-        cpedId: item.cpedId,
-        reson: item.reson,
+        // status: item.status,
+        // fromType: item.fromType,
+        // fromId: item.fromId,
+        // cpemId: item.cpemId,
+        // cpedId: item.cpedId,
+        // reson: item.reson,
+         opt: opt
       };
     },
     loadData() {
