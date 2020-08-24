@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <el-row style="margin: 18px 0px 0px 18px ">
+  <div style="text-align: left">
+    <!-- <el-row> -->
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
         <el-breadcrumb-item>系统功能</el-breadcrumb-item>-->
         <el-breadcrumb-item>服务评价维护</el-breadcrumb-item>
       </el-breadcrumb>
-    </el-row>
-    <el-card style="margin: 18px 2%;width: 95%">
+    <!-- </el-row> -->
+    <el-card style="margin: 1% 1%;width: 98%">
       <el-table
         ref="multipleTable"
         :data="datas"
@@ -17,19 +17,26 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <!-- <el-form label-position="left" inline v-for="item in scope.row.complaints" :key="item.id" >
-              <el-form-item >
-                <span> {{item.remark}}
-         ，日期:{{item.createTime|dateformat('YYYY-MM-DD')}}
-         ，操作员:{{item.operator}}</span>
+            <!-- <el-form
+              label-position="left"
+              inline
+              v-for="item in scope.row.complaints"
+              :key="item.id"
+            >
+              <el-form-item>
+                <span>
+                  {{item.remark}}
+                  ，日期：{{item.createTime|dateformat('YYYY-MM-DD')}}
+                  ，操作员：{{item.operator}}
+                </span>
               </el-form-item>
-            </el-form>-->
+            </el-form> -->
             <ul>
               <li v-for="item in scope.row.complaints" :key="item.id">
                 <span>
                   {{item.remark}}
-                  ，日期:{{item.createTime|dateformat('YYYY-MM-DD')}}
-                  ，操作员:{{item.operator}}
+                  ，日期：{{item.createTime|dateformat('YYYY-MM-DD')}}
+                  ，操作员：{{item.operator}}
                 </span>
               </li>
             </ul>
@@ -80,8 +87,8 @@
         </el-table-column>-->
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button @click.native.prevent="editOpt(scope.row,'1')" type="text" size="small">投诉</el-button>
             <el-button @click.native.prevent="editOpt(scope.row,'2')" type="text" size="small">评价</el-button>
+            <el-button @click.native.prevent="editOpt(scope.row,'1')" type="text" size="small">投诉</el-button>
           </template>
         </el-table-column>
       </el-table>

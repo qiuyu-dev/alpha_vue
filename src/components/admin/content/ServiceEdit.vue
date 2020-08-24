@@ -1,6 +1,6 @@
 <template>
   <div style="text-align: left">
-    <el-button class="add-button" @click="dialogFormVisible = true" type="primary" >添加服务</el-button>
+    <el-button class="add-button" @click="dialogFormVisible = true" type="primary" >批量添加服务</el-button>
     <el-dialog
       title="添加服务"
       :visible.sync="dialogFormVisible"
@@ -10,11 +10,11 @@
                label-width="80px">
         <el-form-item prop="recordNumber" label="备案编号">
           <el-input type="text" v-model="serviceForm.recordNumber"
-                    auto-complete="off" ></el-input>
+                    auto-complete="off" placeholder="备案编号" ></el-input>
         </el-form-item>
         <el-form-item prop="name" label="服务全称">
           <el-input type="text" v-model="serviceForm.name"
-                    auto-complete="off" ></el-input>
+                    auto-complete="off" placeholder="服务全称" ></el-input>
         </el-form-item>
         <!-- <el-form-item style="width: 100%">
           <el-button type="primary"  v-on:click="addservice">确定</el-button>
@@ -35,8 +35,8 @@ export default {
       dialogFormVisible: false,
       formLabelWidth: '120px',
       rules: {
-        recordNumber: [{required: true, message: '备案编号不能为空', trigger: 'blur'}],
-        name: [{required: true, message: '服务全称不能为空', trigger: 'blur'}]
+        recordNumber: [{required: true, message: '请输入备案编号', trigger: 'blur'}],
+        name: [{required: true, message: '请输入服务全称', trigger: 'blur'}]
       },
       serviceForm: {
         recordNumber: '',

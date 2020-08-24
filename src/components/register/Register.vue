@@ -34,8 +34,8 @@
     data () {
       return {
         rules: {
-          username: [{required: true, message: '账号不能为空', trigger: 'blur'}],
-          password: [{required: true, message: '密码不能为空', trigger: 'blur'}]
+          username: [{required: true, message: '请输入账号', trigger: 'blur'}],
+          password: [{required: true, message: '请输入密码', trigger: 'blur'}]
         },
         checked: true,
         loginForm: {

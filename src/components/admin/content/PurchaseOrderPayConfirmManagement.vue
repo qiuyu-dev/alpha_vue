@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-row style="margin: 18px 0px 0px 18px ">
+    <!-- <el-row > -->
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
         <el-breadcrumb-item>内容管理</el-breadcrumb-item>-->
         <el-breadcrumb-item>收款维护</el-breadcrumb-item>
       </el-breadcrumb>
-    </el-row>
-    <el-card style="margin: 18px 2%;width: 95%">
+    <!-- </el-row> -->
+    <el-card style="margin: 1% 1%;width: 98%">
       <el-table
         ref="multipleTable"
         :data="datas"
@@ -21,8 +21,8 @@
             <ul>
               <li v-for="item in scope.row.batchFeeDetails">
                 客户：
-                <alpah-subject-name :asid="item.cpExcelDetail.customerSubjectId.toString()"></alpah-subject-name>， 产品：
-                <product-name :pid="item.cpExcelDetail.productId.toString()"></product-name>
+                <alpah-subject-name :asid="item.cpExcelDetail.customerSubjectId.toString()"></alpah-subject-name>
+                ，产品：<product-name :pid="item.cpExcelDetail.productId.toString()"></product-name>
                 ，开始日：{{item.cpExcelDetail.effectiveDate|dateformat('YYYY-MM-DD')}}
               </li>
             </ul>
@@ -76,7 +76,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button @click.native.prevent="editOpt(scope.row)" type="text" size="small">确认收款</el-button>
+            <el-button @click.native.prevent="editOpt(scope.row)" type="text" size="small">收款</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -132,8 +132,8 @@ export default {
         closingDate: item.closingDate,
         payTime: item.payTime,
         remark: item.remark,
-        payImg: item.payImg,
-        img: item.img,
+        img: item.img,  
+        url: item.url,        
         confirmRemark: item.confirmRemark,
       };
     },

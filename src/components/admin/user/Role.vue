@@ -31,15 +31,15 @@
         <el-button type="primary" @click="onSubmit(selectedRole)">确 定</el-button>
       </div>
     </el-dialog>
-    <el-row style="margin: 18px 0px 0px 18px ">
+    <!-- <el-row style="margin: 18px 0px 0px 18px "> -->
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
         <el-breadcrumb-item>系统功能</el-breadcrumb-item> -->
         <el-breadcrumb-item>角色信息</el-breadcrumb-item>
       </el-breadcrumb>
-    </el-row>
+    <!-- </el-row> -->
     <role-create @onSubmit="listRoles()"></role-create>
-    <el-card style="margin: 18px 2%;width: 95%">
+    <el-card style="margin: 1% 1%;width: 98%">
       <el-table
         :data="roles"
         stripe

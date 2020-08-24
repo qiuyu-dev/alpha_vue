@@ -1,21 +1,22 @@
 <template>
   <div>
-    <el-row>
+    <!-- <el-row> -->
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
         <el-breadcrumb-item>系统功能</el-breadcrumb-item>-->
-        <el-breadcrumb-item>客户单维护</el-breadcrumb-item>
+      <el-breadcrumb-item>客户单维护</el-breadcrumb-item>
       </el-breadcrumb>
-    </el-row>
-    <el-card style="margin: 18px 2%;width: 95%">
+    <!-- </el-row> -->
+    <el-card style="margin: 1% 1%;width: 98%">
       <el-table
         ref="multipleTable"
         :data="datas"
         stripe
         :max-height="tableHeight"
         @selection-change="handleSelectionChange"
+         border
       >
-        <el-table-column type="expand">
+        <el-table-column type="expand" label="服务">
           <template slot-scope="scope">
             <ul>
               <li v-for="item in scope.row.customerProducts" :key="item.id">
@@ -64,7 +65,7 @@
             <state-name :sid="scope.row.state.toString()"></state-name>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作">
+        <el-table-column fixed="right"  label="操作">
           <template slot-scope="scope">
             <!-- <el-button
               @click.native.prevent="editOpt(scope.row)"
@@ -249,14 +250,6 @@ export default {
       var date = row[column.property]
       if (date !== null && date !== undefined) {
         return this.$moment(date).format('YYYY-MM-DD')
-      }
-    },
-    ctFormat (row, column) {
-      var ctype = row[column.property]
-      if (ctype == '1') {
-        return '身份证'
-      } else if (ctype == '2') {
-        return '护照'
       }
     }
   }

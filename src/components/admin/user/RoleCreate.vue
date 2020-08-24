@@ -34,7 +34,7 @@
       return {
         dialogFormVisible: false,
         rules: {
-          name: [{required: true, message: '角色名不能为空', trigger: 'blur'}]
+          name: [{required: true, message: '请输入角色名', trigger: 'blur'}]
         },
         checked: true,
         roleForm: {
