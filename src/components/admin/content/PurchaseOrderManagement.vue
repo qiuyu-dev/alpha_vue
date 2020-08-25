@@ -8,6 +8,25 @@
       </el-breadcrumb>
     <!-- </el-row> -->
     <el-card style="margin: 1% 1%;width: 98%">
+      <div style="text-align: left">
+        <el-form :model="formInline" :inline="true">
+          <el-form-item label="姓名">
+            <el-input v-model="formInline.name" placeholder="姓名"></el-input>
+          </el-form-item>
+          <!-- <el-form-item label="证件号">
+            <el-input v-model="formInline.recordNumber" placeholder="证件号"></el-input>
+          </el-form-item> -->
+          <el-form-item label="产品">
+            <el-input v-model="formInline.productName" placeholder="产品"></el-input>
+          </el-form-item>
+          <el-form-item label="保单号">
+            <el-input v-model="formInline.outTradeNo" placeholder="保单号"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="loadData">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
       <el-table
         ref="multipleTable"
         :data="datas"
@@ -33,23 +52,30 @@
           </template>
         </el-table-column>
         <el-table-column prop="cpExcelMst.fileName" label="文件名" ></el-table-column>
-        <el-table-column label="采购企业" show-overflow-tooltip >
+          <el-table-column prop="cpExcelMst.paySubject.name" label="采购企业" ></el-table-column>
+         
+        <!-- <el-table-column label="采购企业" show-overflow-tooltip >
           <template slot-scope="scope">
             <alpah-subject-name :asid="scope.row.cpExcelMst.paySubjectId.toString()"></alpah-subject-name>
           </template>
-        </el-table-column>
-        <el-table-column label="服务企业">
+        </el-table-column> -->
+        <!-- <el-table-column label="服务企业">
           <template slot-scope="scope">
             <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
           </template>
-        </el-table-column>
+        </el-table-column> -->
+             <el-table-column prop="cpExcelMst.chargeSubject.name" label="服务企业" ></el-table-column>
+      
         <el-table-column prop="outTradeNo" label="保单号"  show-overflow-tooltip></el-table-column>
         <el-table-column prop="customerSubject.name" label="客户"></el-table-column>
-        <el-table-column label="类型">
+        <!-- <el-table-column label="类型">
           <template slot-scope="scope">
             <type-name :tid="scope.row.customerSubject.recordType.toString()"></type-name>
           </template>
-        </el-table-column>
+        </el-table-column> -->
+          <el-table-column prop="customerSubject.recordType" label="类型" ></el-table-column>
+      
+     
         <!-- <el-form-item prop="certificateType" style="height: 0">
           <el-input type="hidden" v-model="purchaseOrderForm.certificateType" autocomplete="off"></el-input>
         </el-form-item>-->
@@ -63,16 +89,17 @@
         </el-table-column>-->
         <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日" width="100"></el-table-column>
         <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日" width="100"></el-table-column>
-        <el-table-column prop="remark" label="备注"></el-table-column>
+        <el-table-column prop="remark" label="备注"  show-overflow-tooltip></el-table-column>
         <!-- <el-table-column
         prop="operator"
           label="操作员">
         </el-table-column>-->
-        <el-table-column label="状态">
+        <!-- <el-table-column label="状态">
           <template slot-scope="scope">
             <state-name :sid="scope.row.state.toString()"></state-name>
           </template>
-        </el-table-column>
+        </el-table-column> -->
+         <el-table-column prop="stateReason" label="状态"></el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click.native.prevent="editOpt(scope.row,'1')" type="text" size="small">通过</el-button>
@@ -91,22 +118,28 @@
 
 <script>
 import PurchaseOrderEdit from "./PurchaseOrderEdit";
-import AlpahSubjectName from "@/components/common/AlpahSubjectName.vue";
-import ProductName from "@/components/common/ProductName.vue";
-import StateName from "@/components/common/StateName.vue";
-import TypeName from "@/components/common/TypeName.vue";
+// import AlpahSubjectName from "@/components/common/AlpahSubjectName.vue";
+// import ProductName from "@/components/common/ProductName.vue";
+// import StateName from "@/components/common/StateName.vue";
+// import TypeName from "@/components/common/TypeName.vue";
 
 export default {
   name: "PurchaseOrderEditManagement",
   components: {
     PurchaseOrderEdit,
-    AlpahSubjectName,
-    ProductName,
-    StateName,
-    TypeName,
+    // AlpahSubjectName,
+    // ProductName,
+    // StateName,
+    // TypeName,
   },
   data() {
     return {
+      formInline: {
+        name: '',
+        recordNumber: '',
+        productName: '',
+        outTradeNo: ''
+      },
       datas: [],
       multipleSelection: [],
     };
@@ -147,7 +180,15 @@ export default {
     loadData() {
       var _this = this;
       this.$axios
-        .get("/admin/v1/pri/cpExcel/detailList?step=2")
+        .get("/admin/v1/pri/cpExcel/detailList", {
+            params: {
+              step: 2,
+              name: this.formInline.name,
+              recordNumber: this.formInline.recordNumber,
+              productName: this.formInline.productName,
+              outTradeNo: this.formInline.outTradeNo
+            }
+          })
         .then((resp) => {
           if (resp && resp.data.code === 200) {
             _this.datas = resp.data.result;

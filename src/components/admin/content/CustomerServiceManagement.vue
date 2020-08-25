@@ -17,20 +17,6 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <!-- <el-form
-              label-position="left"
-              inline
-              v-for="item in scope.row.complaints"
-              :key="item.id"
-            >
-              <el-form-item>
-                <span>
-                  {{item.remark}}
-                  ，日期：{{item.createTime|dateformat('YYYY-MM-DD')}}
-                  ，操作员：{{item.operator}}
-                </span>
-              </el-form-item>
-            </el-form> -->
             <ul>
               <li v-for="item in scope.row.complaints" :key="item.id">
                 <span>
@@ -42,7 +28,7 @@
             </ul>
           </template>
         </el-table-column>
-        <el-table-column label="采购企业">
+        <!-- <el-table-column label="采购企业">
           <template slot-scope="scope">
             <alpah-subject-name :asid="scope.row.sourceMst.paySubjectId.toString()"></alpah-subject-name>
           </template>
@@ -50,7 +36,10 @@
         <el-table-column label="服务企业">
           <template slot-scope="scope">
             <alpah-subject-name :asid="scope.row.sourceMst.chargeSubjectId.toString()"></alpah-subject-name>
-          </template>
+          </template> -->
+           <el-table-column prop="sourceMst.paySubject.name" label="采购企业" ></el-table-column>
+            <el-table-column prop="sourceMst.chargeSubject.name" label="服务企业" ></el-table-column>
+     
         </el-table-column>
         <!-- <el-table-column
           prop="productId"
@@ -74,11 +63,12 @@
         </el-table-column>-->
         <el-table-column prop="effectiveDate" :formatter="dateFormat" label="开始日" width="100"></el-table-column>
         <el-table-column prop="closingDate" :formatter="dateFormat" label="结束日" width="100"></el-table-column>
-        <el-table-column label="状态">
+         <el-table-column prop="stateReason" label="状态"></el-table-column>
+        <!-- <el-table-column label="状态">
           <template slot-scope="scope">
             <state-name :sid="scope.row.state.toString()"></state-name>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <!-- <el-table-column
           prop="detailId"
           label="ID"
@@ -103,13 +93,15 @@
 
 <script>
 import CustomerServiceEdit from "./CustomerServiceEdit";
-import AlpahSubjectName from "@/components/common/AlpahSubjectName.vue";
-import ProductName from "@/components/common/ProductName.vue";
-import StateName from "@/components/common/StateName.vue";
+// import AlpahSubjectName from "@/components/common/AlpahSubjectName.vue";
+// import ProductName from "@/components/common/ProductName.vue";
+// import StateName from "@/components/common/StateName.vue";
 
 export default {
   name: "CustomerServicetManagement",
-  components: { CustomerServiceEdit, AlpahSubjectName, ProductName, StateName },
+  components: { CustomerServiceEdit
+  // , AlpahSubjectName, ProductName, StateName 
+  },
   data() {
     return {
       datas: [],

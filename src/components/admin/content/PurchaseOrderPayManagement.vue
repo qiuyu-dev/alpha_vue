@@ -8,6 +8,25 @@
       </el-breadcrumb>
     <!-- </el-row> -->
     <el-card style="margin: 1% 1%;width: 98%">
+      <div style="text-align: left">
+        <el-form :model="formInline" :inline="true">
+          <el-form-item label="姓名">
+            <el-input v-model="formInline.name" placeholder="姓名"></el-input>
+          </el-form-item>
+          <!-- <el-form-item label="证件号">
+            <el-input v-model="formInline.recordNumber" placeholder="证件号"></el-input>
+          </el-form-item> -->
+          <el-form-item label="产品">
+            <el-input v-model="formInline.productName" placeholder="产品"></el-input>
+          </el-form-item>
+          <el-form-item label="保单号">
+            <el-input v-model="formInline.outTradeNo" placeholder="保单号"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="loadData">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
       <el-table
         ref="multipleTable"
         :data="datas"
@@ -110,6 +129,12 @@ export default {
   },
   data() {
     return {
+      formInline: {
+        name: '',
+        recordNumber: '',
+        productName: '',
+        outTradeNo: ''
+      },
       datas: [],
       multipleSelection: [],
       mymsg: [],
@@ -145,7 +170,15 @@ export default {
     loadData() {
       var _this = this;
       this.$axios
-        .get("/admin/v1/pri/cpExcel/detailList?step=3")
+        .get("/admin/v1/pri/cpExcel/detailList", {
+            params: {
+              step: 3,
+              name: this.formInline.name,
+              recordNumber: this.formInline.recordNumber,
+              productName: this.formInline.productName,
+              outTradeNo: this.formInline.outTradeNo
+            }
+          })
         .then((resp) => {
           if (resp && resp.data.code === 200) {
             _this.datas = resp.data.result;

@@ -110,7 +110,7 @@ import ProductName from '@/components/common/ProductName.vue'
 import StateName from '@/components/common/StateName.vue'
 import TypeName from '@/components/common/TypeName.vue'
 
-import { isInteger } from '@/utils/validate.js';
+import { isInteger,isBtnZero } from '@/utils/validate.js';
 
 export default {
   name: 'purchaseOrderPayConfirmEdit',
@@ -127,7 +127,7 @@ export default {
         receivable: [
           { required: true, message: '请输入应收款', trigger: 'blur' },
           {
-            validator: isInteger,
+            validator: isBtnZero,
             triger: 'blur'
           }
         ]

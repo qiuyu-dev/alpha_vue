@@ -28,12 +28,18 @@
         <el-row :gutter="1">
           <el-col :span="12">
             <el-form-item label="服务总单价" :label-width="formLabelWidth" prop="price">
-              <el-input
+              <!-- <el-input
                 v-model="purchaseOrderPayForm.price"
                 autocomplete="off"
                 style="width: 90%"
                 placeholder="单价"
-              ></el-input>
+              ></el-input> -->
+              <el-input  v-model="purchaseOrderPayForm.price" 
+              placeholder="服务总单价" autocomplete="off"
+                style="width: 90%"></el-input>         
+                <!-- <el-input-number :min="0" :precision="2" :controls="false"
+                      v-model="purchaseOrderPayForm.price" type="number" style="width: 90%" placeholder="服务总单价"> -->
+         </el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -111,8 +117,8 @@
 </template>
 
 <script>
-import ImgUpload from './ImgUpload';
-import { isInteger } from '@/utils/validate.js';
+import ImgUpload from './ImgUpload'
+import { isInteger ,isBtnZero} from '@/utils/validate.js'
 
 export default {
   name: 'purchaseOrderPayEdit',
@@ -126,15 +132,16 @@ export default {
       formLabelWidth: '120px',
       rules: {
         price: [
-          { required: true, message: '请输入单价', trigger: 'blur' },
+          { required: true, message: '请输入单价', trigger: 'blur' }
+          ,
           {
-            validator: isInteger,
+            validator: isBtnZero,
             triger: 'blur'
           }
         ],
         prepayment: [
           { required: true, message: '请输入预付款', trigger: 'blur' },
-          {validator: isInteger, triger: 'blur'}
+          {validator: isBtnZero, triger: 'blur'}
         ],
         effectiveDate: [
           { required: true, message: '请选择开始日', trigger: 'blur' }
