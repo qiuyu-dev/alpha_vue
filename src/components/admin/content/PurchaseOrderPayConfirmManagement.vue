@@ -1,32 +1,13 @@
 <template>
   <div>
-    <!-- <el-row style="margin: 18px 0px 0px 18px "> -->
+    <!-- <el-row > -->
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-        <el-breadcrumb-item>系统功能</el-breadcrumb-item>-->
-        <el-breadcrumb-item>采购单付费</el-breadcrumb-item>
+        <el-breadcrumb-item>内容管理</el-breadcrumb-item>-->
+        <el-breadcrumb-item>收款维护</el-breadcrumb-item>
       </el-breadcrumb>
     <!-- </el-row> -->
     <el-card style="margin: 1% 1%;width: 98%">
-      <div style="text-align: left">
-        <el-form :model="formInline" :inline="true">
-          <el-form-item label="姓名">
-            <el-input v-model="formInline.name" placeholder="姓名"></el-input>
-          </el-form-item>
-          <!-- <el-form-item label="证件号">
-            <el-input v-model="formInline.recordNumber" placeholder="证件号"></el-input>
-          </el-form-item> -->
-          <el-form-item label="产品">
-            <el-input v-model="formInline.productName" placeholder="产品"></el-input>
-          </el-form-item>
-          <el-form-item label="保单号">
-            <el-input v-model="formInline.outTradeNo" placeholder="保单号"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="loadData">查询</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
       <el-table
         ref="multipleTable"
         :data="datas"
@@ -36,84 +17,73 @@
       >
         <el-table-column type="expand">
           <template slot-scope="scope">
+            <!-- {{scope.row.customerProducts}} -->
             <ul>
-              <li v-for="item in scope.row.batchFeeMsts" :key="item.id">
-                批号：{{item.batchNumber}}
-                ，开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}，结束日{{item.closingDate|dateformat('YYYY-MM-DD')}}
-                ，状态：
-                <state-name :sid="item.state.toString()"></state-name>
-                ，备注：{{item.remark}}，收款备注：{{item.confirmRemark}}
+              <li v-for="item in scope.row.batchFeeDetails">
+                客户：
+                <alpah-subject-name :asid="item.cpExcelDetail.customerSubjectId.toString()"></alpah-subject-name>
+                ，产品：<product-name :pid="item.cpExcelDetail.productId.toString()"></product-name>
+                ，开始日：{{item.cpExcelDetail.effectiveDate|dateformat('YYYY-MM-DD')}}
               </li>
             </ul>
           </template>
         </el-table-column>
-        <el-table-column type="selection" prop="id" label="ID" ></el-table-column>
-
-        <!-- <el-table-column prop="detailId" label="ID" width="100"></el-table-column> -->
-        <!--  <el-table-column
+        <!-- <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>-->
+        <!-- <el-table-column
+          prop="policyNumber"
+          label="保单号"
+          width="100">
+        </el-table-column>
+        <el-table-column
           prop="product"
           label="产品"
           fit>
         </el-table-column>-->
-        <el-table-column prop="cpExcelMst.fileName" label="文件名"></el-table-column>
-            <el-table-column prop="cpExcelMst.paySubject.name" label="采购企业" ></el-table-column>
-             <el-table-column prop="cpExcelMst.chargeSubject.name" label="服务企业" ></el-table-column>
-    
-        <!-- <el-table-column label="付费方">
+        <el-table-column prop="batchNumber" label="服务批号" width="100"></el-table-column>
+        <el-table-column label="采购企业" >
           <template slot-scope="scope">
-            <alpah-subject-name :asid="scope.row.cpExcelMst.paySubjectId.toString()"></alpah-subject-name>
+            <alpah-subject-name :asid="scope.row.paySubjectId.toString()"></alpah-subject-name>
           </template>
         </el-table-column>
-        <el-table-column label="收费方" >
+        <el-table-column label="服务企业" >
           <template slot-scope="scope">
-            <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
+            <alpah-subject-name :asid="scope.row.chargeSubjectId.toString()"></alpah-subject-name>
           </template>
-        </el-table-column> -->
-        <el-table-column prop="outTradeNo" label="保单号"  show-overflow-tooltip></el-table-column>
-        <el-table-column prop="customerName" label="客户"></el-table-column>
-        <!-- <el-table-column prop="certificateType" label="证件类型" :formatter="ctFormat" fit></el-table-column> -->
-        <!-- <el-table-column prop="customerSubject.recordNumber" label="证件号" show-overflow-tooltip fit></el-table-column> -->
-        <!-- <el-table-column prop="phone" label="电话" show-overflow-tooltip fit></el-table-column> -->
-        <!-- <el-table-column label="产品">
-          <template slot-scope="scope">
-            <product-name :pid="scope.row.productId.toString()"></product-name>
-          </template>
-        </el-table-column> -->
-         <el-table-column prop="product.name" label="产品" ></el-table-column>
-     
-        <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日" width="100"></el-table-column>
-        <!-- <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日期" fit></el-table-column> -->
-        <el-table-column prop="confirmRemark" label="备注"  show-overflow-tooltip></el-table-column>
-        <!-- <el-table-column prop="operator" label="操作员"></el-table-column>     -->
-         <el-table-column prop="stateReason" label="状态"></el-table-column>
-        <!-- <el-table-column label="状态">
+        </el-table-column>
+        <el-table-column prop="effectiveNumber" label="有效数" fit></el-table-column>
+        <el-table-column label="服务单价" >
+          <template slot-scope="scope">{{(scope.row.price / 100).toFixed(2)}}</template>
+        </el-table-column>
+        <el-table-column label="预付款" >
+          <template slot-scope="scope">{{(scope.row.prepayment / 100).toFixed(2)}}</template>
+        </el-table-column>
+        <el-table-column label="应收款" >
+          <template slot-scope="scope">{{(scope.row.receivable / 100).toFixed(2)}}</template>
+        </el-table-column>
+        <el-table-column prop="effectiveDate" :formatter="dateFormat" width="100" label="开始日" ></el-table-column>
+        <el-table-column prop="closingDate" :formatter="dateFormat" width="100" label="结束日"></el-table-column>
+        <!-- <el-table-column
+          prop="img"
+            width="0" >
+        </el-table-column>-->
+        <el-table-column label="状态">
           <template slot-scope="scope">
             <state-name :sid="scope.row.state.toString()"></state-name>
           </template>
-        </el-table-column> -->
-        <!-- <el-table-column
-          fixed="right"
-          label="操作"
-          width="120">
+        </el-table-column>
+        <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button
-              @click.native.prevent="editOpt(scope.row)"
-              type="text"
-              size="small">
-              付费
-            </el-button>
+            <el-button @click.native.prevent="editOpt(scope.row)" type="text" size="small">收款</el-button>
           </template>
-        </el-table-column>-->
+        </el-table-column>
       </el-table>
       <el-row>
         <div style="margin: 20px 0 20px 0;float: right">
-          <purchase-order-pay-edit
-            :msg="mymsg"
-            :rToId="mytoid"
-            @onSubmit="loadData()"
-            ref="purchaseOrderPayEdit"
-          ></purchase-order-pay-edit>
-          <el-button class="add-button" @click="batchFeeOpt()" type="primary">付费</el-button>
+          <purchase-order-pay-confirm-edit @onSubmit="loadData()" ref="purchaseOrderPayConfirmEdit"></purchase-order-pay-confirm-edit>
+          <!-- <el-button class="add-button" @click="batchFeeOpt()">付费</el-button> -->
         </div>
       </el-row>
     </el-card>
@@ -121,30 +91,22 @@
 </template>
 
 <script>
-import PurchaseOrderPayEdit from "./PurchaseOrderPayEdit";
-// import AlpahSubjectName from "@/components/common/AlpahSubjectName.vue";
-// import ProductName from "@/components/common/ProductName.vue";
-// import StateName from "@/components/common/StateName.vue";
+import PurchaseOrderPayConfirmEdit from "./PurchaseOrderPayConfirmEdit";
+import AlpahSubjectName from "@/components/common/AlpahSubjectName.vue";
+import ProductName from "@/components/common/ProductName.vue";
+import StateName from "@/components/common/StateName.vue";
 export default {
-  name: "PurchaseOrderPayManagement",
+  name: "PurchaseOrderPayConfirmManagement",
   components: {
-    PurchaseOrderPayEdit,
-    // AlpahSubjectName,
-    // ProductName,
-    // StateName,
+    PurchaseOrderPayConfirmEdit,
+    AlpahSubjectName,
+    ProductName,
+    StateName,
   },
   data() {
     return {
-      formInline: {
-        name: '',
-        recordNumber: '',
-        productName: '',
-        outTradeNo: ''
-      },
       datas: [],
       multipleSelection: [],
-      mymsg: [],
-      mytoid: "",
     };
   },
   mounted() {
@@ -157,43 +119,36 @@ export default {
   },
   methods: {
     editOpt(item) {
-      this.$refs.purchaseOrderPayEdit.dialogFormVisible = true;
-      this.$refs.purchaseOrderPayEdit.purchaseOrderPayForm = {
-        id: item.detailId,
+      this.$refs.purchaseOrderPayConfirmEdit.dialogFormVisible = true;
+      this.$refs.purchaseOrderPayConfirmEdit.purchaseOrderPayConfirmForm = {
+        id: item.id,
         batchNumber: item.batchNumber,
-        ctype: item.ctype,
+        payId: item.payId,
         effectiveNumber: item.effectiveNumber,
-        price: item.price,
-        prepayment: item.prepayment,
+        price: (item.price / 100).toFixed(2),
+        prepayment: (item.prepayment / 100).toFixed(2),
+        receivable: (item.receivable / 100).toFixed(2),
         effectiveDate: item.effectiveDate,
         closingDate: item.closingDate,
         payTime: item.payTime,
         remark: item.remark,
-        pay_img: item.pay_img,
-        toId: item.toId,
+        img: item.img,  
+        url: item.url,        
+        confirmRemark: item.confirmRemark,
       };
     },
     loadData() {
       var _this = this;
-      this.$axios
-        .get("/admin/v1/pri/cpExcel/detailList", {
-            params: {
-              step: 3,
-              name: this.formInline.name,
-              recordNumber: this.formInline.recordNumber,
-              productName: this.formInline.productName,
-              outTradeNo: this.formInline.outTradeNo
-            }
-          })
-        .then((resp) => {
-          if (resp && resp.data.code === 200) {
-            _this.datas = resp.data.result;
-          } else {
-            this.$alert(resp.data.message, "提示", {
-              confirmButtonText: "确定",
-            });
-          }
-        });
+      this.$axios.get("/admin/v1/pri/batchFee/list").then((resp) => {
+        // alert(resp.data)
+        if (resp && resp.data.code === 200) {
+          _this.datas = resp.data.result;
+        } else {
+          this.$alert(resp.data.message, "提示", {
+            confirmButtonText: "确定",
+          });
+        }
+      });
     },
     toggleSelection(rows) {
       if (rows) {
@@ -212,46 +167,6 @@ export default {
       if (date !== null && date !== undefined) {
         return this.$moment(date).format("YYYY-MM-DD");
       }
-    },
-
-    batchFeeOpt() {
-      let toName1 = "";
-      let toName2 = "";
-      let display = "";
-      let bool1 = true;
-      let thistoid = "";
-      let checkArr = this.multipleSelection;
-      let ids = [];
-      if (checkArr.length === 0) {
-        display = "请选择";
-        bool1 = false;
-      } else {
-        checkArr.forEach(function (item) {
-          // alert(item.id)
-          ids.push(item.id);
-          console.log(item.detailId);
-          if (toName1 === "") {
-            toName1 = item.cpExcelMst.chargeSubjectId;
-            thistoid = item.toId;
-          } else {
-            toName2 = item.cpExcelMst.chargeSubjectId;
-            if (toName1 !== toName2) {
-              display = "选择同一服务企业";
-              bool1 = false;
-            }
-          }
-        });
-      }
-      if (!bool1) {
-        this.$alert(display, "提示", {
-          confirmButtonText: "确定",
-        });
-        return false;
-      }
-      // this.$refs.multipleTable.selection
-      this.mytoid = thistoid;
-      this.mymsg = ids;
-      this.$refs.purchaseOrderPayEdit.dialogFormVisible = bool1;
     },
   },
 };
