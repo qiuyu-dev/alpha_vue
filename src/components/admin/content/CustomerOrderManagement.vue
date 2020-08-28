@@ -77,8 +77,8 @@
         <!-- <el-table-column label="产品">
           <template slot-scope="scope">
             <product-name :pid="scope.row.productId.toString()" :key="commonkey"></product-name>
-          </template> -->
-        </el-table-column>
+          </template> 
+        </el-table-column> -->
         <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日" width="100"></el-table-column>
         <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日" width="100"></el-table-column>
         <el-table-column prop="remark" label="备注"  show-overflow-tooltip></el-table-column>
