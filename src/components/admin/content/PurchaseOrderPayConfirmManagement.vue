@@ -19,7 +19,7 @@
           <template slot-scope="scope">
             <!-- {{scope.row.customerProducts}} -->
             <ul>
-              <li v-for="item in scope.row.batchFeeDetails">
+              <li v-for="item in scope.row.batchFeeDetails" :key="item.id">
                 客户：
                 <alpah-subject-name :asid="item.cpExcelDetail.customerSubjectId.toString()"></alpah-subject-name>
                 ，产品：<product-name :pid="item.cpExcelDetail.productId.toString()"></product-name>

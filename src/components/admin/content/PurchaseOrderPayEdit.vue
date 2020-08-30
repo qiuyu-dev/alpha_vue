@@ -38,8 +38,8 @@
               placeholder="服务总单价" autocomplete="off"
                 style="width: 90%"></el-input>         
                 <!-- <el-input-number :min="0" :precision="2" :controls="false"
-                      v-model="purchaseOrderPayForm.price" type="number" style="width: 90%" placeholder="服务总单价"> -->
-         </el-input-number>
+                      v-model="purchaseOrderPayForm.price" type="number" style="width: 90%" placeholder="服务总单价">
+                </el-input-number>  -->
             </el-form-item>
           </el-col>
           <el-col :span="12">
