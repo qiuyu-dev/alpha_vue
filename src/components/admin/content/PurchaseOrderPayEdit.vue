@@ -122,7 +122,7 @@ import { isInteger ,isBtnZero} from '@/utils/validate.js'
 
 export default {
   name: 'purchaseOrderPayEdit',
-  props: ['msg', 'rToId'],
+  props: ['msg'],
   components: { ImgUpload },
   objData: {},
   num: '',
@@ -132,16 +132,12 @@ export default {
       formLabelWidth: '120px',
       rules: {
         price: [
-          { required: true, message: '请输入单价', trigger: 'blur' }
-          ,
-          {
-            validator: isBtnZero,
-            triger: 'blur'
-          }
+          { required: true, message: '请输入单价', trigger: 'blur' },
+          { validator: isBtnZero, triger: 'blur'}
         ],
         prepayment: [
           { required: true, message: '请输入预付款', trigger: 'blur' },
-          {validator: isBtnZero, triger: 'blur'}
+          { validator: isBtnZero, triger: 'blur'}
         ],
         effectiveDate: [
           { required: true, message: '请选择开始日', trigger: 'blur' }
@@ -153,13 +149,13 @@ export default {
       purchaseOrderPayForm: {
         id: '',
         batchNumber: '',
-        cname: '',
+        // cname: '',
         effectiveNumber: '',
         price: '',
         prepayment: '',
         effectiveDate: '',
         closingDate: '',
-        payTime: '',
+        // payTime: '',
         remark: '',
         payImg: ''
       }
@@ -170,42 +166,43 @@ export default {
       this.purchaseOrderPayForm = {
         id: '',
         batchNumber: '',
-        name: '',
+        // cname: '',
         effectiveNumber: '',
         price: '',
         prepayment: '',
         effectiveDate: '',
         closingDate: '',
-        payTime: '',
+        // payTime: '',
         remark: '',
         payImg: ''
       }
       this.$refs.purchaseOrderPayForm.resetFields()
-      this.msg = ''
-      this.rToId = ''
+      this.msg = ''      
     },
     onSubmit (purchaseOrderPayForm) {
-      this.$axios
-        .post('/admin/v1/pri/batchFee/pay', {
-          batchNumber: this.objData.batchNumber,
-          // cid: this.objData.cid,
-          effectiveNumber: this.msg.length,
-          ids: this.msg + '',
-          price: this.purchaseOrderPayForm.price,
-          prepayment: this.purchaseOrderPayForm.prepayment,
-          effectiveDate: this.purchaseOrderPayForm.effectiveDate,
-          closingDate: this.purchaseOrderPayForm.closingDate,
-          // payTime: this.purchaseOrderPayForm.payTime,
-          remark: this.purchaseOrderPayForm.remark,
-          payImg: this.purchaseOrderPayForm.payImg //,
-          // toId : this.rToId
-        })
-        .then((resp) => {
-          if (resp && resp.data.code === 200) {
-            this.dialogFormVisible = false
-            this.$emit('onSubmit')
-          } else {
-            this.$alert(resp.data.message)
+      this.$refs.purchaseOrderPayForm.validate((valid) => {
+          if (valid) {
+            this.$axios
+                .post('/admin/v1/pri/batchFee/pay', {
+                  batchNumber: this.objData.batchNumber,
+                  effectiveNumber: this.msg.length,
+                  ids: this.msg + '',
+                  price: this.purchaseOrderPayForm.price,
+                  prepayment: this.purchaseOrderPayForm.prepayment,
+                  effectiveDate: this.purchaseOrderPayForm.effectiveDate,
+                  closingDate: this.purchaseOrderPayForm.closingDate,
+                  // payTime: this.purchaseOrderPayForm.payTime,
+                  remark: this.purchaseOrderPayForm.remark,
+                  payImg: this.purchaseOrderPayForm.payImg
+                })
+                .then((resp) => {
+                  if (resp && resp.data.code === 200) {
+                    this.dialogFormVisible = false
+                    this.$emit('onSubmit')
+                  } else {
+                    this.$alert(resp.data.message)
+                  }
+                })
           }
         })
     },
@@ -214,12 +211,11 @@ export default {
     },
     getData () {
       let _this = this
-      this.$axios
-        .get('/admin/v1/pri/batchFee/BatchFeeMstData')
+      this.$axios.get('/admin/v1/pri/batchFee/BatchFeeMstData')
         .then((resp) => {
           if (resp && resp.data.code === 200) {
             _this.objData = resp.data.result
-            console.log(_this.objData)
+            //console.log(_this.objData)
           } else {
             this.$alert(resp.data.message, '提示', {
               confirmButtonText: '确定'
@@ -235,7 +231,7 @@ export default {
   mounted () {
     this.getData()
     this.num = this.msg.length
-    console.log('num', this.num)
+    //console.log('num', this.num)
   }
 }
 </script>

@@ -34,45 +34,33 @@
         :max-height="tableHeight"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="expand" label="服务">
-          <template slot-scope="scope">
+         <el-table-column type="expand" label="详细">   
+            <template slot-scope="scope">
             <ul>
-              <li v-for="item in scope.row.customerProducts" :key="item.id">
-                客户：
-                <alpah-subject-name :asid="item.customerSubjectId.toString()"></alpah-subject-name>，服务：
-                <product-name :pid="item.productId.toString()"></product-name>
-                ，开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}
-                ，结束日：{{item.closingDate|dateformat('YYYY-MM-DD')}}
-              </li>
+              <li>
+                姓名：{{scope.row.customerSubject.name}}，证件类型：{{scope.row.customerSubject.recordType}}
+                ，证件号：{{scope.row.customerSubject.recordNumber}}，性别：{{scope.row.customerSubject.sex}}
+                ，年龄：{{scope.row.customerSubject.age}}，所在地：{{scope.row.customerSubject.location}}
+                <!-- ，备注：{{scope.row.remark}} -->
+          </li>
             </ul>
-          </template>
-        </el-table-column>
+            </template>
+        </el-table-column> 
         <el-table-column prop="cpExcelMst.fileName" label="文件名"></el-table-column>
            <el-table-column prop="cpExcelMst.paySubject.name" label="采购企业" ></el-table-column>
-         <!-- <el-table-column label="采购企业"> -->      
-          <!-- <template slot-scope="scope">
-            <alpah-subject-name :asid="scope.row.cpExcelMst.paySubjectId.toString()"></alpah-subject-name>
-          </template> -->
-        <!-- </el-table-column> -->
            <el-table-column prop="cpExcelMst.chargeSubject.name" label="服务企业" ></el-table-column>
-        <!-- <el-table-column label="服务企业">
-          <template slot-scope="scope">
-            <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
-          </template>
-        </el-table-column> -->
-        <el-table-column prop="outTradeNo" label="保单号" show-overflow-tooltip></el-table-column>
+           <el-table-column prop="outTradeNo" label="保单号" show-overflow-tooltip></el-table-column>
+         <el-table-column prop="product.name" label="产品"  show-overflow-tooltip></el-table-column>
         <el-table-column prop="customerName" label="客户"></el-table-column>
-             <el-table-column prop="customerSubject.recordType" label="类型" ></el-table-column>
+             <!-- <el-table-column prop="customerSubject.recordType" label="类型" ></el-table-column> -->
       
         <!-- <el-table-column label="类型">
           <template slot-scope="scope">
             <type-name :tid="scope.row.customerSubject.recordType.toString()"></type-name>
           </template>
         </el-table-column> -->
-        <el-table-column prop="customerSubject.recordNumber" label="证件号" show-overflow-tooltip>
-          
-        </el-table-column>
-          <el-table-column prop="product.name" label="产品" ></el-table-column>
+        <!-- <el-table-column prop="customerSubject.recordNumber" label="证件号" show-overflow-tooltip>          
+        </el-table-column> -->         
      
         <!-- <el-table-column label="产品">
           <template slot-scope="scope">
@@ -81,12 +69,7 @@
         </el-table-column> -->
         <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日" width="100"></el-table-column>
         <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日" width="100"></el-table-column>
-        <el-table-column prop="remark" label="备注"  show-overflow-tooltip></el-table-column>
-        <!-- <el-table-column
-        prop="operator"
-          label="操作员">
-        </el-table-column>-->
-        <el-table-column prop="stateReason" label="状态"></el-table-column>
+       <el-table-column prop="stateReason" label="状态"></el-table-column>
         <!-- <el-table-column label="状态">
           <template slot-scope="scope">
             <state-name :sid="scope.row.state.toString()"></state-name>

@@ -32,7 +32,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="1">
+        <!-- <el-row :gutter="1">
           <el-col :span="8">
             <el-form-item label="生效日：" :label-width="formLabelWidth">
               <el-form-item prop="effectiveDate">
@@ -47,7 +47,7 @@
               </el-form-item>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="1">
           <el-col :span="8">
             <el-form-item label="性别：" :label-width="formLabelWidth" prop="sex">
@@ -65,11 +65,11 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="1">
+        <!-- <el-row :gutter="1">
           <el-form-item label="备注：" :label-width="formLabelWidth" prop="remark">
             <label>{{purchaseOrderForm.remark}}</label>
           </el-form-item>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="1">
           <el-form-item label="操作" :label-width="formLabelWidth" prop="opt">
             <el-select class="select" v-model="purchaseOrderForm.opt" placeholder="请选择操作" disabled>

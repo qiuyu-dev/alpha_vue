@@ -39,9 +39,12 @@
             <ul>
               <li v-for="item in scope.row.batchFeeMsts" :key="item.id">
                 批号：{{item.batchNumber}}
+                ，单价：{{(item.price/ 100).toFixed(2)}}
+                ，预付款：{{(item.prepayment/ 100).toFixed(2)}}
                 ，开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}，结束日{{item.closingDate|dateformat('YYYY-MM-DD')}}
-                ，状态：
-                <state-name :sid="item.state.toString()"></state-name>
+                <!-- ，状态：
+                <state-name :sid="item.state.toString()"></state-name> -->
+                 ，状态：{{item.stateReason}}
                 ，备注：{{item.remark}}，收款备注：{{item.confirmRemark}}
               </li>
             </ul>
@@ -56,35 +59,14 @@
           fit>
         </el-table-column>-->
         <el-table-column prop="cpExcelMst.fileName" label="文件名"></el-table-column>
-        <el-table-column label="付费方">
-          <template slot-scope="scope">
-            <alpah-subject-name :asid="scope.row.cpExcelMst.paySubjectId.toString()"></alpah-subject-name>
-          </template>
-        </el-table-column>
-        <el-table-column label="收费方" >
-          <template slot-scope="scope">
-            <alpah-subject-name :asid="scope.row.cpExcelMst.chargeSubjectId.toString()"></alpah-subject-name>
-          </template>
-        </el-table-column>
-        <el-table-column prop="outTradeNo" label="保单号"></el-table-column>
+        <el-table-column prop="cpExcelMst.paySubject.name" label="采购企业" ></el-table-column>
+        <el-table-column prop="cpExcelMst.chargeSubject.name" label="服务企业" ></el-table-column>
+        <el-table-column prop="outTradeNo" label="保单号" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="product.name" label="产品"  show-overflow-tooltip></el-table-column>
         <el-table-column prop="customerName" label="客户"></el-table-column>
-        <!-- <el-table-column prop="certificateType" label="证件类型" :formatter="ctFormat" fit></el-table-column> -->
-        <!-- <el-table-column prop="customerSubject.recordNumber" label="证件号" show-overflow-tooltip fit></el-table-column> -->
-        <!-- <el-table-column prop="phone" label="电话" show-overflow-tooltip fit></el-table-column> -->
-        <el-table-column label="产品">
-          <template slot-scope="scope">
-            <product-name :pid="scope.row.productId.toString()"></product-name>
-          </template>
-        </el-table-column>
         <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日" width="100"></el-table-column>
-        <!-- <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日期" fit></el-table-column> -->
-        <el-table-column prop="confirmRemark" label="备注"></el-table-column>
-        <!-- <el-table-column prop="operator" label="操作员"></el-table-column>     -->
-        <el-table-column label="状态">
-          <template slot-scope="scope">
-            <state-name :sid="scope.row.state.toString()"></state-name>
-          </template>
-        </el-table-column>
+        <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日期" width="100"></el-table-column>
+        <el-table-column prop="stateReason" label="状态"></el-table-column>
         <!-- <el-table-column
           fixed="right"
           label="操作"
@@ -102,8 +84,7 @@
       <el-row>
         <div style="margin: 20px 0 20px 0;float: right">
           <purchase-order-pay-edit
-            :msg="mymsg"
-            :rToId="mytoid"
+            :msg="mymsg"            
             @onSubmit="loadData()"
             ref="purchaseOrderPayEdit"
           ></purchase-order-pay-edit>
@@ -137,8 +118,7 @@ export default {
       },
       datas: [],
       multipleSelection: [],
-      mymsg: [],
-      mytoid: "",
+      mymsg: []      
     };
   },
   mounted() {
@@ -211,22 +191,24 @@ export default {
     batchFeeOpt() {
       let toName1 = "";
       let toName2 = "";
+      let cName1 = "";
+      let cName2 = "";
       let display = "";
       let bool1 = true;
       let thistoid = "";
       let checkArr = this.multipleSelection;
       let ids = [];
+      let customerIds = [];
       if (checkArr.length === 0) {
         display = "请选择";
         bool1 = false;
       } else {
         checkArr.forEach(function (item) {
-          // alert(item.id)
           ids.push(item.id);
-          console.log(item.detailId);
+          customerIds.push(item.customerSubjectId);
+          // console.log(item.id);
           if (toName1 === "") {
             toName1 = item.cpExcelMst.chargeSubjectId;
-            thistoid = item.toId;
           } else {
             toName2 = item.cpExcelMst.chargeSubjectId;
             if (toName1 !== toName2) {
@@ -234,8 +216,34 @@ export default {
               bool1 = false;
             }
           }
+          if (cName1 === "") {
+            cName1 = item.customerSubjectId;
+          } else {
+            cName2 = item.customerSubjectId;
+            if (cName1 === cName2) {
+              display = "有相同客户";
+              bool1 = false;
+            }
+          }
         });
+
+        var bRepeat = false;
+        customerIds.forEach(function (iIndex, sItem) {
+          for (var i = 0;i < customerIds.length - 1;i++) {
+              if (customerIds[i] == customerIds[i + 1]) {
+                bRepeat = true;
+                display = "有相同客户";
+              }
+          }
+        });
+        if(bRepeat){
+            this.$alert(display, "提示", {
+            confirmButtonText: "确定",
+            });
+          return false;
+        }
       }
+
       if (!bool1) {
         this.$alert(display, "提示", {
           confirmButtonText: "确定",
@@ -243,7 +251,6 @@ export default {
         return false;
       }
       // this.$refs.multipleTable.selection
-      this.mytoid = thistoid;
       this.mymsg = ids;
       this.$refs.purchaseOrderPayEdit.dialogFormVisible = bool1;
     },

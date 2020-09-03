@@ -41,7 +41,7 @@
           prop="product"
           label="产品"
           fit>
-        </el-table-column>-->
+        </el-table-column> -->
         <el-table-column prop="batchNumber" label="服务批号" width="100"></el-table-column>
         <el-table-column label="采购企业" >
           <template slot-scope="scope">
@@ -68,7 +68,7 @@
         <!-- <el-table-column
           prop="img"
             width="0" >
-        </el-table-column>-->
+        </el-table-column> -->
         <el-table-column label="状态">
           <template slot-scope="scope">
             <state-name :sid="scope.row.state.toString()"></state-name>
@@ -76,7 +76,8 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button @click.native.prevent="editOpt(scope.row)" type="text" size="small">收款</el-button>
+            <el-button @click.native.prevent="editOpt(scope.row,'1')" type="text" size="small">收款</el-button>
+            <el-button @click.native.prevent="editOpt(scope.row,'2')" type="text" size="small">驳回</el-button>       
           </template>
         </el-table-column>
       </el-table>
@@ -118,7 +119,7 @@ export default {
     },
   },
   methods: {
-    editOpt(item) {
+    editOpt(item, opt) {
       this.$refs.purchaseOrderPayConfirmEdit.dialogFormVisible = true;
       this.$refs.purchaseOrderPayConfirmEdit.purchaseOrderPayConfirmForm = {
         id: item.id,
@@ -130,11 +131,12 @@ export default {
         receivable: (item.receivable / 100).toFixed(2),
         effectiveDate: item.effectiveDate,
         closingDate: item.closingDate,
-        payTime: item.payTime,
+        // payTime: item.payTime,
         remark: item.remark,
-        img: item.img,  
+        // img: item.img,  
         url: item.url,        
         confirmRemark: item.confirmRemark,
+        opt: opt
       };
     },
     loadData() {
