@@ -16,9 +16,6 @@
           <el-input type="text" v-model="serviceForm.name"
                     auto-complete="off" placeholder="服务全称" ></el-input>
         </el-form-item>
-        <!-- <el-form-item style="width: 100%">
-          <el-button type="primary"  v-on:click="addservice">确定</el-button>
-        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
          <el-button type="primary"  v-on:click="addservice">确定</el-button>

@@ -33,8 +33,6 @@
               :data="getData()"
               :file-list="fileList"
               >
-              <!-- <i class="el-icon-upload"></i>
-              <div class="ec-upload__text">将文件拖到此处,或<em>点击上传</em></div> -->
               <el-button size="small" type="primary">点击上传</el-button>
               <div slot="tip" class="el-upload__tip">只能上传xlsx/xls的excel文件,且不超过500kb</div>
             </el-upload>
@@ -44,7 +42,6 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <!-- <el-button @click="dialogFormVisible = false">取 消</el-button> -->
         <el-button type="primary" @click="onSubmit()">确 定</el-button>
       </div>
     </el-dialog>

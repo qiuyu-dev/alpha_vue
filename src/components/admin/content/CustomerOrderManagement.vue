@@ -1,12 +1,8 @@
 <template>
   <div>
-    <!-- <el-row> -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-      <el-breadcrumb-item>系统功能</el-breadcrumb-item>-->
       <el-breadcrumb-item>客户单维护</el-breadcrumb-item>
     </el-breadcrumb>
-    <!-- </el-row> -->
     <el-card style="margin: 1% 1%;width: 98%">
       <div style="text-align: left">
         <el-form :model="formInline" :inline="true">
@@ -34,63 +30,33 @@
         :max-height="tableHeight"
         @selection-change="handleSelectionChange"
       >
-         <el-table-column type="expand" label="详细">   
+         <el-table-column type="expand" label="客户">
             <template slot-scope="scope">
             <ul>
               <li>
                 姓名：{{scope.row.customerSubject.name}}，证件类型：{{scope.row.customerSubject.recordType}}
                 ，证件号：{{scope.row.customerSubject.recordNumber}}，性别：{{scope.row.customerSubject.sex}}
                 ，年龄：{{scope.row.customerSubject.age}}，所在地：{{scope.row.customerSubject.location}}
-                <!-- ，备注：{{scope.row.remark}} -->
           </li>
             </ul>
             </template>
-        </el-table-column> 
+        </el-table-column>
         <el-table-column prop="cpExcelMst.fileName" label="文件名"></el-table-column>
-           <el-table-column prop="cpExcelMst.paySubject.name" label="采购企业" ></el-table-column>
-           <el-table-column prop="cpExcelMst.chargeSubject.name" label="服务企业" ></el-table-column>
-           <el-table-column prop="outTradeNo" label="保单号" show-overflow-tooltip></el-table-column>
-         <el-table-column prop="product.name" label="产品"  show-overflow-tooltip></el-table-column>
+        <el-table-column prop="cpExcelMst.paySubject.name" label="采购企业" ></el-table-column>
+        <el-table-column prop="cpExcelMst.chargeSubject.name" label="服务企业" ></el-table-column>
+        <el-table-column prop="outTradeNo" label="保单号" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="product.name" label="产品"  show-overflow-tooltip></el-table-column>
         <el-table-column prop="customerName" label="客户"></el-table-column>
-             <!-- <el-table-column prop="customerSubject.recordType" label="类型" ></el-table-column> -->
-      
-        <!-- <el-table-column label="类型">
-          <template slot-scope="scope">
-            <type-name :tid="scope.row.customerSubject.recordType.toString()"></type-name>
-          </template>
-        </el-table-column> -->
-        <!-- <el-table-column prop="customerSubject.recordNumber" label="证件号" show-overflow-tooltip>          
-        </el-table-column> -->         
-     
-        <!-- <el-table-column label="产品">
-          <template slot-scope="scope">
-            <product-name :pid="scope.row.productId.toString()" :key="commonkey"></product-name>
-          </template> 
-        </el-table-column> -->
         <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日" width="100"></el-table-column>
         <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日" width="100"></el-table-column>
-       <el-table-column prop="stateReason" label="状态"></el-table-column>
-        <!-- <el-table-column label="状态">
-          <template slot-scope="scope">
-            <state-name :sid="scope.row.state.toString()"></state-name>
-          </template>
-        </el-table-column> -->
+        <el-table-column prop="stateReason" label="状态"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <!-- <el-button
-              @click.native.prevent="editOpt(scope.row)"
-              type="text"
-              size="small">
-              编辑
-            </el-button>-->
             <el-button @click.native.prevent="deleteOpt(scope.row.id)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-row>
-        <!-- <div style="margin: 20px 0 20px 0;float: right">
-        <customer-order-edit @onSubmit="loadData()" ref="CustomerOrderEdit"></customer-order-edit>
-        </div>-->
         <div style="margin: 20px 0 20px 0;float: right">
           <upload-form @onUpload="loadData()" ref="UploadForm"></upload-form>
         </div>
@@ -101,20 +67,12 @@
 <script>
 import CustomerOrderEdit from './CustomerOrderEdit'
 import UploadForm from './UploadForm'
-// import AlpahSubjectName from '@/components/common/AlpahSubjectName.vue'
-// import ProductName from '@/components/common/ProductName.vue'
-// import StateName from '@/components/common/StateName.vue'
-// import TypeName from '@/components/common/TypeName.vue'
 
 export default {
   name: 'CustomerOrderManagement',
   components: {
     CustomerOrderEdit,
-    UploadForm,
-    // AlpahSubjectName,
-    // ProductName,
-    // StateName,
-    // TypeName
+    UploadForm
   },
   data () {
     return {
@@ -127,7 +85,7 @@ export default {
       datas: [],
       multipleSelection: [],
       commonkey: 0,
-				setDateTime: null
+      setDateTime: null
     }
   },
   mounted () {
@@ -140,12 +98,6 @@ export default {
     }
   },
   methods: {
-    // onSubmit(formInline) {
-    //     this.$axios
-    //           .post('/admin/v1/pri/co/section/customerorder', {
-    //             outTradeNo: this.formInline.outTradeNo,
-    //             recordNumber: this.formInline.recordNumber})
-    //   },
     dateFormat (row, column) {
       var date = row[column.property]
       if (date !== null && date !== undefined) {
@@ -198,9 +150,6 @@ export default {
         state: item.state,
         cpExcelMst: item.cpExcelMst
       }
-      // this.$refs.edit.category = {
-      //   id: item.category.id.toString()
-      // }
     },
     loadData (formInline) {
       var _this = this
@@ -280,23 +229,17 @@ export default {
           }
         })
     },
-    dateFormat (row, column) {
-      var date = row[column.property]
-      if (date !== null && date !== undefined) {
-        return this.$moment(date).format('YYYY-MM-DD')
-      }
-    },
     // 设置定时器
-			setDateTimeInterval(){
-				this.setDateTime = setInterval(()=>{
-					this.commonkey ++
-				}, 1000 * 60 * 3)
-			},
-			// 清除定时器
-			destroyed(){
-				clearInterval(this.setDateTime)
-				this.setDateTime = null
-			}
+    setDateTimeInterval () {
+      this.setDateTime = setInterval(() => {
+        this.commonkey++
+      }, 1000 * 60 * 3)
+    },
+    // 清除定时器
+    destroyed () {
+      clearInterval(this.setDateTime)
+      this.setDateTime = null
+    }
   }
 }
 </script>

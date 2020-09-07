@@ -1,21 +1,14 @@
 <template>
   <div>
-    <!-- <el-row style="margin: 18px 0px 0px 18px "> -->
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-        <el-breadcrumb-item>系统功能</el-breadcrumb-item>-->
-        <el-breadcrumb-item>采购单付费</el-breadcrumb-item>
-      </el-breadcrumb>
-    <!-- </el-row> -->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item>采购单付费</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card style="margin: 1% 1%;width: 98%">
       <div style="text-align: left">
         <el-form :model="formInline" :inline="true">
           <el-form-item label="姓名">
             <el-input v-model="formInline.name" placeholder="姓名"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="证件号">
-            <el-input v-model="formInline.recordNumber" placeholder="证件号"></el-input>
-          </el-form-item> -->
           <el-form-item label="产品">
             <el-input v-model="formInline.productName" placeholder="产品"></el-input>
           </el-form-item>
@@ -34,7 +27,7 @@
         :max-height="tableHeight"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="expand">
+        <el-table-column type="expand" label="付费">
           <template slot-scope="scope">
             <ul>
               <li v-for="item in scope.row.batchFeeMsts" :key="item.id">
@@ -42,52 +35,26 @@
                 ，单价：{{(item.price/ 100).toFixed(2)}}
                 ，预付款：{{(item.prepayment/ 100).toFixed(2)}}
                 ，开始日：{{item.effectiveDate|dateformat('YYYY-MM-DD')}}，结束日{{item.closingDate|dateformat('YYYY-MM-DD')}}
-                <!-- ，状态：
-                <state-name :sid="item.state.toString()"></state-name> -->
-                 ，状态：{{item.stateReason}}
+                ，状态：{{item.stateReason}}
                 ，备注：{{item.remark}}，收款备注：{{item.confirmRemark}}
               </li>
             </ul>
           </template>
         </el-table-column>
-        <el-table-column type="selection" prop="id" label="ID" ></el-table-column>
-
-        <!-- <el-table-column prop="detailId" label="ID" width="100"></el-table-column> -->
-        <!--  <el-table-column
-          prop="product"
-          label="产品"
-          fit>
-        </el-table-column>-->
+        <el-table-column type="selection" prop="id" label="ID"></el-table-column>
         <el-table-column prop="cpExcelMst.fileName" label="文件名"></el-table-column>
-        <el-table-column prop="cpExcelMst.paySubject.name" label="采购企业" ></el-table-column>
-        <el-table-column prop="cpExcelMst.chargeSubject.name" label="服务企业" ></el-table-column>
+        <el-table-column prop="cpExcelMst.paySubject.name" label="采购企业"></el-table-column>
+        <el-table-column prop="cpExcelMst.chargeSubject.name" label="服务企业"></el-table-column>
         <el-table-column prop="outTradeNo" label="保单号" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="product.name" label="产品"  show-overflow-tooltip></el-table-column>
+        <el-table-column prop="product.name" label="产品" show-overflow-tooltip></el-table-column>
         <el-table-column prop="customerName" label="客户"></el-table-column>
         <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日" width="100"></el-table-column>
         <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日期" width="100"></el-table-column>
         <el-table-column prop="stateReason" label="状态"></el-table-column>
-        <!-- <el-table-column
-          fixed="right"
-          label="操作"
-          width="120">
-          <template slot-scope="scope">
-            <el-button
-              @click.native.prevent="editOpt(scope.row)"
-              type="text"
-              size="small">
-              付费
-            </el-button>
-          </template>
-        </el-table-column>-->
       </el-table>
       <el-row>
         <div style="margin: 20px 0 20px 0;float: right">
-          <purchase-order-pay-edit
-            :msg="mymsg"            
-            @onSubmit="loadData()"
-            ref="purchaseOrderPayEdit"
-          ></purchase-order-pay-edit>
+          <purchase-order-pay-edit :msg="mymsg" @onSubmit="loadData()" ref="purchaseOrderPayEdit"></purchase-order-pay-edit>
           <el-button class="add-button" @click="batchFeeOpt()" type="primary">付费</el-button>
         </div>
       </el-row>
@@ -96,19 +63,13 @@
 </template>
 
 <script>
-import PurchaseOrderPayEdit from "./PurchaseOrderPayEdit";
-import AlpahSubjectName from "@/components/common/AlpahSubjectName.vue";
-import ProductName from "@/components/common/ProductName.vue";
-import StateName from "@/components/common/StateName.vue";
+import PurchaseOrderPayEdit from './PurchaseOrderPayEdit'
 export default {
-  name: "PurchaseOrderPayManagement",
+  name: 'PurchaseOrderPayManagement',
   components: {
-    PurchaseOrderPayEdit,
-    AlpahSubjectName,
-    ProductName,
-    StateName,
+    PurchaseOrderPayEdit
   },
-  data() {
+  data () {
     return {
       formInline: {
         name: '',
@@ -118,20 +79,20 @@ export default {
       },
       datas: [],
       multipleSelection: [],
-      mymsg: []      
-    };
+      mymsg: []
+    }
   },
-  mounted() {
-    this.loadData();
+  mounted () {
+    this.loadData()
   },
   computed: {
-    tableHeight() {
-      return window.innerHeight - 320;
-    },
+    tableHeight () {
+      return window.innerHeight - 320
+    }
   },
   methods: {
-    editOpt(item) {
-      this.$refs.purchaseOrderPayEdit.dialogFormVisible = true;
+    editOpt (item) {
+      this.$refs.purchaseOrderPayEdit.dialogFormVisible = true
       this.$refs.purchaseOrderPayEdit.purchaseOrderPayForm = {
         id: item.detailId,
         batchNumber: item.batchNumber,
@@ -144,118 +105,117 @@ export default {
         payTime: item.payTime,
         remark: item.remark,
         pay_img: item.pay_img,
-        toId: item.toId,
-      };
+        toId: item.toId
+      }
     },
-    loadData() {
-      var _this = this;
+    loadData () {
+      var _this = this
       this.$axios
-        .get("/admin/v1/pri/cpExcel/detailList", {
-            params: {
-              step: 3,
-              name: this.formInline.name,
-              recordNumber: this.formInline.recordNumber,
-              productName: this.formInline.productName,
-              outTradeNo: this.formInline.outTradeNo
-            }
-          })
+        .get('/admin/v1/pri/cpExcel/detailList', {
+          params: {
+            step: 3,
+            name: this.formInline.name,
+            recordNumber: this.formInline.recordNumber,
+            productName: this.formInline.productName,
+            outTradeNo: this.formInline.outTradeNo
+          }
+        })
         .then((resp) => {
           if (resp && resp.data.code === 200) {
-            _this.datas = resp.data.result;
+            _this.datas = resp.data.result
           } else {
-            this.$alert(resp.data.message, "提示", {
-              confirmButtonText: "确定",
-            });
+            this.$alert(resp.data.message, '提示', {
+              confirmButtonText: '确定'
+            })
           }
-        });
+        })
     },
-    toggleSelection(rows) {
+    toggleSelection (rows) {
       if (rows) {
         rows.forEach((row) => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
       } else {
-        this.$refs.multipleTable.clearSelection();
+        this.$refs.multipleTable.clearSelection()
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    handleSelectionChange (val) {
+      this.multipleSelection = val
     },
-    dateFormat(row, column) {
-      var date = row[column.property];
+    dateFormat (row, column) {
+      var date = row[column.property]
       if (date !== null && date !== undefined) {
-        return this.$moment(date).format("YYYY-MM-DD");
+        return this.$moment(date).format('YYYY-MM-DD')
       }
     },
 
-    batchFeeOpt() {
-      let toName1 = "";
-      let toName2 = "";
-      let cName1 = "";
-      let cName2 = "";
-      let display = "";
-      let bool1 = true;
-      let thistoid = "";
-      let checkArr = this.multipleSelection;
-      let ids = [];
-      let customerIds = [];
+    batchFeeOpt () {
+      let toName1 = ''
+      let toName2 = ''
+      let cName1 = ''
+      let cName2 = ''
+      let display = ''
+      let bool1 = true
+      let checkArr = this.multipleSelection
+      let ids = []
+      let customerIds = []
       if (checkArr.length === 0) {
-        display = "请选择";
-        bool1 = false;
+        display = '请选择'
+        bool1 = false
       } else {
         checkArr.forEach(function (item) {
-          ids.push(item.id);
-          customerIds.push(item.customerSubjectId);
+          ids.push(item.id)
+          customerIds.push(item.customerSubjectId)
           // console.log(item.id);
-          if (toName1 === "") {
-            toName1 = item.cpExcelMst.chargeSubjectId;
+          if (toName1 === '') {
+            toName1 = item.cpExcelMst.chargeSubjectId
           } else {
-            toName2 = item.cpExcelMst.chargeSubjectId;
+            toName2 = item.cpExcelMst.chargeSubjectId
             if (toName1 !== toName2) {
-              display = "选择同一服务企业";
-              bool1 = false;
+              display = '选择同一服务企业'
+              bool1 = false
             }
           }
-          if (cName1 === "") {
-            cName1 = item.customerSubjectId;
+          if (cName1 === '') {
+            cName1 = item.customerSubjectId
           } else {
-            cName2 = item.customerSubjectId;
+            cName2 = item.customerSubjectId
             if (cName1 === cName2) {
-              display = "有相同客户";
-              bool1 = false;
+              display = '有相同客户'
+              bool1 = false
             }
           }
-        });
+        })
 
-        var bRepeat = false;
+        var bRepeat = false
         customerIds.forEach(function (iIndex, sItem) {
-          for (var i = 0;i < customerIds.length - 1;i++) {
-              if (customerIds[i] == customerIds[i + 1]) {
-                bRepeat = true;
-                display = "有相同客户";
-              }
+          for (var i = 0; i < customerIds.length - 1; i++) {
+            if (customerIds[i] === customerIds[i + 1]) {
+              bRepeat = true
+              display = '有相同客户'
+            }
           }
-        });
-        if(bRepeat){
-            this.$alert(display, "提示", {
-            confirmButtonText: "确定",
-            });
-          return false;
+        })
+        if (bRepeat) {
+          this.$alert(display, '提示', {
+            confirmButtonText: '确定'
+          })
+          return false
         }
       }
 
       if (!bool1) {
-        this.$alert(display, "提示", {
-          confirmButtonText: "确定",
-        });
-        return false;
+        this.$alert(display, '提示', {
+          confirmButtonText: '确定'
+        })
+        return false
       }
       // this.$refs.multipleTable.selection
-      this.mymsg = ids;
-      this.$refs.purchaseOrderPayEdit.dialogFormVisible = bool1;
-    },
-  },
-};
+      this.mymsg = ids
+      this.$refs.purchaseOrderPayEdit.dialogFormVisible = bool1
+    }
+  }
+}
 </script>
 
 <style scoped>

@@ -32,27 +32,7 @@
               prop="product"
             >{{customerServiceForm.product}}</el-form-item>
           </el-col>
-          <!-- <el-col :span="8">
-            <div style="margin: 10px 0 10px 0;">
-              <el-form-item label="证件类型" :label-width="formLabelWidth" prop="certificateType">
-                <el-select
-                  class="select"
-                  v-model="customerServiceForm.certificateType"
-                  placeholder="请选择分类"
-                  disabled
-                >
-                  <el-option label="身份证" value="1"></el-option>
-                  <el-option label="护照" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-col>-->
-          <!-- <el-col :span="12">
-            <el-form-item label="证件号" :label-width="formLabelWidth" prop="insuredId">
-              <el-input v-model="customerServiceForm.insuredId" autocomplete="off" readonly="true" disabled></el-input>
-            </el-form-item>
-          </el-col>-->
-        </el-row>
+     </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item
@@ -62,18 +42,11 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="结束日：" :label-width="formLabelWidth">
-              <!-- <el-form-item prop="closingDate" readonly="true"> -->
               {{customerServiceForm.closingDate|dateformat('YYYY-MM-DD')}}
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- <el-row>
-          <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">
-            <el-input v-model="customerServiceForm.remark" autocomplete="off" readonly="true"  disabled></el-input>
-          </el-form-item>
-        </el-row>-->
-        <!-- <div style="margin: 10px 0 10px 0;"> -->
-        <el-row :gutter="10">
+         <el-row :gutter="10">
           <el-form-item label="操作" :label-width="formLabelWidth" prop="opt">
             <el-select
               class="select"
@@ -86,7 +59,6 @@
             </el-select>
           </el-form-item>
         </el-row>
-        <!-- </div> -->
         <el-row>
           <el-form-item label="说明" :label-width="formLabelWidth" prop="reson">
             <el-col :span="16">
@@ -102,7 +74,6 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <!-- <el-button @click="dialogFormVisible = false">取 消</el-button> -->
         <el-button type="primary" @click="onSubmit(customerServiceForm)">确 定</el-button>
       </div>
     </el-dialog>
@@ -172,9 +143,7 @@ export default {
           this.$axios
             .post('/admin/v1/pri/customerProduct/complaint', {
               id: this.customerServiceForm.id,
-              // remark: this.customerServiceForm.remark,
               opt: this.customerServiceForm.opt,
-              // state: this.customerServiceForm.state,
               reson: this.customerServiceForm.reson
             })
             .then((resp) => {

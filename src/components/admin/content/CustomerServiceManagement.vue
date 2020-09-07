@@ -1,12 +1,8 @@
 <template>
   <div style="text-align: left">
-    <!-- <el-row> -->
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-        <el-breadcrumb-item>系统功能</el-breadcrumb-item>-->
         <el-breadcrumb-item>服务评价维护</el-breadcrumb-item>
       </el-breadcrumb>
-    <!-- </el-row> -->
     <el-card style="margin: 1% 1%;width: 98%">
       <el-table
         ref="multipleTable"
@@ -37,44 +33,17 @@
           <template slot-scope="scope">
             <alpah-subject-name :asid="scope.row.sourceMst.chargeSubjectId.toString()"></alpah-subject-name>
           </template>
-           <!-- <el-table-column prop="sourceMst.paySubject.name" label="采购企业" ></el-table-column>
-            <el-table-column prop="sourceMst.chargeSubject.name" label="服务企业" ></el-table-column> -->
-     
-        </el-table-column>
-        <!-- <el-table-column
-          prop="productId"
-          label="备案编号"
-          fit>
-        </el-table-column>-->
+         </el-table-column>
         <el-table-column label="客户" prop="customerSubject.name"></el-table-column>
         <el-table-column label="电话" prop="customerSubject.phone"></el-table-column>
         <el-table-column label="服务" prop="product.name"></el-table-column>
-        <!-- <el-table-column
-          prop="customerSubjectId"
-          label="证件号"
-          show-overflow-tooltip
-          fit>
-        </el-table-column>
-        <el-table-column
-          prop="customerSubjectId"
-          label="电话"
-          show-overflow-tooltip
-          fit> 
-        </el-table-column>-->
-        <el-table-column prop="effectiveDate" :formatter="dateFormat" label="开始日" width="100"></el-table-column>
+       <el-table-column prop="effectiveDate" :formatter="dateFormat" label="开始日" width="100"></el-table-column>
         <el-table-column prop="closingDate" :formatter="dateFormat" label="结束日" width="100"></el-table-column>
-         <!-- <el-table-column prop="stateReason" label="状态"></el-table-column> -->
         <el-table-column label="状态">
           <template slot-scope="scope">
             <state-name :sid="scope.row.state.toString()"></state-name>
           </template>
         </el-table-column>
-        <!-- <el-table-column
-          prop="detailId"
-          label="ID"
-          width="100"
-          fit>
-        </el-table-column>-->
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button @click.native.prevent="editOpt(scope.row,'2')" type="text" size="small">评价</el-button>
@@ -92,85 +61,76 @@
 </template>
 
 <script>
-import CustomerServiceEdit from "./CustomerServiceEdit";
-import AlpahSubjectName from "@/components/common/AlpahSubjectName.vue";
-import ProductName from "@/components/common/ProductName.vue";
-import StateName from "@/components/common/StateName.vue";
+import CustomerServiceEdit from './CustomerServiceEdit'
+// import AlpahSubjectName from "@/components/common/AlpahSubjectName.vue";
+// import ProductName from "@/components/common/ProductName.vue";
+// import StateName from "@/components/common/StateName.vue";
 
 export default {
-  name: "CustomerServicetManagement",
+  name: 'CustomerServicetManagement',
   components: { CustomerServiceEdit
-  , AlpahSubjectName, ProductName, StateName 
+  // , AlpahSubjectName, ProductName, StateName
   },
-  data() {
+  data () {
     return {
       datas: [],
-      multipleSelection: [],
-    };
+      multipleSelection: []
+    }
   },
-  mounted() {
-    this.loadData();
+  mounted () {
+    this.loadData()
   },
   computed: {
-    tableHeight() {
-      return window.innerHeight - 320;
-    },
+    tableHeight () {
+      return window.innerHeight - 320
+    }
   },
   methods: {
-    editOpt(item, opt) {
-      this.$refs.CustomerServiceEdit.dialogFormVisible = true;
+    editOpt (item, opt) {
+      this.$refs.CustomerServiceEdit.dialogFormVisible = true
       this.$refs.CustomerServiceEdit.customerServiceForm = {
         id: item.id,
-        // seqNumber: item.seqNumber,
-        // policyNumber: item.policyNumber,
         product: item.product.name,
         insuredName: item.customerSubject.name,
-        // certificateType: item.certificateType,
-        // insuredId: item.insuredId,
         phone: item.customerSubject.phone,
         effectiveDate: item.effectiveDate,
         closingDate: item.closingDate,
-        // sex: item.sex,
-        // age: item.age.toString(), // 不加验证报错
-        // location: item.location,
         remark: item.remark,
-        opt: opt,
-        // state: item.state,
-        // reson: item.reson
-      };
+        opt: opt
+      }
     },
-    loadData() {
-      var _this = this;
-      this.$axios.get("/admin/v1/pri/customerProduct/list").then((resp) => {
+    loadData () {
+      var _this = this
+      this.$axios.get('/admin/v1/pri/customerProduct/list').then((resp) => {
         if (resp && resp.data.code === 200) {
-          _this.datas = resp.data.result;
+          _this.datas = resp.data.result
         } else {
-          this.$alert(resp.data.message, "提示", {
-            confirmButtonText: "确定",
-          });
+          this.$alert(resp.data.message, '提示', {
+            confirmButtonText: '确定'
+          })
         }
-      });
+      })
     },
-    toggleSelection(rows) {
+    toggleSelection (rows) {
       if (rows) {
         rows.forEach((row) => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
       } else {
-        this.$refs.multipleTable.clearSelection();
+        this.$refs.multipleTable.clearSelection()
       }
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    handleSelectionChange (val) {
+      this.multipleSelection = val
     },
-    dateFormat(row, column) {
-      var date = row[column.property];
+    dateFormat (row, column) {
+      var date = row[column.property]
       if (date !== null && date !== undefined) {
-        return this.$moment(date).format("YYYY-MM-DD");
+        return this.$moment(date).format('YYYY-MM-DD')
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>

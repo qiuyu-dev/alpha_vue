@@ -2,9 +2,6 @@
   <div style="text-align: left">
     <el-dialog title="修改服务" :visible.sync="dialogFormVisible" width="40%">
       <el-form v-model="selectedService" ref="dataForm" label-width="80px">
-        <!-- <el-form-item label="id" label-width="80px" prop="id">
-          <label>{{selectedService.id}}</label>
-        </el-form-item>-->
         <el-form-item label="备案编号" prop="recordNumber">
           <el-input v-model="selectedService.recordNumber" autocomplete="off" placeholder="备案编号"></el-input>
         </el-form-item>
@@ -13,20 +10,14 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <!-- <el-button @click="dialogFormVisible = false">取 消</el-button> -->
         <el-button @click="onSubmit(selectedService)"  type="primary">确 定</el-button>
       </div>
     </el-dialog>
-    <!-- <el-row> -->
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <!-- <el-breadcrumb-item :to="{ path: '/admin/dashboard' }">管理中心</el-breadcrumb-item>
-        <el-breadcrumb-item>系统功能</el-breadcrumb-item>-->
         <el-breadcrumb-item>建保服务维护</el-breadcrumb-item>
       </el-breadcrumb>
-    <!-- </el-row> -->
     <el-card style="margin: 1% 1%;width: 98%">
       <el-table ref="multipleTable" :data="services" stripe :max-height="tableHeight">
-        <!-- <el-table-column prop="id" label="ID" show-overflow-tooltip fit></el-table-column> -->
         <el-table-column label="企业">
           <template slot-scope="scope">
             <alpah-subject-name :asid="scope.row.alphaSubjectId.toString()"></alpah-subject-name>
@@ -50,12 +41,9 @@
 
 <script>
 import ServiceEdit from './ServiceEdit'
-import AlpahSubjectName from '@/components/common/AlpahSubjectName.vue'
-import ProductName from '@/components/common/ProductName.vue'
-import StateName from '@/components/common/StateName.vue'
 export default {
   name: 'ServiceManagement',
-  components: { ServiceEdit, AlpahSubjectName, ProductName, StateName },
+  components: { ServiceEdit },
   data () {
     return {
       services: [],
@@ -116,7 +104,6 @@ export default {
     },
 
     onSubmit (service) {
-      let _this = this
       this.$axios
         .post('/admin/v1/pub/product/save', {
           id: service.id,
