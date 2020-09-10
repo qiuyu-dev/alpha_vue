@@ -20,7 +20,8 @@
       <el-table ref="multipleTable" :data="services" stripe :max-height="tableHeight">
         <el-table-column label="企业">
           <template slot-scope="scope">
-            <alpah-subject-name :asid="scope.row.alphaSubjectId.toString()"></alpah-subject-name>
+            {{scope.row.alphaSubject.name}}
+            <!-- <alpha-subject-name :asid="scope.row.alphaSubjectId.toString()"></alpha-subject-name> -->
           </template>
         </el-table-column>
         <el-table-column prop="recordNumber" label="备案编号"></el-table-column>
@@ -41,9 +42,10 @@
 
 <script>
 import ServiceEdit from './ServiceEdit'
+import AlphaSubjectName from "@/components/common/AlphaSubjectName.vue"
 export default {
   name: 'ServiceManagement',
-  components: { ServiceEdit },
+  components: { ServiceEdit, AlphaSubjectName },
   data () {
     return {
       services: [],

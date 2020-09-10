@@ -19,7 +19,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
          <el-button type="primary"  v-on:click="addservice">确定</el-button>
-         </div>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -53,7 +53,6 @@ export default {
         .post('/admin/v1/pub/product/save', {
           recordNumber: this.serviceForm.recordNumber,
           name: this.serviceForm.name
-
         })
         .then(resp => {
           if (resp.data.code === 200) {
