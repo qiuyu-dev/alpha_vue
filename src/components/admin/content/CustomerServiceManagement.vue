@@ -26,22 +26,22 @@
         </el-table-column>
         <el-table-column label="采购企业">
           <template slot-scope="scope">
-            <alpah-subject-name :asid="scope.row.sourceMst.paySubjectId.toString()"></alpah-subject-name>
+             {{scope.row.sourceMst.paySubject.name}}
           </template>
         </el-table-column>
         <el-table-column label="服务企业">
           <template slot-scope="scope">
-            <alpah-subject-name :asid="scope.row.sourceMst.chargeSubjectId.toString()"></alpah-subject-name>
+            {{scope.row.sourceMst.chargeSubject.name}}
           </template>
          </el-table-column>
         <el-table-column label="客户" prop="customerSubject.name"></el-table-column>
         <el-table-column label="电话" prop="customerSubject.phone"></el-table-column>
         <el-table-column label="服务" prop="product.name"></el-table-column>
-       <el-table-column prop="effectiveDate" :formatter="dateFormat" label="开始日" width="100"></el-table-column>
+        <el-table-column prop="effectiveDate" :formatter="dateFormat" label="开始日" width="100"></el-table-column>
         <el-table-column prop="closingDate" :formatter="dateFormat" label="结束日" width="100"></el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">
-            <state-name :sid="scope.row.state.toString()"></state-name>
+            {{scope.row.stateReason}}
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作">
@@ -62,14 +62,10 @@
 
 <script>
 import CustomerServiceEdit from './CustomerServiceEdit'
-// import AlpahSubjectName from "@/components/common/AlpahSubjectName.vue";
-// import ProductName from "@/components/common/ProductName.vue";
-// import StateName from "@/components/common/StateName.vue";
 
 export default {
   name: 'CustomerServicetManagement',
   components: { CustomerServiceEdit
-  // , AlpahSubjectName, ProductName, StateName
   },
   data () {
     return {
