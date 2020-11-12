@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align: left">
+  <div style="text-align: center">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item>服务评价维护</el-breadcrumb-item>
       </el-breadcrumb>
@@ -57,6 +57,13 @@
         </div>
       </el-row>
     </el-card>
+    <el-pagination
+      background
+      layout="total, prev, pager, next, jumper"
+      @current-change="handleCurrentChange"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>     
   </div>
 </template>
 
@@ -70,7 +77,9 @@ export default {
   data () {
     return {
       datas: [],
-      multipleSelection: []
+      multipleSelection: [],
+      pageSize: 10,
+      total: 0
     }
   },
   mounted () {
@@ -97,9 +106,10 @@ export default {
     },
     loadData () {
       var _this = this
-      this.$axios.get('/admin/v1/pri/customerProduct/list').then((resp) => {
+      this.$axios.get('/admin/v1/pri/customerProduct/list/' + this.pageSize + '/1').then((resp) => {
         if (resp && resp.data.code === 200) {
-          _this.datas = resp.data.result
+          _this.datas = resp.data.result.content
+          _this.total = resp.data.result.totalElements
         } else {
           this.$alert(resp.data.message, '提示', {
             confirmButtonText: '确定'
@@ -107,6 +117,15 @@ export default {
         }
       })
     },
+    handleCurrentChange (page) {
+        var _this = this
+        this.$axios.get('/admin/v1/pri/customerProduct/list/' + this.pageSize + '/' + page).then(resp => {
+          if (resp && resp.data.code === 200) {
+            _this.datas = resp.data.result.content
+            _this.total = resp.data.result.totalElements
+          }
+        })
+    },     
     toggleSelection (rows) {
       if (rows) {
         rows.forEach((row) => {

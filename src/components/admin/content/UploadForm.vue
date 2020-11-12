@@ -91,12 +91,12 @@ export default {
       // 判断上传文件格式
       if (this.fileTemp) {
         if ((this.fileTemp.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') || (this.fileTemp.type == 'application/vnd.ms-excel')) {
-          if (this.fileTemp.size < 0.5 * 1024 * 1024) { // 文件大小须小于500kb
+          if (this.fileTemp.size < 30 * 1024 * 1024) { // 文件大小须小于30MB
             return true
           } else {
             this.$message({
               type: 'warning',
-              message: '文件不能大于500kb！'
+              message: '文件不能大于30MB！'
             })
             return false
           }
@@ -165,8 +165,8 @@ export default {
         })
         return false
       }
-      if (this.fileTemp.size > 0.5 * 1024 * 1024) {
-        this.$alert('上传excel文件大小须小于500kb', '提示', {
+      if (this.fileTemp.size > 30 * 1024 * 1024) {
+        this.$alert('上传excel文件大小须小于30MB', '提示', {
           confirmButtonText: '确定'
         })
         return false

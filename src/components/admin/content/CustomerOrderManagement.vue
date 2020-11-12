@@ -62,6 +62,13 @@
         </div>
       </el-row>
     </el-card>
+    <el-pagination
+      background
+      layout="total, prev, pager, next, jumper"
+      @current-change="handleCurrentChange"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>    
   </div>
 </template>
 <script>
@@ -85,7 +92,9 @@ export default {
       datas: [],
       multipleSelection: [],
       commonkey: 0,
-      setDateTime: null
+      setDateTime: null,
+      pageSize: 10,
+      total: 0
     }
   },
   mounted () {
@@ -154,7 +163,7 @@ export default {
     loadData (formInline) {
       var _this = this
       this.$axios
-        .get('/admin/v1/pri/cpExcel/detailList'
+        .get('/admin/v1/pri/cpExcel/detailList/' + this.pageSize + '/1'
           , {
             params: {
               step: 1,
@@ -166,7 +175,8 @@ export default {
           })
         .then((resp) => {
           if (resp && resp.data.code === 200) {
-            _this.datas = resp.data.result
+            _this.datas = resp.data.result.content
+            _this.total = resp.data.result.totalElements
           } else {
             this.$alert(resp.data.message, '提示', {
               confirmButtonText: '确定'
@@ -186,6 +196,24 @@ export default {
     handleSelectionChange (val) {
       this.multipleSelection = val
     },
+    handleCurrentChange (page) {
+        var _this = this
+        this.$axios.get('/admin/v1/pri/cpExcel/detailList/' + this.pageSize + '/' + page,
+          {
+            params: {
+              step: 1,
+              name: this.formInline.name,
+              recordNumber: '',
+              productName: this.formInline.productName,
+              outTradeNo: this.formInline.outTradeNo
+            }
+          }).then(resp => {
+          if (resp && resp.data.code === 200) {
+            _this.datas = resp.data.result.content
+            _this.total = resp.data.result.totalElements
+          }
+        })
+    },    
     batchOpt () {
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
