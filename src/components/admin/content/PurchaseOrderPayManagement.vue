@@ -59,6 +59,13 @@
         </div>
       </el-row>
     </el-card>
+    <el-pagination
+      background
+      layout="total, prev, pager, next, jumper"
+      @current-change="handleCurrentChange"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>      
   </div>
 </template>
 
@@ -79,7 +86,9 @@ export default {
       },
       datas: [],
       multipleSelection: [],
-      mymsg: []
+      mymsg: [],
+      pageSize: 10,
+      total: 0      
     }
   },
   mounted () {
@@ -111,18 +120,19 @@ export default {
     loadData () {
       var _this = this
       this.$axios
-        .get('/admin/v1/pri/cpExcel/detailList', {
+        .get('/admin/v1/pri/cpExcel/detailList/'+ this.pageSize + '/1', {
           params: {
             step: 3,
             name: this.formInline.name,
-            recordNumber: this.formInline.recordNumber,
+            recordNumber: '',
             productName: this.formInline.productName,
             outTradeNo: this.formInline.outTradeNo
           }
         })
         .then((resp) => {
           if (resp && resp.data.code === 200) {
-            _this.datas = resp.data.result
+            _this.datas = resp.data.result.content
+            _this.total = resp.data.result.totalElements
           } else {
             this.$alert(resp.data.message, '提示', {
               confirmButtonText: '确定'
@@ -142,6 +152,24 @@ export default {
     handleSelectionChange (val) {
       this.multipleSelection = val
     },
+    handleCurrentChange (page) {
+        var _this = this
+        this.$axios.get('/admin/v1/pri/cpExcel/detailList/' + this.pageSize + '/' + page,
+          {
+            params: {
+              step: 3,
+              name: this.formInline.name,
+              recordNumber: '',
+              productName: this.formInline.productName,
+              outTradeNo: this.formInline.outTradeNo
+            }
+          }).then(resp => {
+          if (resp && resp.data.code === 200) {
+            _this.datas = resp.data.result.content
+            _this.total = resp.data.result.totalElements
+          }
+        })
+    },     
     dateFormat (row, column) {
       var date = row[column.property]
       if (date !== null && date !== undefined) {
