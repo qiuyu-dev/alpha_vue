@@ -34,7 +34,7 @@
               :file-list="fileList"
               >
               <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传xlsx/xls的excel文件,且不超过500kb</div>
+              <div slot="tip" class="el-upload__tip">只能上传xlsx/xls的excel文件,且不超过30M</div>
             </el-upload>
         </el-form-item>
         <el-form-item prop="id" style="height: 0">

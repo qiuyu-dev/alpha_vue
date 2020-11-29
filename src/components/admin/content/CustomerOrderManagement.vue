@@ -30,25 +30,31 @@
         :max-height="tableHeight"
         @selection-change="handleSelectionChange"
       >
-         <el-table-column type="expand" label="客户">
+        <!-- <el-table-column type="expand" label="客户">
             <template slot-scope="scope">
             <ul>
               <li>
                 姓名：{{scope.row.customerSubject.name}}，证件类型：{{scope.row.customerSubject.recordType}}
                 ，证件号：{{scope.row.customerSubject.recordNumber}}，性别：{{scope.row.customerSubject.sex}}
                 ，年龄：{{scope.row.customerSubject.age}}，所在地：{{scope.row.customerSubject.location}}
-          </li>
+              </li>
             </ul>
             </template>
-        </el-table-column>
-        <el-table-column prop="cpExcelMst.fileName" label="文件名"></el-table-column>
-        <el-table-column prop="cpExcelMst.paySubject.name" label="采购企业" ></el-table-column>
-        <el-table-column prop="cpExcelMst.chargeSubject.name" label="服务企业" ></el-table-column>
-        <el-table-column prop="outTradeNo" label="保单号" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="product.name" label="产品"  show-overflow-tooltip></el-table-column>
-        <el-table-column prop="customerName" label="客户"></el-table-column>
-        <el-table-column prop="effectiveDate" :formatter="dateFormat" label="生效日" width="100"></el-table-column>
-        <el-table-column prop="closingDate" :formatter="dateFormat" label="截止日" width="100"></el-table-column>
+        </el-table-column> -->
+        <el-table-column prop="seqNumber" label="编号"></el-table-column>
+        <el-table-column prop="insuranceCode" label="险种代码" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="insuranceName" label="险种名称" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="productCode" label="产品代码" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="productName" label="产品名称" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="outTradeNo" label="保单号" show-overflow-tooltip></el-table-column>     
+        <el-table-column prop="effectiveDate" label="起保日期" width="100"></el-table-column>
+        <el-table-column prop="closingDate" label="终保日期" width="100"></el-table-column>
+        <el-table-column prop="customerName" label="被保险人姓名"></el-table-column>
+        <el-table-column prop="customerType" label="证件类型" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="customerSubject.recordNumber" label="证件号码" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="sex" label="性别"></el-table-column>
+        <el-table-column prop="birthday" label="出生日期" width="100"></el-table-column>
+        <el-table-column prop="insuranceState" label="保单状态"></el-table-column>
         <el-table-column prop="stateReason" label="状态"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">

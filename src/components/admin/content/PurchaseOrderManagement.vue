@@ -27,7 +27,7 @@
         :max-height="tableHeight"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="expand" label="保单">
+        <!-- <el-table-column type="expand" label="保单">
           <template slot-scope="scope">
             <ul>
               <li v-for="item in scope.row.cpExcelDetails" :key="item.id">
@@ -39,14 +39,22 @@
               </li>
             </ul>
           </template>
-        </el-table-column>
-        <el-table-column prop="name" label="客户" ></el-table-column>
-        <el-table-column prop="recordType" label="证件类型" ></el-table-column>
-        <el-table-column prop="recordNumber" label="证件号"  show-overflow-tooltip></el-table-column>
-        <el-table-column prop="location" label="所在地"  show-overflow-tooltip></el-table-column>
-        <el-table-column prop="age" label="年龄"></el-table-column>
-        <el-table-column prop="sex" label="性别" ></el-table-column>
-        <el-table-column prop="phone" label="联系电话" show-overflow-tooltip></el-table-column>
+        </el-table-column> -->
+        <el-table-column prop="cpExcelDetails[0].seqNumber" label="编号"></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].insuranceCode" label="险种代码" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].insuranceName" label="险种名称" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].productCode" label="产品代码" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].productName" label="产品名称" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].outTradeNo" label="保单号" show-overflow-tooltip></el-table-column>     
+        <el-table-column prop="cpExcelDetails[0].effectiveDate" label="起保日期" width="100"></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].closingDate" label="终保日期" width="100"></el-table-column>
+        <el-table-column prop="name" label="被保险人姓名"></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].customerType" label="证件类型" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="recordNumber" label="证件号码" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].sex" label="性别"></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].birthday" label="出生日期" width="100"></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].insuranceState" label="保单状态"></el-table-column>
+        <el-table-column prop="cpExcelDetails[0].stateReason" label="状态"></el-table-column>        
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click.native.prevent="editOpt(scope.row,'1')" type="text" size="small">通过</el-button>
