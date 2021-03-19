@@ -102,171 +102,171 @@
 </template>
 
 <script>
-  import RoleCreate from './RoleCreate'
-  export default {
-    name: 'UserRole',
-    components: {RoleCreate},
-    data () {
-      return {
-        dialogFormVisible: false,
-        roles: [],
-        perms: [],
-        menus: [],
-        selectedRole: [],
-        selectedPermsIds: [],
-        selectedMenusIds: [],
-        props: {
-          id: 'id',
-          label: 'nameZh',
-          children: 'children'
-        }
-      }
-    },
-    mounted () {
-      this.listRoles()
-      this.listPerms()
-      this.listMenus()
-    },
-    computed: {
-      tableHeight () {
-        return window.innerHeight - 320
-      }
-    },
-    methods: {
-      listRoles () {
-        var _this = this
-        this.$axios.get('/admin/role/list').then(resp => {
-          if (resp && resp.status === 200) {
-            _this.roles = resp.data.result
-          } else {
-            this.$alert(resp.data.message, '提示', {
-                    confirmButtonText: '确定'
-                  })
-          }
-        })
-      },
-      listPerms () {
-        var _this = this
-        this.$axios.get('/admin/role/perm').then(resp => {
-          if (resp && resp.data.code === 200) {
-            _this.perms = resp.data.result
-          } else {
-            this.$alert(resp.data.message, '提示', {
-                    confirmButtonText: '确定'
-                  })
-          }
-        })
-      },
-      listMenus () {
-        var _this = this
-        this.$axios.get('/admin/v1/pri/menus/list').then(resp => {
-          if (resp && resp.data.code === 200) {
-            _this.menus = resp.data.result
-          } else {
-            this.$alert(resp.data.message, '提示', {
-                    confirmButtonText: '确定'
-                  })
-          }
-        })
-      },
-      commitStatusChange (value, role) {
-        if (role.id !== 1) {
-          this.$confirm('是否更改角色状态？', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.$axios.put('/admin/role/status', {
-              enabled: value,
-              id: role.id
-            }).then(resp => {
-              if (resp && resp.data.code === 200) {
-                if (value) {
-                  this.$message('角色 [' + role.nameZh + '] 已启用')
-                } else {
-                  this.$message('角色 [' + role.nameZh + '] 已禁用')
-                }
-              } else {
-                this.$alert(resp.data.message, '提示', {
-                    confirmButtonText: '确定'
-                  })
-              }
-            })
-          }).catch(() => {
-            role.enabled = !role.enabled
-            this.$message({
-              type: 'info',
-              message: '已取消'
-            })
-          })
-        } else {
-          role.enabled = true
-          this.$alert('无法禁用系统管理员！')
-        }
-      },
-      editRole (role) {
-        this.dialogFormVisible = true
-        this.selectedRole = role
-        let permIds = []
-        for (let i = 0; i < role.perms.length; i++) {
-          permIds.push(role.perms[i].id)
-        }
-        this.selectedPermsIds = permIds
-        let menuIds = []
-        for (let i = 0; i < role.menus.length; i++) {
-          menuIds.push(role.menus[i].id)
-          for (let j = 0; j < role.menus[i].children.length; j++) {
-            menuIds.push(role.menus[i].children[j].id)
-          }
-        }
-        this.selectedMenusIds = menuIds
-        // 判断树是否已经加载，第一次打开对话框前树不存在，会报错。所以需要设置 default-checked
-        if (this.$refs.tree) {
-          this.$refs.tree.setCheckedKeys(menuIds)
-        }
-      },
-      onSubmit (role) {
-        let _this = this
-        // 根据视图绑定的角色 id 向后端传送角色信息
-        let perms = []
-        for (let i = 0; i < _this.selectedPermsIds.length; i++) {
-          for (let j = 0; j < _this.perms.length; j++) {
-            if (_this.selectedPermsIds[i] === _this.perms[j].id) {
-              perms.push(_this.perms[j])
-            }
-          }
-        }
-        this.$axios.put('/admin/role/edit', {
-          id: role.id,
-          name: role.name,
-          nameZh: role.nameZh,
-          enabled: role.enabled,
-          perms: perms
-        }).then(resp => {
-          if (resp && resp.data.code === 200) {
-            this.$alert(resp.data.message)
-            this.dialogFormVisible = false
-            this.listRoles()
-          } else {
-            this.$alert(resp.data.message, '提示', {
-                    confirmButtonText: '确定'
-                  })
-          }
-        })
-        this.$axios.put('/admin/role/menu?rid=' + role.id, {
-          menusIds: this.$refs.tree.getCheckedKeys()
-        }).then(resp => {
-          if (resp && resp.data.code === 200) {
-            console.log(resp.data.message)
-          } else {
-            this.$alert(resp.data.message, '提示', {
-                    confirmButtonText: '确定'
-                  })
-          }
-        })
+import RoleCreate from './RoleCreate'
+export default {
+  name: 'UserRole',
+  components: {RoleCreate},
+  data () {
+    return {
+      dialogFormVisible: false,
+      roles: [],
+      perms: [],
+      menus: [],
+      selectedRole: [],
+      selectedPermsIds: [],
+      selectedMenusIds: [],
+      props: {
+        id: 'id',
+        label: 'nameZh',
+        children: 'children'
       }
     }
+  },
+  mounted () {
+    this.listRoles()
+    this.listPerms()
+    this.listMenus()
+  },
+  computed: {
+    tableHeight () {
+      return window.innerHeight - 320
+    }
+  },
+  methods: {
+    listRoles () {
+      var _this = this
+      this.$axios.get('/admin/role/list').then(resp => {
+        if (resp && resp.status === 200) {
+          _this.roles = resp.data.result
+        } else {
+          this.$alert(resp.data.message, '提示', {
+            confirmButtonText: '确定'
+          })
+        }
+      })
+    },
+    listPerms () {
+      var _this = this
+      this.$axios.get('/admin/role/perm').then(resp => {
+        if (resp && resp.data.code === 200) {
+          _this.perms = resp.data.result
+        } else {
+          this.$alert(resp.data.message, '提示', {
+            confirmButtonText: '确定'
+          })
+        }
+      })
+    },
+    listMenus () {
+      var _this = this
+      this.$axios.get('/admin/v1/pri/menus/list').then(resp => {
+        if (resp && resp.data.code === 200) {
+          _this.menus = resp.data.result
+        } else {
+          this.$alert(resp.data.message, '提示', {
+            confirmButtonText: '确定'
+          })
+        }
+      })
+    },
+    commitStatusChange (value, role) {
+      if (role.id !== 1) {
+        this.$confirm('是否更改角色状态？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$axios.put('/admin/role/status', {
+            enabled: value,
+            id: role.id
+          }).then(resp => {
+            if (resp && resp.data.code === 200) {
+              if (value) {
+                this.$message('角色 [' + role.nameZh + '] 已启用')
+              } else {
+                this.$message('角色 [' + role.nameZh + '] 已禁用')
+              }
+            } else {
+              this.$alert(resp.data.message, '提示', {
+                confirmButtonText: '确定'
+              })
+            }
+          })
+        }).catch(() => {
+          role.enabled = !role.enabled
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          })
+        })
+      } else {
+        role.enabled = true
+        this.$alert('无法禁用系统管理员！')
+      }
+    },
+    editRole (role) {
+      this.dialogFormVisible = true
+      this.selectedRole = role
+      let permIds = []
+      for (let i = 0; i < role.perms.length; i++) {
+        permIds.push(role.perms[i].id)
+      }
+      this.selectedPermsIds = permIds
+      let menuIds = []
+      for (let i = 0; i < role.menus.length; i++) {
+        menuIds.push(role.menus[i].id)
+        for (let j = 0; j < role.menus[i].children.length; j++) {
+          menuIds.push(role.menus[i].children[j].id)
+        }
+      }
+      this.selectedMenusIds = menuIds
+      // 判断树是否已经加载，第一次打开对话框前树不存在，会报错。所以需要设置 default-checked
+      if (this.$refs.tree) {
+        this.$refs.tree.setCheckedKeys(menuIds)
+      }
+    },
+    onSubmit (role) {
+      let _this = this
+      // 根据视图绑定的角色 id 向后端传送角色信息
+      let perms = []
+      for (let i = 0; i < _this.selectedPermsIds.length; i++) {
+        for (let j = 0; j < _this.perms.length; j++) {
+          if (_this.selectedPermsIds[i] === _this.perms[j].id) {
+            perms.push(_this.perms[j])
+          }
+        }
+      }
+      this.$axios.put('/admin/role/edit', {
+        id: role.id,
+        name: role.name,
+        nameZh: role.nameZh,
+        enabled: role.enabled,
+        perms: perms
+      }).then(resp => {
+        if (resp && resp.data.code === 200) {
+          this.$alert(resp.data.message)
+          this.dialogFormVisible = false
+          this.listRoles()
+        } else {
+          this.$alert(resp.data.message, '提示', {
+            confirmButtonText: '确定'
+          })
+        }
+      })
+      this.$axios.put('/admin/role/menu?rid=' + role.id, {
+        menusIds: this.$refs.tree.getCheckedKeys()
+      }).then(resp => {
+        if (resp && resp.data.code === 200) {
+          console.log(resp.data.message)
+        } else {
+          this.$alert(resp.data.message, '提示', {
+            confirmButtonText: '确定'
+          })
+        }
+      })
+    }
   }
+}
 </script>
 
 <style scoped>

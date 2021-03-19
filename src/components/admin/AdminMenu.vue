@@ -25,30 +25,30 @@
 </template>
 
 <script>
-    export default {
-      inject: ['reload'],
-      name: 'AdminMenu',
-      data () {
-        return {
-          isCollapse: false
-        }
-      },
-      computed: {
-        adminMenus () {
-          return this.$store.state.adminMenus
-        },
-        currentPath () {
-          return this.$route.path         
-        }
-      },
-      methods: {
-        handleSelect (index) {
-          if (index === this.$route.path) {
-            this.reload()
-          }
-        }
+export default {
+  inject: ['reload'],
+  name: 'AdminMenu',
+  data () {
+    return {
+      isCollapse: false
+    }
+  },
+  computed: {
+    adminMenus () {
+      return this.$store.state.adminMenus
+    },
+    currentPath () {
+      return this.$route.path
+    }
+  },
+  methods: {
+    handleSelect (index) {
+      if (index === this.$route.path) {
+        this.reload()
       }
     }
+  }
+}
 </script>
 
 <style scoped>

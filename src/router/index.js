@@ -4,17 +4,16 @@ import Login from '@/components/Login'
 import Register from '@/components/register/Register'
 import RegisterEnterprise from '@/components/register/RegisterEnterprise'
 
-
 Vue.use(Router)
 
 const originalPush = Router.prototype.push
-Router.prototype.push = function push(location) {
+Router.prototype.push = function push (location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
 export default new Router({
   mode: 'history',
-  routes: [    
+  routes: [
     {
       path: '/',
       name: 'LoginIndex',
@@ -24,7 +23,7 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
-    },    
+    },
     {
       path: '/register',
       name: 'Register',
@@ -34,7 +33,7 @@ export default new Router({
       path: '/registerEnterprise',
       name: 'RegisterEnterprise',
       component: RegisterEnterprise
-    },    
+    },
     {
       path: '/admin',
       name: 'Admin',
@@ -45,7 +44,7 @@ export default new Router({
       children: [
         {
           path: '/admin/dashboard',
-          name: 'Dashboard',
+          name: 'DashboardAdmin',
           component: () => import('../components/admin/dashboard/admin/index'),
           meta: {
             requireAuth: true
@@ -56,7 +55,7 @@ export default new Router({
     {
       path: '*',
       component: () => import('../components/pages/Error404')
-    }    
+    }
   ]
 })
 
@@ -68,7 +67,7 @@ export const createRouter = routes => new Router({
       path: '/login',
       name: 'Login',
       component: Login
-    },    
+    },
     {
       path: '/register',
       name: 'Register',
@@ -78,7 +77,7 @@ export const createRouter = routes => new Router({
       path: '/registerEnterprise',
       name: 'RegisterEnterprise',
       component: RegisterEnterprise
-    },    
+    },
     {
       path: '/admin',
       name: 'Admin',
@@ -89,7 +88,7 @@ export const createRouter = routes => new Router({
       children: [
         {
           path: '/admin/dashboard',
-          name: 'Dashboard',
+          name: 'DashboardAdmin',
           component: () => import('../components/admin/dashboard/admin/index'),
           meta: {
             requireAuth: true
@@ -100,7 +99,7 @@ export const createRouter = routes => new Router({
     {
       path: '*',
       component: () => import('../components/pages/Error404')
-    }      
+    }
   ]
 }
 )

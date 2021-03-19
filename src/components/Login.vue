@@ -113,26 +113,29 @@ export default {
   }
 }
 </script>
-<style  scoped>
+<style>
+body{
+    margin: -5px 0px;
+}
+
 .main {
   padding: 0 ;
   text-align: center;
 }
-  #paper {
-    background:url("../assets/img/bg/back1.jpeg") no-repeat;
-    background-position: center;
-    height: 100%;
-    width: 100%;
-    background-size: cover;
-    position: fixed;
-  }
-  body{
-    margin: -5px 0px;
-  }
+
+#paper {
+  background:url("../assets/img/bg/back1.jpeg") no-repeat;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  position: fixed;
+}
+
 .login-container {
   border-radius: 15px;
   background-clip: padding-box;
-  margin: 90px auto;
+  margin: 120px auto;
   width: 30%;
   /* height: 30%; */
   padding: 35px 35px 15px 35px;
@@ -142,6 +145,7 @@ export default {
   min-height: 30%;
   overflow: hidden;
 }
+
 .login_title {
   margin: 0px auto 40px auto;
   text-align: center;

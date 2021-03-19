@@ -3,15 +3,15 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-//import ElementUI from 'element-ui'
-//import 'element-ui/lib/theme-chalk/index.css'
+// import ElementUI from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import 'echarts/theme/macarons.js'
 import store from './store'
 import moment from 'moment'
-//import Blob from './vendor/Blob.js'
-//import Export2Excel from './vendor/Export2Excel.js'
+// import Blob from './vendor/Blob.js'
+// import Export2Excel from './vendor/Export2Excel.js'
 
 import {
   Pagination,
@@ -134,9 +134,9 @@ Vue.prototype.$notify = Notification
 Vue.prototype.$message = Message
 Vue.prototype.$moment = moment
 
-// 设置反向代理,前端请求默认发送到 http://localhost:8443/api
+// 设置反向代理,前端请求默认发送到 http://localhost:8443/api // http://8.131.75.71:8443/api
 var axios = require('axios')
-axios.defaults.baseURL='http://localhost:8443/api'
+axios.defaults.baseURL = 'http://localhost:8443/api' 
 // 使请求带上凭证信息
 axios.defaults.withCredentials = true
 // 全局注册,之后可在其他组件中通过this.$axios发送数据
@@ -156,17 +156,17 @@ router.beforeEach((to, from, next) => {
   if (store.state.username && to.path.startsWith('/login')) {
     next({
       // name: 'Dashboard'
-      name: Admin
+      name: 'Admin'
     })
   }
   // 如果前端没有登录信息则直接拦截，如果有则判断后端是否正常登录（防止构造参数绕过）
   if (to.meta.requireAuth) {
     if (store.state.username) {
-      axios.get('/authentication').then(resp=>{
-        if (resp)
+      axios.get('/authentication').then(resp => {
+        if (resp) {
           next()
         }
-      )      
+      })
     } else {
       next({
         path: 'login',
@@ -195,12 +195,12 @@ axios.interceptors.response.use(
 
 const initAdminMenu = (router, store) => {
   // 防止重复触发加载菜单操作
-  if (store.state.adminMenus.length > 0) {    
+  if (store.state.adminMenus.length > 0) {
     return
   }
   axios.get('/admin/v1/pri/menu/currentuser').then(resp => {
     if (resp && resp.status === 200) {
-      //console.log(resp.data.result)
+      // console.log(resp.data.result)
       var fmtRoutes = formatRoutes(resp.data.result)
       router.addRoutes(fmtRoutes)
       store.commit('initAdminMenu', fmtRoutes)

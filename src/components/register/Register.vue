@@ -30,51 +30,51 @@
   </div>
 </template>
 <script>
-  export default{
-    data () {
-      return {
-        rules: {
-          username: [{required: true, message: '请输入账号', trigger: 'blur'}],
-          password: [{required: true, message: '请输入密码', trigger: 'blur'}]
-        },
-        checked: true,
-        loginForm: {
-          username: '',
-          password: '',
-          name: '',
-          phone: '',
-          email: ''
-        },
-        loading: false
-      }
-    },
-    methods: {
-      register () {
-        var _this = this
-        this.$axios
-          .post('/register', {
-            username: this.loginForm.username,
-            password: this.loginForm.password,
-            name: this.loginForm.name,
-            phone: this.loginForm.phone,
-            email: this.loginForm.email
-          })
-          .then(resp => {
-            if (resp.data.code === 200) {
-              this.$alert('注册成功', '提示', {
-                confirmButtonText: '确定'
-              })
-              _this.$router.replace('/login')
-            } else {
-              this.$alert(resp.data.message, '提示', {
-                confirmButtonText: '确定'
-              })
-            }
-          })
-          .catch(failResponse => {})
-      }
+export default{
+  data () {
+    return {
+      rules: {
+        username: [{required: true, message: '请输入账号', trigger: 'blur'}],
+        password: [{required: true, message: '请输入密码', trigger: 'blur'}]
+      },
+      checked: true,
+      loginForm: {
+        username: '',
+        password: '',
+        name: '',
+        phone: '',
+        email: ''
+      },
+      loading: false
+    }
+  },
+  methods: {
+    register () {
+      var _this = this
+      this.$axios
+        .post('/register', {
+          username: this.loginForm.username,
+          password: this.loginForm.password,
+          name: this.loginForm.name,
+          phone: this.loginForm.phone,
+          email: this.loginForm.email
+        })
+        .then(resp => {
+          if (resp.data.code === 200) {
+            this.$alert('注册成功', '提示', {
+              confirmButtonText: '确定'
+            })
+            _this.$router.replace('/login')
+          } else {
+            this.$alert(resp.data.message, '提示', {
+              confirmButtonText: '确定'
+            })
+          }
+        })
+        .catch(failResponse => {})
     }
   }
+}
 </script>
 <style>
   #paper {
